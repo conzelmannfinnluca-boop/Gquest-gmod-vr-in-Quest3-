@@ -7,7 +7,7 @@ Garry's Mod ist für seine offene Spielwelt und die vielen Möglichkeiten bekann
 
 ## Entwicklung
 
-Bei der Entwicklung von Gquest kommt KI zum Einsatz. Sie unterstützt den Entwicklungsprozess und hilft dabei, das Projekt Schritt für Schritt umzusetzen. Gquest ist ein eigenständiges Projekt; Umfang und Funktionen richten sich nach dem tatsächlichen Entwicklungsstand. Gquest ist noch keine vollständig fertige oder fehlerfreie Version, daher können Fehler auftreten und Funktionen noch verändert werden.
+Gquest wurde mithilfe von Gdroid und KI entwickelt. Gquest ist ein eigenständiges Projekt; Umfang und Funktionen richten sich nach dem tatsächlichen Entwicklungsstand. Gquest ist noch keine vollständig fertige oder fehlerfreie Version, daher können Fehler auftreten und Funktionen noch verändert werden.
 
 ## Funktionen
 
