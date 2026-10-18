@@ -1,25 +1,49 @@
-# Gquest-gmod-vr-in-Quest3-
-Gquest ist ein Projekt mit dem Ziel, Garry's Mod auf die Meta Quest 3 und Quest 3S zu bringen. Die Idee verbindet das offene Sandbox-Konzept von Garry's Mod mit Virtual Reality und einer Nutzung direkt auf einem Quest-Headset.
+# Gquest – Quellcode
 
-## Projektziel
+Lokale Quellcode-Sicherung vom 18. Oktober 2026. Enthält den aktuell im Projekt
+vorhandenen eigenen Gquest-Code, Build-Werkzeuge und Tests.
 
-Garry's Mod ist für seine offene Spielwelt und die vielen Möglichkeiten bekannt, die sich aus den verfügbaren Inhalten und Werkzeugen ergeben. Gquest soll dieses Grundkonzept für die Quest-Plattform zugänglich machen. Dabei steht die Entwicklung eines passenden VR-Erlebnisses für Quest 3 und Quest 3S im Mittelpunkt.
+## Hier findest du den Code
 
-## Entwicklung
+- `work/quest_engine_bridge.cpp`: native Android-/OpenXR-Brücke und Handkorrektur.
+- `work/gquest-ui/lua/autorun/client/`: Menü, Handgelenk-HUD,
+  Waffenmodell-Diagnose und Ausrichtung.
+- `work/gquest-arcvr/content/lua/`: eigener ArcVR-Adapter und Glock-SWEP.
+- `work/gquest-arcvr/derive_grip.py`: reproduzierbare Glock-Griffkorrektur.
+- `work/gquest_decode_idle_root.py`: Decoder der tatsächlichen Idle-Wurzelpose.
+- `work/gdroid-xr-bootstrap/`: Quellcode und Konfiguration des XR-Bootstrap-Tests.
+- `work/build_quest_lab.py`: APK-Packager.
+- `work/verify_gquest_package.py`: APK-Signatur-/Inhaltsprüfung.
+- `work/harness/`, `work/gquest-arcvr/test_*.lua`: vorhandene Tests.
+- Weitere Probe-/Audit-Skripte unter `work/` sind Entwicklungswerkzeuge;
+  sie werden nicht automatisch in das Spiel geladen.
 
-Gquest wurde mithilfe von Gdroid und KI entwickelt. Gquest ist ein eigenständiges Projekt; Umfang und Funktionen richten sich nach dem tatsächlichen Entwicklungsstand. Gquest ist noch keine vollständig fertige oder fehlerfreie Version, daher können Fehler auftreten und Funktionen noch verändert werden.
+`SOURCE_FILES.json` enthält Originalpfade, Dateigrößen und SHA256-Prüfsummen.
+Die Ordnerstruktur entspricht dem bestehenden Projekt, damit relative Pfade
+in den vorhandenen Skripten erhalten bleiben.
 
-## Funktionen
+## Umfang
 
-- VR-Bild mit Kopftracking zum räumlichen Umsehen.
-- Touch-Controller zur Darstellung der Hände sowie für Bewegung und Waffen.
-- Eine GMod-Spielwelt, bisher vor allem auf `gm_construct` getestet.
-- Physgun und weitere Standardwaffen mit VR-Modellen.
-- Spawn-Menü und VR-Einstellungen. Bei der Bedienung gibt es noch offene Fehler.
+Dies ist der verfügbare Gquest-Anpassungscode, nicht der vollständige Quellcode
+von Garry’s Mod, GDroid oder der Source-Engine. APKs, Spielemodelle/-texturen,
+SDKs, kompilierte Bibliotheken, Signierschlüssel und das vollständige ArcVR-
+Repository sind keine Bestandteile dieser Sicherung. Die Lua-Waffenintegration
+orientiert sich an Pescorr/arcvr_anniversary_bugfix_beta, Commit
+`0d8d5bed01c77ad1550097689dc0d1e6fc035385`; Herkunft und Anpassungen sind
+in `work/gquest-arcvr/ADAPTATION.md` und den Manifesten beschrieben.
+Es wird keine neue Lizenz für fremde Bestandteile vergeben.
 
-## Zielplattform
+## Bauen
 
-- Meta Quest 3
-- Meta Quest 3S
+Siehe `BUILD.md`. Für den privaten APK-Build werden die bereits lokal vorhandenen
+Abhängigkeiten aus dem übergeordneten Gquest-Projekt benötigt. Diese werden nur
+auf ausdrücklichen Aufruf von `prepare_dependencies.py` lokal verlinkt.
+Der Build verwendet ausschließlich die Quellcode-Kopie in diesem Ordner und
+schreibt seine Ergebnisse hier nach `work/` und `outputs/`.
 
-Weitere Informationen zu Installation und Bedienung folgen, sobald sie feststehen.
+## Stand
+
+Die Sicherung enthält auch jüngere HUD-/Ausrichtungsänderungen, deren
+Darstellung auf der Quest noch geprüft werden muss. Das beigefügte bisherige
+Build-Protokoll ist eine Momentaufnahme des übergeordneten Projekts und keine
+neue Kompilierungs- oder Geräteprüfung dieses Exports.

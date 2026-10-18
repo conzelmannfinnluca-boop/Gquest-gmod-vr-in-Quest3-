@@ -1,0 +1,526 @@
+{
+  "private_lab_only": true,
+  "source_file_count": 17,
+  "private_vmt_count": 1,
+  "patched_material": {
+    "path": "materials/models/weapons/arcticvr/p38/v_p38.vmt",
+    "source_commit": "0d8d5bed01c77ad1550097689dc0d1e6fc035385",
+    "original_bytes": 238,
+    "original_sha256": "ea89a384fe7dd01e058e3fb9f939b3c75eebd385edbd66c9238232d7efc105b3",
+    "adapted_bytes": 236,
+    "adapted_sha256": "71d9fe3e06743f100372f4aca9760335ead0227ea16f090e2321dc64bae10e20",
+    "change": "Remove only final unmatched closing brace and its newline. Source checkout is unchanged.",
+    "reason": "Native runtime KeyValues parser reported missing { for this exact VMT.",
+    "runtime_fix_verified": false
+  },
+  "source_asset_checks": [
+    {
+      "path": "materials/models/weapons/arcticvr/p38/bullet_normal_flat.vtf",
+      "upstream_bytes_match": true,
+      "sha256": "7144538d0e6a877de815ad94e55c23175eb0113c7b26d95b8011e10e0eea09e8"
+    },
+    {
+      "path": "materials/models/weapons/arcticvr/p38/v_p38.vmt",
+      "upstream_bytes_match": false,
+      "sha256": "71d9fe3e06743f100372f4aca9760335ead0227ea16f090e2321dc64bae10e20"
+    },
+    {
+      "path": "materials/models/weapons/arcticvr/p38/v_p38.vtf",
+      "upstream_bytes_match": true,
+      "sha256": "7b11f6aac8811d6d1042d9d169a4afd3176a4607ac5dad29b17bfe8ee3c2c866"
+    },
+    {
+      "path": "models/weapons/arcticvr/aniv/9mmbullet.dx90.vtx",
+      "upstream_bytes_match": true,
+      "sha256": "1b5696a460bfbbb99babed3aaa101616b32b556ecf2965846dec137b4948e7de"
+    },
+    {
+      "path": "models/weapons/arcticvr/aniv/9mmbullet.mdl",
+      "upstream_bytes_match": true,
+      "sha256": "893fceb021bd82af0defa55f3332f672dbd3e443fb8e6b34c901f946aae49b8d"
+    },
+    {
+      "path": "models/weapons/arcticvr/aniv/9mmbullet.vvd",
+      "upstream_bytes_match": true,
+      "sha256": "2dccf4a76c43e742dcfbb77a7392c67c9d7da4c053c4797002b1c621803208a7"
+    },
+    {
+      "path": "models/weapons/arcticvr/aniv/9mmcase.dx90.vtx",
+      "upstream_bytes_match": true,
+      "sha256": "dec4bc5182e5e63b57d4742e082f24acd99ef564cda5333934f9917a47d9f228"
+    },
+    {
+      "path": "models/weapons/arcticvr/aniv/9mmcase.mdl",
+      "upstream_bytes_match": true,
+      "sha256": "f4c119d38ee1030ac4895e08ee654c517707e1cc8baaf3659df2e075c11ccc39"
+    },
+    {
+      "path": "models/weapons/arcticvr/aniv/9mmcase.vvd",
+      "upstream_bytes_match": true,
+      "sha256": "bb26a2e1abf99eb480403f90cf0de393d8c76220ecc66cbbf61c11f5332f5d65"
+    },
+    {
+      "path": "models/weapons/arcticvr/aniv/mag_glock.dx90.vtx",
+      "upstream_bytes_match": true,
+      "sha256": "057c6e916aefa5e452c8fdd9568394d735c39365087d43b8ba9873be7a306c4c"
+    },
+    {
+      "path": "models/weapons/arcticvr/aniv/mag_glock.mdl",
+      "upstream_bytes_match": true,
+      "sha256": "b7700fddb1957672029dc3457a85c53516bc23c36c0f8ff7cfa10edf55f7276c"
+    },
+    {
+      "path": "models/weapons/arcticvr/aniv/mag_glock.phy",
+      "upstream_bytes_match": true,
+      "sha256": "3b840b98b60d75f9d2659c3a6a23d488f7c140e19d7e78a09e4ea92ca24a7bc5"
+    },
+    {
+      "path": "models/weapons/arcticvr/aniv/mag_glock.vvd",
+      "upstream_bytes_match": true,
+      "sha256": "3d8e2d3966be56298bd488ce22dda2dab3dd1fe8a20b5ddb4e2a67355094fe65"
+    },
+    {
+      "path": "models/weapons/arcticvr/aniv/pistol_glock.dx90.vtx",
+      "upstream_bytes_match": true,
+      "sha256": "0fcf150e2668faa7544e2b44fea1547e0d1cf622315dea941ecdc60aaeae693b"
+    },
+    {
+      "path": "models/weapons/arcticvr/aniv/pistol_glock.mdl",
+      "upstream_bytes_match": true,
+      "sha256": "c682c0cf077149eba9085c0bfe38b8641e9e5bfac979972e3ef90db80412fbcd"
+    },
+    {
+      "path": "models/weapons/arcticvr/aniv/pistol_glock.phy",
+      "upstream_bytes_match": true,
+      "sha256": "bff09490d19a1a2134b729b4703846ff60111e4bf4f0d3710c90feea589a80fc"
+    },
+    {
+      "path": "models/weapons/arcticvr/aniv/pistol_glock.vvd",
+      "upstream_bytes_match": true,
+      "sha256": "f4e51a468ed562bd3b361c1a2fdacd368224c1d2bebc1a964f61e23f8d64a1ed"
+    }
+  ],
+  "models": [
+    {
+      "path": "models/weapons/arcticvr/aniv/9mmbullet.mdl",
+      "checksum": 3881321444,
+      "textures": [
+        "v_p38"
+      ],
+      "texture_directories": [
+        "models/weapons/arcticvr/p38/"
+      ],
+      "skinref_count": 1,
+      "skin_families": [
+        [
+          0
+        ]
+      ],
+      "mesh_skinref_indices": [
+        {
+          "bodypart": 0,
+          "model": 0,
+          "mesh": 0,
+          "skinref": 0,
+          "vertex_count": 692
+        }
+      ],
+      "resolved_materials": [
+        {
+          "texture": "v_p38",
+          "location": "private content",
+          "path": "materials/models/weapons/arcticvr/p38/v_p38.vmt",
+          "bytes": 236
+        }
+      ]
+    },
+    {
+      "path": "models/weapons/arcticvr/aniv/9mmcase.mdl",
+      "checksum": 209381064,
+      "textures": [
+        "v_p38"
+      ],
+      "texture_directories": [
+        "models/weapons/arcticvr/p38/"
+      ],
+      "skinref_count": 1,
+      "skin_families": [
+        [
+          0
+        ]
+      ],
+      "mesh_skinref_indices": [
+        {
+          "bodypart": 0,
+          "model": 0,
+          "mesh": 0,
+          "skinref": 0,
+          "vertex_count": 902
+        }
+      ],
+      "resolved_materials": [
+        {
+          "texture": "v_p38",
+          "location": "private content",
+          "path": "materials/models/weapons/arcticvr/p38/v_p38.vmt",
+          "bytes": 236
+        }
+      ]
+    },
+    {
+      "path": "models/weapons/arcticvr/aniv/mag_glock.mdl",
+      "checksum": 113920014,
+      "textures": [
+        "Glock18",
+        "v_p38"
+      ],
+      "texture_directories": [
+        "models/weapons/arcticvr/p38/",
+        "models/weapons/v_models/pist_glock18/",
+        "/\"/"
+      ],
+      "skinref_count": 2,
+      "skin_families": [
+        [
+          0,
+          1
+        ]
+      ],
+      "mesh_skinref_indices": [
+        {
+          "bodypart": 0,
+          "model": 0,
+          "mesh": 0,
+          "skinref": 0,
+          "vertex_count": 97
+        },
+        {
+          "bodypart": 1,
+          "model": 1,
+          "mesh": 0,
+          "skinref": 1,
+          "vertex_count": 692
+        },
+        {
+          "bodypart": 2,
+          "model": 1,
+          "mesh": 0,
+          "skinref": 1,
+          "vertex_count": 692
+        },
+        {
+          "bodypart": 3,
+          "model": 1,
+          "mesh": 0,
+          "skinref": 1,
+          "vertex_count": 692
+        }
+      ],
+      "resolved_materials": [
+        {
+          "texture": "Glock18",
+          "location": "/home/shift/.var/app/com.valvesoftware.Steam/.local/share/Steam/steamapps/common/GarrysMod/sourceengine/content_cstrike_dir.vpk",
+          "path": "materials/models/weapons/v_models/pist_glock18/glock18.vmt",
+          "bytes": 183
+        },
+        {
+          "texture": "v_p38",
+          "location": "private content",
+          "path": "materials/models/weapons/arcticvr/p38/v_p38.vmt",
+          "bytes": 236
+        }
+      ]
+    },
+    {
+      "path": "models/weapons/arcticvr/aniv/pistol_glock.mdl",
+      "checksum": 989677389,
+      "textures": [
+        "Glock18",
+        "v_p38"
+      ],
+      "texture_directories": [
+        "models/weapons/arcticvr/p38/",
+        "models/weapons/v_models/pist_glock18/",
+        "/\"/"
+      ],
+      "skinref_count": 2,
+      "skin_families": [
+        [
+          0,
+          1
+        ]
+      ],
+      "mesh_skinref_indices": [
+        {
+          "bodypart": 0,
+          "model": 0,
+          "mesh": 0,
+          "skinref": 0,
+          "vertex_count": 1591
+        },
+        {
+          "bodypart": 0,
+          "model": 0,
+          "mesh": 1,
+          "skinref": 1,
+          "vertex_count": 692
+        }
+      ],
+      "resolved_materials": [
+        {
+          "texture": "Glock18",
+          "location": "/home/shift/.var/app/com.valvesoftware.Steam/.local/share/Steam/steamapps/common/GarrysMod/sourceengine/content_cstrike_dir.vpk",
+          "path": "materials/models/weapons/v_models/pist_glock18/glock18.vmt",
+          "bytes": 183
+        },
+        {
+          "texture": "v_p38",
+          "location": "private content",
+          "path": "materials/models/weapons/arcticvr/p38/v_p38.vmt",
+          "bytes": 236
+        }
+      ]
+    },
+    {
+      "path": "models/weapons/gquest_arcvr/pistol_glock_posefix2.mdl",
+      "checksum": 989677389,
+      "textures": [
+        "Glock18",
+        "v_p38"
+      ],
+      "texture_directories": [
+        "models/weapons/arcticvr/p38/",
+        "models/weapons/v_models/pist_glock18/",
+        "/\"/"
+      ],
+      "skinref_count": 2,
+      "skin_families": [
+        [
+          0,
+          1
+        ]
+      ],
+      "mesh_skinref_indices": [
+        {
+          "bodypart": 0,
+          "model": 0,
+          "mesh": 0,
+          "skinref": 0,
+          "vertex_count": 1591
+        },
+        {
+          "bodypart": 0,
+          "model": 0,
+          "mesh": 1,
+          "skinref": 1,
+          "vertex_count": 692
+        }
+      ],
+      "resolved_materials": [
+        {
+          "texture": "Glock18",
+          "location": "/home/shift/.var/app/com.valvesoftware.Steam/.local/share/Steam/steamapps/common/GarrysMod/sourceengine/content_cstrike_dir.vpk",
+          "path": "materials/models/weapons/v_models/pist_glock18/glock18.vmt",
+          "bytes": 183
+        },
+        {
+          "texture": "v_p38",
+          "location": "private content",
+          "path": "materials/models/weapons/arcticvr/p38/v_p38.vmt",
+          "bytes": 236
+        }
+      ]
+    }
+  ],
+  "materials": [
+    {
+      "location": "private content",
+      "path": "materials/models/weapons/arcticvr/p38/v_p38.vmt",
+      "bytes": 236,
+      "shader": "VertexLitGeneric",
+      "syntax": "balanced key/value grammar",
+      "sha256": "71d9fe3e06743f100372f4aca9760335ead0227ea16f090e2321dc64bae10e20",
+      "dependencies": [
+        {
+          "location": "private content",
+          "path": "materials/models/weapons/arcticvr/p38/v_p38.vtf",
+          "bytes": 699272,
+          "vtf_version": [
+            7,
+            2
+          ],
+          "width": 1024,
+          "height": 1024,
+          "sha256": "7b11f6aac8811d6d1042d9d169a4afd3176a4607ac5dad29b17bfe8ee3c2c866"
+        },
+        {
+          "location": "private content",
+          "path": "materials/models/weapons/arcticvr/p38/bullet_normal_flat.vtf",
+          "bytes": 349640,
+          "vtf_version": [
+            7,
+            5
+          ],
+          "width": 512,
+          "height": 512,
+          "sha256": "7144538d0e6a877de815ad94e55c23175eb0113c7b26d95b8011e10e0eea09e8"
+        }
+      ]
+    },
+    {
+      "location": "/home/shift/.var/app/com.valvesoftware.Steam/.local/share/Steam/steamapps/common/GarrysMod/sourceengine/content_cstrike_dir.vpk",
+      "path": "materials/models/weapons/v_models/pist_glock18/glock18.vmt",
+      "bytes": 183,
+      "shader": "VertexLitGeneric",
+      "syntax": "balanced key/value grammar",
+      "sha256": "65853b749d28ce03d3096b82fa7b65e85f0533d73e70e761c95428b9bbb38ec3",
+      "dependencies": [
+        {
+          "location": "/home/shift/.var/app/com.valvesoftware.Steam/.local/share/Steam/steamapps/common/GarrysMod/sourceengine/content_cstrike_dir.vpk",
+          "path": "materials/models/weapons/v_models/pist_glock18/glock18.vtf",
+          "bytes": 174968,
+          "vtf_version": [
+            7,
+            1
+          ],
+          "width": 512,
+          "height": 512,
+          "sha256": "c25f526579a336de289143d92b91abb4bc4a28e24c18440f6b35ef6239c5c366"
+        },
+        {
+          "location": "/home/shift/.var/app/com.valvesoftware.Steam/.local/share/Steam/steamapps/common/GarrysMod/sourceengine/content_cstrike_dir.vpk",
+          "path": "materials/models/weapons/v_models/pist_glock18/glock18_ref.vtf",
+          "bytes": 174968,
+          "vtf_version": [
+            7,
+            1
+          ],
+          "width": 512,
+          "height": 512,
+          "sha256": "5f9d0c5ecb8cff5b7f8765204cc6048e7ec8611c82d74286796ca6a73daaf116"
+        }
+      ]
+    }
+  ],
+  "stock_material_variants": [
+    {
+      "archive": "/home/shift/.var/app/com.valvesoftware.Steam/.local/share/Steam/steamapps/common/GarrysMod/sourceengine/content_cstrike_dir.vpk",
+      "path": "materials/models/weapons/v_models/pist_glock18/glock18.vmt",
+      "syntax": "balanced key/value grammar",
+      "shader": "VertexLitGeneric",
+      "sha256": "65853b749d28ce03d3096b82fa7b65e85f0533d73e70e761c95428b9bbb38ec3",
+      "dependencies": [
+        {
+          "path": "materials/models/weapons/v_models/pist_glock18/glock18.vtf",
+          "available_in": [
+            {
+              "archive": "/home/shift/.var/app/com.valvesoftware.Steam/.local/share/Steam/steamapps/common/GarrysMod/sourceengine/content_cstrike_dir.vpk",
+              "bytes": 174968,
+              "sha256": "c25f526579a336de289143d92b91abb4bc4a28e24c18440f6b35ef6239c5c366"
+            },
+            {
+              "archive": "/home/shift/.var/app/com.valvesoftware.Steam/.local/share/Steam/steamapps/common/GarrysMod/garrysmod/fallbacks_dir.vpk",
+              "bytes": 2952,
+              "sha256": "934f52eb041d3b05ddaab86967cdd4c2d1be5de60e23c1f548e454b3d08a6105"
+            }
+          ]
+        },
+        {
+          "path": "materials/models/weapons/v_models/pist_glock18/glock18_ref.vtf",
+          "available_in": [
+            {
+              "archive": "/home/shift/.var/app/com.valvesoftware.Steam/.local/share/Steam/steamapps/common/GarrysMod/sourceengine/content_cstrike_dir.vpk",
+              "bytes": 174968,
+              "sha256": "5f9d0c5ecb8cff5b7f8765204cc6048e7ec8611c82d74286796ca6a73daaf116"
+            },
+            {
+              "archive": "/home/shift/.var/app/com.valvesoftware.Steam/.local/share/Steam/steamapps/common/GarrysMod/garrysmod/fallbacks_dir.vpk",
+              "bytes": 2952,
+              "sha256": "eb291012ab54728d644ddbace091e99c5ea2d9de4354a52f799a622ca83de30b"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "archive": "/home/shift/.var/app/com.valvesoftware.Steam/.local/share/Steam/steamapps/common/GarrysMod/garrysmod/garrysmod_dir.vpk",
+      "path": "materials/models/weapons/v_models/pist_glock18/glock18.vmt",
+      "syntax": "balanced key/value grammar",
+      "shader": "VertexLitGeneric",
+      "sha256": "445efc9bf3143c1fa4ea72424f3e66c3a72e407ebcc536d232c511b496807b3a",
+      "dependencies": [
+        {
+          "path": "materials/models/weapons/v_models/pist_glock18/glock18.vtf",
+          "available_in": [
+            {
+              "archive": "/home/shift/.var/app/com.valvesoftware.Steam/.local/share/Steam/steamapps/common/GarrysMod/sourceengine/content_cstrike_dir.vpk",
+              "bytes": 174968,
+              "sha256": "c25f526579a336de289143d92b91abb4bc4a28e24c18440f6b35ef6239c5c366"
+            },
+            {
+              "archive": "/home/shift/.var/app/com.valvesoftware.Steam/.local/share/Steam/steamapps/common/GarrysMod/garrysmod/fallbacks_dir.vpk",
+              "bytes": 2952,
+              "sha256": "934f52eb041d3b05ddaab86967cdd4c2d1be5de60e23c1f548e454b3d08a6105"
+            }
+          ]
+        },
+        {
+          "path": "materials/models/weapons/v_models/pist_glock18/glock18_ref.vtf",
+          "available_in": [
+            {
+              "archive": "/home/shift/.var/app/com.valvesoftware.Steam/.local/share/Steam/steamapps/common/GarrysMod/sourceengine/content_cstrike_dir.vpk",
+              "bytes": 174968,
+              "sha256": "5f9d0c5ecb8cff5b7f8765204cc6048e7ec8611c82d74286796ca6a73daaf116"
+            },
+            {
+              "archive": "/home/shift/.var/app/com.valvesoftware.Steam/.local/share/Steam/steamapps/common/GarrysMod/garrysmod/fallbacks_dir.vpk",
+              "bytes": 2952,
+              "sha256": "eb291012ab54728d644ddbace091e99c5ea2d9de4354a52f799a622ca83de30b"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "archive": "/home/shift/.var/app/com.valvesoftware.Steam/.local/share/Steam/steamapps/common/GarrysMod/garrysmod/fallbacks_dir.vpk",
+      "path": "materials/models/weapons/v_models/pist_glock18/glock18.vmt",
+      "syntax": "balanced key/value grammar",
+      "shader": "VertexLitGeneric",
+      "sha256": "a0ed6d5665f489b096e68b84fafe1e1014c2e84d7de25074c1e7b24c38d1f534",
+      "dependencies": [
+        {
+          "path": "materials/models/weapons/v_models/pist_glock18/glock18.vtf",
+          "available_in": [
+            {
+              "archive": "/home/shift/.var/app/com.valvesoftware.Steam/.local/share/Steam/steamapps/common/GarrysMod/sourceengine/content_cstrike_dir.vpk",
+              "bytes": 174968,
+              "sha256": "c25f526579a336de289143d92b91abb4bc4a28e24c18440f6b35ef6239c5c366"
+            },
+            {
+              "archive": "/home/shift/.var/app/com.valvesoftware.Steam/.local/share/Steam/steamapps/common/GarrysMod/garrysmod/fallbacks_dir.vpk",
+              "bytes": 2952,
+              "sha256": "934f52eb041d3b05ddaab86967cdd4c2d1be5de60e23c1f548e454b3d08a6105"
+            }
+          ]
+        },
+        {
+          "path": "materials/models/weapons/v_models/pist_glock18/glock18_ref.vtf",
+          "available_in": [
+            {
+              "archive": "/home/shift/.var/app/com.valvesoftware.Steam/.local/share/Steam/steamapps/common/GarrysMod/sourceengine/content_cstrike_dir.vpk",
+              "bytes": 174968,
+              "sha256": "5f9d0c5ecb8cff5b7f8765204cc6048e7ec8611c82d74286796ca6a73daaf116"
+            },
+            {
+              "archive": "/home/shift/.var/app/com.valvesoftware.Steam/.local/share/Steam/steamapps/common/GarrysMod/garrysmod/fallbacks_dir.vpk",
+              "bytes": 2952,
+              "sha256": "eb291012ab54728d644ddbace091e99c5ea2d9de4354a52f799a622ca83de30b"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "missing_dependencies": [],
+  "limitations": "Static syntax, VTF headers, CRCs, MDL skin references and local user VPK resolution verified. Actual Quest mount order/native rendering require device verification; no replacement textures or models supplied."
+}

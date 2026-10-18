@@ -1,0 +1,477 @@
+{
+  "snapshot_date": "2026-10-18",
+  "original_workspace": "/home/shift/Documents/Codex/2026-10-13/Gquest",
+  "scope": "Own source/adaptation files and build metadata only; external binary/game dependencies excluded",
+  "files": [
+    {
+      "path": ".gitignore",
+      "original_relative_path": null,
+      "bytes": 421,
+      "sha256": "3194fe5246c5c749094014e7d08c82f071ddcc89692ae013c42f4d0b6dd59f40"
+    },
+    {
+      "path": "BUILD.md",
+      "original_relative_path": null,
+      "bytes": 2639,
+      "sha256": "52f948902533807823de1e4e298703d34e799bda39b651b3eccab3e825c8ad66"
+    },
+    {
+      "path": "README.md",
+      "original_relative_path": null,
+      "bytes": 2494,
+      "sha256": "5a9de527d706f91847408d81bcaf646a56bfc3431d8cc1475f38292ffdd48244"
+    },
+    {
+      "path": "build-local.sh",
+      "original_relative_path": null,
+      "bytes": 1589,
+      "sha256": "1c2313bebe9ace8456aec434132511ce2c3c8c53348f7db375df2aef75a95a87"
+    },
+    {
+      "path": "docs/GQUEST_STATUS.md",
+      "original_relative_path": "outputs/GQUEST_STATUS.md",
+      "bytes": 15956,
+      "sha256": "7afa726e4bf78e268b115c515666ff03298d23ea21e58269b3d7b6ec9f143bc3"
+    },
+    {
+      "path": "docs/Gquest-build-verification.json",
+      "original_relative_path": "outputs/Gquest-build-verification.json",
+      "bytes": 475,
+      "sha256": "80ebab992411d3bfa7b40bbee8e2163d77ea964007bbcca131ca4ba8e8fb0837"
+    },
+    {
+      "path": "outputs/install-gquest.sh",
+      "original_relative_path": "outputs/install-gquest.sh",
+      "bytes": 681,
+      "sha256": "97038df47e9c94d2896509c139d5fa7df6c95fbf1804eb1ee3eff4483192a298"
+    },
+    {
+      "path": "prepare_dependencies.py",
+      "original_relative_path": null,
+      "bytes": 2323,
+      "sha256": "bb7cc8de79273fdd71cca54f9d7e291aceee81bfcf6a4ba1be817b7a74f6d27c"
+    },
+    {
+      "path": "work/GQUEST_LEFT_HAND_AUDIT.md",
+      "original_relative_path": "work/GQUEST_LEFT_HAND_AUDIT.md",
+      "bytes": 4350,
+      "sha256": "8269ed047803f0b464001b3c334f02d69858bb1e56783b5457c5c1ca3a347fda"
+    },
+    {
+      "path": "work/GQUEST_LEFT_HAND_LIVE.md",
+      "original_relative_path": "work/GQUEST_LEFT_HAND_LIVE.md",
+      "bytes": 3674,
+      "sha256": "d69974241fd730a5034ce2c7abb7aab26531fbf8a274a87ca4a0ae9e1953ad97"
+    },
+    {
+      "path": "work/GQUEST_NATIVE_HAND_AXES.md",
+      "original_relative_path": "work/GQUEST_NATIVE_HAND_AXES.md",
+      "bytes": 7834,
+      "sha256": "c86cd60297715ac010f82397fe684478ebf6c99041e3f43e19a1549a1609c03b"
+    },
+    {
+      "path": "work/GQUEST_POSE_BINDING_AUDIT.md",
+      "original_relative_path": "work/GQUEST_POSE_BINDING_AUDIT.md",
+      "bytes": 6088,
+      "sha256": "31550cb495ba1539d32bf750755f7aacb1c3d5d1c739fbe80a00c4d3de4e0a49"
+    },
+    {
+      "path": "work/analyze_left_hand_live.py",
+      "original_relative_path": "work/analyze_left_hand_live.py",
+      "bytes": 3241,
+      "sha256": "2d5e456446316615f1489226775e00c223409eb7d47720a0d3bd0ddbe9f7b793"
+    },
+    {
+      "path": "work/build_quest_lab.py",
+      "original_relative_path": "work/build_quest_lab.py",
+      "bytes": 10889,
+      "sha256": "af9902027158620c3c75c345537dd4e9133309c62742c0d58d720df6e5264a06"
+    },
+    {
+      "path": "work/gdroid-xr-bootstrap/AndroidManifest.xml",
+      "original_relative_path": "work/gdroid-xr-bootstrap/AndroidManifest.xml",
+      "bytes": 1446,
+      "sha256": "bc6408f84e4bab914f7edbb866d1c1148a1291075dec9a80a6d5e28d178b8ba9"
+    },
+    {
+      "path": "work/gdroid-xr-bootstrap/CMakeLists.txt",
+      "original_relative_path": "work/gdroid-xr-bootstrap/CMakeLists.txt",
+      "bytes": 477,
+      "sha256": "08c3989a28d34a4230d40e2d64d04ecb99f2569e968eb39014c35539eea15b89"
+    },
+    {
+      "path": "work/gdroid-xr-bootstrap/build.gradle",
+      "original_relative_path": "work/gdroid-xr-bootstrap/build.gradle",
+      "bytes": 553,
+      "sha256": "8a4783eed5dcd677d008f5b607153af261843941078aa2707213bedb93f27643"
+    },
+    {
+      "path": "work/gdroid-xr-bootstrap/main.cpp",
+      "original_relative_path": "work/gdroid-xr-bootstrap/main.cpp",
+      "bytes": 3352,
+      "sha256": "bfb19ae04530fc1958f661318838dc87d26186262eac0f17d0f152dca7aad7e9"
+    },
+    {
+      "path": "work/gdroid-xr-bootstrap/settings.gradle",
+      "original_relative_path": "work/gdroid-xr-bootstrap/settings.gradle",
+      "bytes": 376,
+      "sha256": "cf207590e5333a2e070fd65d62dc2c58bf912d9bb547505fbfb68c4f24911e30"
+    },
+    {
+      "path": "work/generate_weapon_model_audit.py",
+      "original_relative_path": "work/generate_weapon_model_audit.py",
+      "bytes": 11801,
+      "sha256": "6c5c4b4f32f0071074b10098be1becf530831ba26c7a4decbde2309bd2f58fbc"
+    },
+    {
+      "path": "work/gquest-arcvr/ADAPTATION.md",
+      "original_relative_path": "work/gquest-arcvr/ADAPTATION.md",
+      "bytes": 5606,
+      "sha256": "e1b23f55fe2ad6c9891fdf2db22a5f7512bd4bc8bf06ae5cd13f80688df60710"
+    },
+    {
+      "path": "work/gquest-arcvr/MATERIAL_FIX.md",
+      "original_relative_path": "work/gquest-arcvr/MATERIAL_FIX.md",
+      "bytes": 2892,
+      "sha256": "90da5890655b3e01ad55061260beeeab20fb1ee60848d47a6396edafe1b88f27"
+    },
+    {
+      "path": "work/gquest-arcvr/NATIVE_INPUT_AUDIT.md",
+      "original_relative_path": "work/gquest-arcvr/NATIVE_INPUT_AUDIT.md",
+      "bytes": 5750,
+      "sha256": "3e3271b5b3928ff89749a80e73743f50fda03f2cb7ca00b181e095f3c5d099fc"
+    },
+    {
+      "path": "work/gquest-arcvr/audit_materials.py",
+      "original_relative_path": "work/gquest-arcvr/audit_materials.py",
+      "bytes": 9071,
+      "sha256": "ac7fb67f56d5dbee8251b5f069ca8dac101d037a54ae117f36c79cec6fa74319"
+    },
+    {
+      "path": "work/gquest-arcvr/content/lua/autorun/client/gquest_arcvr_pose.lua",
+      "original_relative_path": "work/gquest-arcvr/content/lua/autorun/client/gquest_arcvr_pose.lua",
+      "bytes": 7165,
+      "sha256": "73dd85c59a8c28a022b1c589fc69be8d556ffe8feef493e2154c0f1a0027d78e"
+    },
+    {
+      "path": "work/gquest-arcvr/content/lua/weapons/gquest_arcvr_aniv_glock/shared.lua",
+      "original_relative_path": "work/gquest-arcvr/content/lua/weapons/gquest_arcvr_aniv_glock/shared.lua",
+      "bytes": 12983,
+      "sha256": "b71c402168825d977b6f52515f76d30e415ae1a3dd69b1bccceef14b8a69e232"
+    },
+    {
+      "path": "work/gquest-arcvr/derive_grip.py",
+      "original_relative_path": "work/gquest-arcvr/derive_grip.py",
+      "bytes": 4493,
+      "sha256": "6855e38131646bef760fcecb269fdde0c77db006415ae55835f3e5fda84d6c78"
+    },
+    {
+      "path": "work/gquest-arcvr/glock_manifest.json",
+      "original_relative_path": "work/gquest-arcvr/glock_manifest.json",
+      "bytes": 9618,
+      "sha256": "9b5c41bf2fc998f0fa7acce2f3958ed5c4d32e4a2597861a6a45a9becd01ff07"
+    },
+    {
+      "path": "work/gquest-arcvr/grip_roundtrip.json",
+      "original_relative_path": "work/gquest-arcvr/grip_roundtrip.json",
+      "bytes": 4217,
+      "sha256": "9dde5757f585a33c5e78095320107d1c10cc09a57b9dbb8d9d4215acab999e0d"
+    },
+    {
+      "path": "work/gquest-arcvr/manifest_runtime.py",
+      "original_relative_path": "work/gquest-arcvr/manifest_runtime.py",
+      "bytes": 1067,
+      "sha256": "79d46dbba3365fd3acc698adb773017167a819473ff002cb0c70dc90eaaf5d2e"
+    },
+    {
+      "path": "work/gquest-arcvr/material_audit.json",
+      "original_relative_path": "work/gquest-arcvr/material_audit.json",
+      "bytes": 18201,
+      "sha256": "6a9392f724a69090988c4f86959d07bd4fc99c3d49404a47abd90716fb8255d1"
+    },
+    {
+      "path": "work/gquest-arcvr/material_patch.json",
+      "original_relative_path": "work/gquest-arcvr/material_patch.json",
+      "bytes": 576,
+      "sha256": "d67bb98146a8e11e5c516dc51d93080ed2377e763511b2e753a29bd1ccdc23d9"
+    },
+    {
+      "path": "work/gquest-arcvr/prepare_glock.py",
+      "original_relative_path": "work/gquest-arcvr/prepare_glock.py",
+      "bytes": 5309,
+      "sha256": "9403b32442ca2a13d9f1a7ddc1360987c997d9f9b72a00a369d8792f908f6306"
+    },
+    {
+      "path": "work/gquest-arcvr/prepare_grip_pose_candidate.py",
+      "original_relative_path": "work/gquest-arcvr/prepare_grip_pose_candidate.py",
+      "bytes": 3031,
+      "sha256": "ff0ab1cbe8c0ac8a2430542f07528e5317a3a8b16e1cdca3b0458be670f1452b"
+    },
+    {
+      "path": "work/gquest-arcvr/runtime_manifest.json",
+      "original_relative_path": "work/gquest-arcvr/runtime_manifest.json",
+      "bytes": 4846,
+      "sha256": "56616d9fea764806f6e649af258511b46511639450cbf978b5662c413ef3a521"
+    },
+    {
+      "path": "work/gquest-arcvr/test_client_trigger.lua",
+      "original_relative_path": "work/gquest-arcvr/test_client_trigger.lua",
+      "bytes": 3937,
+      "sha256": "1661c7d2eebd60eac72f2e08092d44994eb8ff91bb726832e00ef36135fe9357"
+    },
+    {
+      "path": "work/gquest-arcvr/test_server_state.lua",
+      "original_relative_path": "work/gquest-arcvr/test_server_state.lua",
+      "bytes": 3881,
+      "sha256": "c31666dd317427e5b6e564ffe0eb760df38f0687c831863526e4ef97387d9646"
+    },
+    {
+      "path": "work/gquest-glock-idle-root-audit.json",
+      "original_relative_path": "work/gquest-glock-idle-root-audit.json",
+      "bytes": 1384,
+      "sha256": "58ddfa2491f41623e56b40f0548c5a99d3a71a56abf1862dd2ccbae9835baa8e"
+    },
+    {
+      "path": "work/gquest-ui/lua/autorun/client/gquest_vr_ui.lua",
+      "original_relative_path": "work/gquest-ui/lua/autorun/client/gquest_vr_ui.lua",
+      "bytes": 14496,
+      "sha256": "ba37515189b04d2ae11b07cb5de7a48f1100e2f036c08e2710256888ac06fa9f"
+    },
+    {
+      "path": "work/gquest-ui/lua/autorun/client/gquest_weapon_align.lua",
+      "original_relative_path": "work/gquest-ui/lua/autorun/client/gquest_weapon_align.lua",
+      "bytes": 15930,
+      "sha256": "00d56050175b5f3b1fb3efe3c758c90b72687fcab00a05c4abd77063837d5a3e"
+    },
+    {
+      "path": "work/gquest-ui/lua/autorun/client/gquest_weapon_models.lua",
+      "original_relative_path": "work/gquest-ui/lua/autorun/client/gquest_weapon_models.lua",
+      "bytes": 12539,
+      "sha256": "522cf0875833737b030cb986a55f197b5c07134f9c9175312ab60407432ad7a8"
+    },
+    {
+      "path": "work/gquest-ui/lua/autorun/client/gquest_wrist_hud.lua",
+      "original_relative_path": "work/gquest-ui/lua/autorun/client/gquest_wrist_hud.lua",
+      "bytes": 10652,
+      "sha256": "9dce362e053b7cec731f8bc93155fa05450d6c3fff933ddaa67d056bbbc6e565"
+    },
+    {
+      "path": "work/gquest-weapon-models/manifest.json",
+      "original_relative_path": "work/gquest-weapon-models/manifest.json",
+      "bytes": 10478,
+      "sha256": "3db374b7c024c54094747f01916b709da384c3561ef5fe6e630b74ee84568e06"
+    },
+    {
+      "path": "work/gquest_arcvr_equip_test.lua",
+      "original_relative_path": "work/gquest_arcvr_equip_test.lua",
+      "bytes": 2082,
+      "sha256": "d85a25527605c4685ee2e75e38a181c9c63833b2a4db659e9e3a5d4d5d62527c"
+    },
+    {
+      "path": "work/gquest_arcvr_load.lua",
+      "original_relative_path": "work/gquest_arcvr_load.lua",
+      "bytes": 240,
+      "sha256": "37f42cd41b3c0868c879035e9171aa93e7d8caca265c193dc3b3fdee1771ee14"
+    },
+    {
+      "path": "work/gquest_arcvr_runtime_probe.lua",
+      "original_relative_path": "work/gquest_arcvr_runtime_probe.lua",
+      "bytes": 1853,
+      "sha256": "d644c4ada937a28efda6b47b3be6d636a92374b4fce114c954bbad692deafc77"
+    },
+    {
+      "path": "work/gquest_arcvr_server_probe.lua",
+      "original_relative_path": "work/gquest_arcvr_server_probe.lua",
+      "bytes": 522,
+      "sha256": "30829b6e535e4c05068cb7c6d407e411a4575aa2598390d81f9284cb2b4fa4e3"
+    },
+    {
+      "path": "work/gquest_arcvr_trigger_load.lua",
+      "original_relative_path": "work/gquest_arcvr_trigger_load.lua",
+      "bytes": 228,
+      "sha256": "d2ab56773ef8619f8e407a8f2fd51254e80e214b7e6a4cdc1b08d104a6d68f96"
+    },
+    {
+      "path": "work/gquest_close_menu_probe.lua",
+      "original_relative_path": "work/gquest_close_menu_probe.lua",
+      "bytes": 683,
+      "sha256": "f78ea2f6c9e2fd9e324e886484d0111ba8c84c9f61ec3f9577e127d33cd9f3ce"
+    },
+    {
+      "path": "work/gquest_decode_idle_root.py",
+      "original_relative_path": "work/gquest_decode_idle_root.py",
+      "bytes": 5513,
+      "sha256": "1247dc21fc9772478624c2458c86c03da2f89e8a426f3098da82920f47929427"
+    },
+    {
+      "path": "work/gquest_device_check.py",
+      "original_relative_path": "work/gquest_device_check.py",
+      "bytes": 8614,
+      "sha256": "d6cf38b535be131cb7589af67c95b2152979bb9088fe90ad30a05b52f1cd0c3e"
+    },
+    {
+      "path": "work/gquest_elf_lookup.py",
+      "original_relative_path": "work/gquest_elf_lookup.py",
+      "bytes": 3256,
+      "sha256": "cf2be567b633d60099ac2fd53416a38a16b15f86c77820ca27ad9d69286a9a66"
+    },
+    {
+      "path": "work/gquest_glock_palm_probe.lua",
+      "original_relative_path": "work/gquest_glock_palm_probe.lua",
+      "bytes": 1733,
+      "sha256": "b3c570a606212cc59b3f150fdb84389f4766e84ae246f064398a2245342c10c0"
+    },
+    {
+      "path": "work/gquest_glock_pose_candidate.lua",
+      "original_relative_path": "work/gquest_glock_pose_candidate.lua",
+      "bytes": 597,
+      "sha256": "bcd2c465c83cbcb03233d2252ff4c78e093cfd385b2eda6c3b6e55e8a3ae66bd"
+    },
+    {
+      "path": "work/gquest_glock_pose_definition2.lua",
+      "original_relative_path": "work/gquest_glock_pose_definition2.lua",
+      "bytes": 179,
+      "sha256": "a0b0cff2609b14ac7b57804ab88c1e64136a47dc9c98aea9318d497b4d5b4324"
+    },
+    {
+      "path": "work/gquest_glock_pose_recreate.lua",
+      "original_relative_path": "work/gquest_glock_pose_recreate.lua",
+      "bytes": 1017,
+      "sha256": "fad96a891e61cf3ecd7480fb021df7e0f7e789b5b23e1100cb3d2655104a1f18"
+    },
+    {
+      "path": "work/gquest_glock_pose_swap_v3.lua",
+      "original_relative_path": "work/gquest_glock_pose_swap_v3.lua",
+      "bytes": 1753,
+      "sha256": "0b24ebbaa5b7896dcbd10551484b1bd4120c42f8549c23e1cbc3812510d66911"
+    },
+    {
+      "path": "work/gquest_hand_frame_probe.lua",
+      "original_relative_path": "work/gquest_hand_frame_probe.lua",
+      "bytes": 1231,
+      "sha256": "4765d1d4bac113706916a8d98baac9d64d65642b1ea936d242a58ba80a57689e"
+    },
+    {
+      "path": "work/gquest_hand_probe.lua",
+      "original_relative_path": "work/gquest_hand_probe.lua",
+      "bytes": 558,
+      "sha256": "2d3119a028eaa8a47e9abecfdd994709c97340a07ac6b000edc8520eb0b92ca6"
+    },
+    {
+      "path": "work/gquest_left_grip_trace.lua",
+      "original_relative_path": "work/gquest_left_grip_trace.lua",
+      "bytes": 1038,
+      "sha256": "9e1a5a296101808a960aab8124d2a3407c8ee77cc1099a240f277726b7b28740"
+    },
+    {
+      "path": "work/gquest_left_hand_audit.lua",
+      "original_relative_path": "work/gquest_left_hand_audit.lua",
+      "bytes": 3424,
+      "sha256": "44ab100042ec2e1774dfe5be1bb22b6324f5f666f81536ed5fa177b0357e189b"
+    },
+    {
+      "path": "work/gquest_live_diagnostics.py",
+      "original_relative_path": "work/gquest_live_diagnostics.py",
+      "bytes": 978,
+      "sha256": "ea64e1e7370e1fcbde4da1cfe31c4a1abe6ece41cc2eedfa43dd70f8a5a079e7"
+    },
+    {
+      "path": "work/gquest_mdl_audit.py",
+      "original_relative_path": "work/gquest_mdl_audit.py",
+      "bytes": 8622,
+      "sha256": "d56ba3c5a93549c8e679ff3bf873c5490ed30c935fb3cdd642ce714e38c7ba83"
+    },
+    {
+      "path": "work/gquest_menu_smoke.lua",
+      "original_relative_path": "work/gquest_menu_smoke.lua",
+      "bytes": 1118,
+      "sha256": "92fe57a33312d2f5063730e371aa7fa8c07c903057607cf7ed5e6ecdd03104e5"
+    },
+    {
+      "path": "work/gquest_model_axis_audit.py",
+      "original_relative_path": "work/gquest_model_axis_audit.py",
+      "bytes": 6191,
+      "sha256": "d0fb2dcee93c9c0ab10def4b634e005ae13e6965ced574d5856d4cf44c751250"
+    },
+    {
+      "path": "work/gquest_queue_live_check.py",
+      "original_relative_path": "work/gquest_queue_live_check.py",
+      "bytes": 914,
+      "sha256": "8814c995747a927f6adfc3af9be63ce295603e9840558e54b2d11f8c7958140d"
+    },
+    {
+      "path": "work/gquest_string_xrefs.py",
+      "original_relative_path": "work/gquest_string_xrefs.py",
+      "bytes": 3098,
+      "sha256": "70081e4d207d38907be8cb24493f20d4a804bd157cdeeb6e9b780d61f7af4551"
+    },
+    {
+      "path": "work/gquest_vpk.py",
+      "original_relative_path": "work/gquest_vpk.py",
+      "bytes": 3672,
+      "sha256": "ea23144acd125a020094ebb0092bedefe910be3d1a51ee224eff273545eb1ef1"
+    },
+    {
+      "path": "work/gquest_weapon_models_probe.lua",
+      "original_relative_path": "work/gquest_weapon_models_probe.lua",
+      "bytes": 4199,
+      "sha256": "bd9f77afc43dfcd291a7df602c35489683a4743cc29f1cfe7f0d6e86ee1806a4"
+    },
+    {
+      "path": "work/gquest_xref.py",
+      "original_relative_path": "work/gquest_xref.py",
+      "bytes": 3647,
+      "sha256": "df303793084414c3778e29e130881efa5924ac7a3b2a4a88a8a4d4ff8c46bc7b"
+    },
+    {
+      "path": "work/harness/gquest_weapon_align_test.lua",
+      "original_relative_path": "work/harness/gquest_weapon_align_test.lua",
+      "bytes": 11660,
+      "sha256": "fa6dc6d612c392414af651bacd1f458f7ab839e3e6de75558a0530cfe46124d2"
+    },
+    {
+      "path": "work/harness/gquest_wrist_hud_test.lua",
+      "original_relative_path": "work/harness/gquest_wrist_hud_test.lua",
+      "bytes": 9944,
+      "sha256": "c19ee0bcce6a9bd610aaff069141b6ac4fb4fe20357161b631061f8db35037a3"
+    },
+    {
+      "path": "work/lua_compile_check.sh",
+      "original_relative_path": "work/lua_compile_check.sh",
+      "bytes": 1210,
+      "sha256": "8f52a97726a46c612e8df6ab571059cc856d36b25316c40b3b93bf8fd588df8f"
+    },
+    {
+      "path": "work/lua_syntax_check.py",
+      "original_relative_path": "work/lua_syntax_check.py",
+      "bytes": 4616,
+      "sha256": "e5991f3f3c47600276a4eb544dcb97565fd42de009f3ab3ac0ff523b7bebe4d6"
+    },
+    {
+      "path": "work/prepare_weapon_model_overrides.py",
+      "original_relative_path": "work/prepare_weapon_model_overrides.py",
+      "bytes": 3954,
+      "sha256": "c735c7fd56f647229b016b93b7b27273580b86e6d79d45352d09548774915ba8"
+    },
+    {
+      "path": "work/quest_engine_bridge.cpp",
+      "original_relative_path": "work/quest_engine_bridge.cpp",
+      "bytes": 33195,
+      "sha256": "776d1751a38656c5854f5bed1479a097568936cb1fa438e42661fd5d8334f777"
+    },
+    {
+      "path": "work/verify_gquest_package.py",
+      "original_relative_path": "work/verify_gquest_package.py",
+      "bytes": 2927,
+      "sha256": "f1d94748bee2a0b7c7dcf3ddd61cded2463fca56c9385905a900a9e5f0d4cd1e"
+    }
+  ],
+  "verification": {
+    "source_copy_identity": "passed",
+    "python_syntax": "22 files parsed",
+    "build_shell_syntax": "passed",
+    "dependency_preflight": "31 inputs found; no links created",
+    "full_apk_build_executed": false,
+    "quest_actions_executed": false
+  }
+}

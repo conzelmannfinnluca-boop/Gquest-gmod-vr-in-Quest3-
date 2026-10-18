@@ -1,0 +1,200 @@
+{
+  "private_lab_only": true,
+  "origin_apk_sha256": "5b0acd75fb4adba92e63bc5b5266e6a1b1d3aa721e82fc0995893d0792050976",
+  "files": [
+    {
+      "path": "scripts/weapon_357.txt",
+      "bytes": 1414,
+      "sha256": "014d4eaef77c0742203bc25444ac1c495b3b897da1b3ffa9f4c35df203310ace",
+      "original_path": "/home/shift/.var/app/com.valvesoftware.Steam/.local/share/Steam/steamapps/common/GarrysMod/sourceengine/scripts/weapon_357.txt",
+      "original_sha256": "3f6044cff692b05092bd9156c96631af675462131a4c76cb0e444209fd4cbe23",
+      "donor_script_sha256": "aafff3fba739ab1d16d4ef32088f86cca459cfcc0c41fbf44f2dcb90bfb51f34",
+      "fields": {
+        "vrmodel": "models/weapons/vr_357.mdl",
+        "vrmodel_l": "models/weapons/left_handed/vr_357_l.mdl"
+      },
+      "original_bytes_preserved": true,
+      "flat_viewmodel": "models/weapons/v_357.mdl",
+      "simple_vr_rename": "models/weapons/vr_357.mdl",
+      "simple_vr_rename_present": true
+    },
+    {
+      "path": "scripts/weapon_ar2.txt",
+      "bytes": 1851,
+      "sha256": "af3c95738e8593a28ced3d8abc934d251b6157fb665d6a29209431cf096b2c29",
+      "original_path": "/home/shift/.var/app/com.valvesoftware.Steam/.local/share/Steam/steamapps/common/GarrysMod/sourceengine/scripts/weapon_ar2.txt",
+      "original_sha256": "cc7de6931f0acd7d4f8675781d158ee194bdaa994b3996b6a8b981f32ace8304",
+      "donor_script_sha256": "3397cde08141a481ab63f49ae5b2f8b8407295a84feecebf9a12b661e5cd1e97",
+      "fields": {
+        "vrmodel": "models/weapons/vr_irifle.mdl",
+        "vrmodel_l": "models/weapons/left_handed/vr_irifle_l.mdl"
+      },
+      "original_bytes_preserved": true,
+      "flat_viewmodel": "models/weapons/v_irifle.mdl",
+      "simple_vr_rename": "models/weapons/vr_irifle.mdl",
+      "simple_vr_rename_present": true
+    },
+    {
+      "path": "scripts/weapon_bugbait.txt",
+      "bytes": 1238,
+      "sha256": "44060025efc266eccd7ca0ed8bf4b1fb5aab9d7fe921831ac4af5fe05d0015e0",
+      "original_path": "/home/shift/.var/app/com.valvesoftware.Steam/.local/share/Steam/steamapps/common/GarrysMod/sourceengine/scripts/weapon_bugbait.txt",
+      "original_sha256": "2557a9b44c6aafb0c64b932a2bc3b07f9b3223f9d8427f596138a75c5953e9fc",
+      "donor_script_sha256": "82f7200cf98529a947cce0ec1884954d9524ebe2d488ede48e8dae5cb00eea5f",
+      "fields": {
+        "vrmodel": "models/weapons/vr_bugbait.mdl",
+        "vrmodel_l": "models/weapons/left_handed/vr_bugbait_l.mdl"
+      },
+      "original_bytes_preserved": true,
+      "flat_viewmodel": "models/weapons/v_bugbait.mdl",
+      "simple_vr_rename": "models/weapons/vr_bugbait.mdl",
+      "simple_vr_rename_present": true
+    },
+    {
+      "path": "scripts/weapon_crossbow.txt",
+      "bytes": 1703,
+      "sha256": "c0128915f59e4b231605d2a3f34ebbec7b873012ef3e6034c0564d7a2038f19e",
+      "original_path": "/home/shift/.var/app/com.valvesoftware.Steam/.local/share/Steam/steamapps/common/GarrysMod/sourceengine/scripts/weapon_crossbow.txt",
+      "original_sha256": "cb08bea8db972d317a64a2845706e0128687b1f1fcb198da57e898e23f61fd2b",
+      "donor_script_sha256": "9e568ceb9e19d83738c95ca2c29c48b672cb6d51e9d9348d02ece4d637be32d7",
+      "fields": {
+        "vrmodel": "models/weapons/vr_crossbow.mdl",
+        "vrmodel_l": "models/weapons/left_handed/vr_crossbow_l.mdl"
+      },
+      "original_bytes_preserved": true,
+      "flat_viewmodel": "models/weapons/v_crossbow.mdl",
+      "simple_vr_rename": "models/weapons/vr_crossbow.mdl",
+      "simple_vr_rename_present": true
+    },
+    {
+      "path": "scripts/weapon_crowbar.txt",
+      "bytes": 1384,
+      "sha256": "fa4f299d215d30f3e00d2cd6c9a2204b75338c767fff47dac70b123abdabdec7",
+      "original_path": "/home/shift/.var/app/com.valvesoftware.Steam/.local/share/Steam/steamapps/common/GarrysMod/sourceengine/scripts/weapon_crowbar.txt",
+      "original_sha256": "ec6a7d282699222fdc96543a5fbf24f691956d2844bf4fbe89446ccc392150cf",
+      "donor_script_sha256": "11017c4944c04165d4b180f7a91c5f2bd90e58c50d60eb40c14eb6d801ffa26a",
+      "fields": {
+        "vrmodel": "models/weapons/vr_crowbar.mdl",
+        "vrmodel_l": "models/weapons/left_handed/vr_crowbar_l.mdl"
+      },
+      "original_bytes_preserved": true,
+      "flat_viewmodel": "models/weapons/v_crowbar.mdl",
+      "simple_vr_rename": "models/weapons/vr_crowbar.mdl",
+      "simple_vr_rename_present": true
+    },
+    {
+      "path": "scripts/weapon_frag.txt",
+      "bytes": 1551,
+      "sha256": "8d54629a4be1b5d953083f2068d270b99cd55344ac093ca4e7a4c9a7926cc99b",
+      "original_path": "/home/shift/.var/app/com.valvesoftware.Steam/.local/share/Steam/steamapps/common/GarrysMod/sourceengine/scripts/weapon_frag.txt",
+      "original_sha256": "b5820961a2ca34178baa274ba6a481c99c7ae267dfff2ac210ca6c94b13d4503",
+      "donor_script_sha256": "edf83b86bc805b52215e391038641f404e7247d170d6eb75e81554b559dbe0ed",
+      "fields": {
+        "vrmodel": "models/weapons/vr_grenade.mdl",
+        "vrmodel_l": "models/weapons/left_handed/vr_grenade_l.mdl"
+      },
+      "original_bytes_preserved": true,
+      "flat_viewmodel": "models/weapons/v_grenade.mdl",
+      "simple_vr_rename": "models/weapons/vr_grenade.mdl",
+      "simple_vr_rename_present": true
+    },
+    {
+      "path": "scripts/weapon_physcannon.txt",
+      "bytes": 1732,
+      "sha256": "457c189fc1bcaa70fd12b3e57523f3431e1c42534af03188a689d9476a415a77",
+      "original_path": "/home/shift/.var/app/com.valvesoftware.Steam/.local/share/Steam/steamapps/common/GarrysMod/sourceengine/scripts/weapon_physcannon.txt",
+      "original_sha256": "f8fc6038845b3484c5d6ac03891afe13d7934d2de87de239ae31062470f9d0d2",
+      "donor_script_sha256": "d7ebf8acf51ea9b3f6deec70dd0da2372189ecc028af43e0a22466f858dc76fc",
+      "fields": {
+        "vrmodel": "models/weapons/vr_physcannon.mdl",
+        "vrmodel_l": "models/weapons/left_handed/vr_physcannon_l.mdl"
+      },
+      "original_bytes_preserved": true,
+      "flat_viewmodel": "models/weapons/v_physcannon.mdl",
+      "simple_vr_rename": "models/weapons/vr_physcannon.mdl",
+      "simple_vr_rename_present": true
+    },
+    {
+      "path": "scripts/weapon_physgun.txt",
+      "bytes": 1332,
+      "sha256": "d7b759fa144ab75641ed000b60d0622e86be5f97a899d1064fa9f5adaa43d969",
+      "original_path": "/home/shift/.var/app/com.valvesoftware.Steam/.local/share/Steam/steamapps/common/GarrysMod/sourceengine/scripts/weapon_physgun.txt",
+      "original_sha256": "b5e61291ab5a0296ec6fa48e9e9f8a5712d2c350d3831411d4f3dd61e0bfc354",
+      "donor_script_sha256": "0b4ee2aab0f82876cfd77551be460f23cb7e5c9e9363595202f7f4f2261037df",
+      "fields": {
+        "vrmodel": "models/weapons/vr_superphyscannon.mdl",
+        "vrmodel_l": "models/weapons/left_handed/vr_superphyscannon_l.mdl"
+      },
+      "original_bytes_preserved": true,
+      "flat_viewmodel": "models/weapons/v_Physics.mdl",
+      "simple_vr_rename": "models/weapons/vr_physics.mdl",
+      "simple_vr_rename_present": false
+    },
+    {
+      "path": "scripts/weapon_pistol.txt",
+      "bytes": 1653,
+      "sha256": "a393abb597e43c44ed5e80c875c7a517437377e381fa8747dac72cfedc769312",
+      "original_path": "/home/shift/.var/app/com.valvesoftware.Steam/.local/share/Steam/steamapps/common/GarrysMod/sourceengine/scripts/weapon_pistol.txt",
+      "original_sha256": "fef09131ba84c71b300b3d1b26114fc7901c7274654552687fece7daf27729cc",
+      "donor_script_sha256": "83b74a78074cb6e59570860881f571834f696d1f9232cd6dcb000f2bb7f45a74",
+      "fields": {
+        "vrmodel": "models/weapons/vr_pistol.mdl",
+        "vrmodel_l": "models/weapons/left_handed/vr_pistol_l.mdl"
+      },
+      "original_bytes_preserved": true,
+      "flat_viewmodel": "models/weapons/v_pistol.mdl",
+      "simple_vr_rename": "models/weapons/vr_pistol.mdl",
+      "simple_vr_rename_present": true
+    },
+    {
+      "path": "scripts/weapon_rpg.txt",
+      "bytes": 1714,
+      "sha256": "4f22bb66ee61a46f7fe4e6f915bbb391d2f920e3661e19c351a068b346a57e1a",
+      "original_path": "/home/shift/.var/app/com.valvesoftware.Steam/.local/share/Steam/steamapps/common/GarrysMod/sourceengine/scripts/weapon_rpg.txt",
+      "original_sha256": "a66e7cb6dd7996e5d1904599a6b30ec1c0049ff1ec499968a313072f23b6ac18",
+      "donor_script_sha256": "a5057c72cdd8f94a498a8bb250af0a98e6a546429fce17aaa9a07473442974c2",
+      "fields": {
+        "vrmodel": "models/weapons/vr_rocket_launcher.mdl",
+        "vrmodel_l": "models/weapons/left_handed/vr_rocket_launcher_l.mdl"
+      },
+      "original_bytes_preserved": true,
+      "flat_viewmodel": "models/weapons/v_rpg.mdl",
+      "simple_vr_rename": "models/weapons/vr_rpg.mdl",
+      "simple_vr_rename_present": false
+    },
+    {
+      "path": "scripts/weapon_shotgun.txt",
+      "bytes": 1675,
+      "sha256": "dd38c2606d13add87e9dbca869d7b2740cd83a4975f1d45b08b33e93384d18ec",
+      "original_path": "/home/shift/.var/app/com.valvesoftware.Steam/.local/share/Steam/steamapps/common/GarrysMod/sourceengine/scripts/weapon_shotgun.txt",
+      "original_sha256": "e06d904e824b6ea0781246bbe89fb00bd810ca73e8726729aa5224a5026b46ae",
+      "donor_script_sha256": "36c81ea9f2c1570c50a74aaa741a792707f404bdd31875a62b5045e5e73863f4",
+      "fields": {
+        "vrmodel": "models/weapons/vr_shotgun.mdl",
+        "vrmodel_l": "models/weapons/left_handed/vr_shotgun_l.mdl"
+      },
+      "original_bytes_preserved": true,
+      "flat_viewmodel": "models/weapons/v_shotgun.mdl",
+      "simple_vr_rename": "models/weapons/vr_shotgun.mdl",
+      "simple_vr_rename_present": true
+    },
+    {
+      "path": "scripts/weapon_smg1.txt",
+      "bytes": 1857,
+      "sha256": "758bddd0c446213c0f9d359a104e656333a5b89a81bc814728817f526b77f718",
+      "original_path": "/home/shift/.var/app/com.valvesoftware.Steam/.local/share/Steam/steamapps/common/GarrysMod/sourceengine/scripts/weapon_smg1.txt",
+      "original_sha256": "2cdc1a26b74ef512d874fd9f6b604a507217823e421b088eb7cc855f1289dda0",
+      "donor_script_sha256": "4efe9fbac05910420e17bbe83f090ffdb7eb5b1236d834e1cfabfadc5dee2300",
+      "fields": {
+        "vrmodel": "models/weapons/vr_smg.mdl",
+        "vrmodel_l": "models/weapons/left_handed/vr_smg_l.mdl"
+      },
+      "original_bytes_preserved": true,
+      "flat_viewmodel": "models/weapons/v_smg1.mdl",
+      "simple_vr_rename": "models/weapons/vr_smg1.mdl",
+      "simple_vr_rename_present": false
+    }
+  ],
+  "runtime_verified": false,
+  "scope": "Only vrmodel/vrmodel_l keys added to exact original user-owned scripts. No ammo, damage, audio, buckets or animation fields changed."
+}

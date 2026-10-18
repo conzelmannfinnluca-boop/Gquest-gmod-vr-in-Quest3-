@@ -1,0 +1,133 @@
+{
+  "source_commit": "0d8d5bed01c77ad1550097689dc0d1e6fc035385",
+  "private_lab_only": true,
+  "source_weapon": "arcticvr_aniv_glock",
+  "adapted_weapon": "gquest_arcvr_aniv_glock",
+  "files": [
+    {
+      "path": "lua/autorun/client/gquest_arcvr_pose.lua",
+      "bytes": 7165,
+      "sha256": "73dd85c59a8c28a022b1c589fc69be8d556ffe8feef493e2154c0f1a0027d78e"
+    },
+    {
+      "path": "lua/weapons/gquest_arcvr_aniv_glock/shared.lua",
+      "bytes": 12983,
+      "sha256": "b71c402168825d977b6f52515f76d30e415ae1a3dd69b1bccceef14b8a69e232"
+    },
+    {
+      "path": "materials/models/weapons/arcticvr/p38/bullet_normal_flat.vtf",
+      "bytes": 349640,
+      "sha256": "7144538d0e6a877de815ad94e55c23175eb0113c7b26d95b8011e10e0eea09e8"
+    },
+    {
+      "path": "materials/models/weapons/arcticvr/p38/v_p38.vmt",
+      "bytes": 236,
+      "sha256": "71d9fe3e06743f100372f4aca9760335ead0227ea16f090e2321dc64bae10e20"
+    },
+    {
+      "path": "materials/models/weapons/arcticvr/p38/v_p38.vtf",
+      "bytes": 699272,
+      "sha256": "7b11f6aac8811d6d1042d9d169a4afd3176a4607ac5dad29b17bfe8ee3c2c866"
+    },
+    {
+      "path": "models/weapons/arcticvr/aniv/9mmbullet.dx90.vtx",
+      "bytes": 11961,
+      "sha256": "1b5696a460bfbbb99babed3aaa101616b32b556ecf2965846dec137b4948e7de"
+    },
+    {
+      "path": "models/weapons/arcticvr/aniv/9mmbullet.mdl",
+      "bytes": 2644,
+      "sha256": "893fceb021bd82af0defa55f3332f672dbd3e443fb8e6b34c901f946aae49b8d"
+    },
+    {
+      "path": "models/weapons/arcticvr/aniv/9mmbullet.vvd",
+      "bytes": 44352,
+      "sha256": "2dccf4a76c43e742dcfbb77a7392c67c9d7da4c053c4797002b1c621803208a7"
+    },
+    {
+      "path": "models/weapons/arcticvr/aniv/9mmcase.dx90.vtx",
+      "bytes": 13971,
+      "sha256": "dec4bc5182e5e63b57d4742e082f24acd99ef564cda5333934f9917a47d9f228"
+    },
+    {
+      "path": "models/weapons/arcticvr/aniv/9mmcase.mdl",
+      "bytes": 2644,
+      "sha256": "f4c119d38ee1030ac4895e08ee654c517707e1cc8baaf3659df2e075c11ccc39"
+    },
+    {
+      "path": "models/weapons/arcticvr/aniv/9mmcase.vvd",
+      "bytes": 57792,
+      "sha256": "bb26a2e1abf99eb480403f90cf0de393d8c76220ecc66cbbf61c11f5332f5d65"
+    },
+    {
+      "path": "models/weapons/arcticvr/aniv/mag_glock.dx90.vtx",
+      "bytes": 37191,
+      "sha256": "057c6e916aefa5e452c8fdd9568394d735c39365087d43b8ba9873be7a306c4c"
+    },
+    {
+      "path": "models/weapons/arcticvr/aniv/mag_glock.mdl",
+      "bytes": 3140,
+      "sha256": "b7700fddb1957672029dc3457a85c53516bc23c36c0f8ff7cfa10edf55f7276c"
+    },
+    {
+      "path": "models/weapons/arcticvr/aniv/mag_glock.phy",
+      "bytes": 2121,
+      "sha256": "3b840b98b60d75f9d2659c3a6a23d488f7c140e19d7e78a09e4ea92ca24a7bc5"
+    },
+    {
+      "path": "models/weapons/arcticvr/aniv/mag_glock.vvd",
+      "bytes": 139136,
+      "sha256": "3d8e2d3966be56298bd488ce22dda2dab3dd1fe8a20b5ddb4e2a67355094fe65"
+    },
+    {
+      "path": "models/weapons/arcticvr/aniv/pistol_glock.dx90.vtx",
+      "bytes": 34431,
+      "sha256": "0fcf150e2668faa7544e2b44fea1547e0d1cf622315dea941ecdc60aaeae693b"
+    },
+    {
+      "path": "models/weapons/arcticvr/aniv/pistol_glock.mdl",
+      "bytes": 6016,
+      "sha256": "c682c0cf077149eba9085c0bfe38b8641e9e5bfac979972e3ef90db80412fbcd"
+    },
+    {
+      "path": "models/weapons/arcticvr/aniv/pistol_glock.phy",
+      "bytes": 1015,
+      "sha256": "bff09490d19a1a2134b729b4703846ff60111e4bf4f0d3710c90feea589a80fc"
+    },
+    {
+      "path": "models/weapons/arcticvr/aniv/pistol_glock.vvd",
+      "bytes": 146176,
+      "sha256": "f4e51a468ed562bd3b361c1a2fdacd368224c1d2bebc1a964f61e23f8d64a1ed"
+    },
+    {
+      "path": "models/weapons/gquest_arcvr/pistol_glock_posefix2.dx90.vtx",
+      "bytes": 34431,
+      "sha256": "0fcf150e2668faa7544e2b44fea1547e0d1cf622315dea941ecdc60aaeae693b"
+    },
+    {
+      "path": "models/weapons/gquest_arcvr/pistol_glock_posefix2.mdl",
+      "bytes": 6503,
+      "sha256": "aec218d7a64f276a2be9932836f817ad23de82dea393780a74a545d014895975"
+    },
+    {
+      "path": "models/weapons/gquest_arcvr/pistol_glock_posefix2.phy",
+      "bytes": 1015,
+      "sha256": "bff09490d19a1a2134b729b4703846ff60111e4bf4f0d3710c90feea589a80fc"
+    },
+    {
+      "path": "models/weapons/gquest_arcvr/pistol_glock_posefix2.vvd",
+      "bytes": 146176,
+      "sha256": "f4e51a468ed562bd3b361c1a2fdacd368224c1d2bebc1a964f61e23f8d64a1ed"
+    }
+  ],
+  "total_bytes": 1760011,
+  "runtime_verified": false,
+  "limitations": "Singleplayer shooting slice; explicit test insertion/rack/eject; no physical reload or complete ArcVR compatibility.",
+  "weapon_pose_test": {
+    "session": "1792172326",
+    "model_sha256": "aec218d7a64f276a2be9932836f817ad23de82dea393780a74a545d014895975",
+    "wearer_orientation": "better",
+    "wearer_final_distance": "correct",
+    "packaged_restart_verified": false
+  }
+}

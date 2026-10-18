@@ -1,0 +1,11 @@
+{
+  "path": "materials/models/weapons/arcticvr/p38/v_p38.vmt",
+  "source_commit": "0d8d5bed01c77ad1550097689dc0d1e6fc035385",
+  "original_bytes": 238,
+  "original_sha256": "ea89a384fe7dd01e058e3fb9f939b3c75eebd385edbd66c9238232d7efc105b3",
+  "adapted_bytes": 236,
+  "adapted_sha256": "71d9fe3e06743f100372f4aca9760335ead0227ea16f090e2321dc64bae10e20",
+  "change": "Remove only final unmatched closing brace and its newline. Source checkout is unchanged.",
+  "reason": "Native runtime KeyValues parser reported missing { for this exact VMT.",
+  "runtime_fix_verified": false
+}

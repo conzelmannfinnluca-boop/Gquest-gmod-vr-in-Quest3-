@@ -1,0 +1,201 @@
+{
+  "original": "models/weapons/arcticvr/aniv/pistol_glock.mdl",
+  "derived": "models/weapons/gquest_arcvr/pistol_glock_posefix2.mdl",
+  "original_sha256": "c682c0cf077149eba9085c0bfe38b8641e9e5bfac979972e3ef90db80412fbcd",
+  "derived_sha256": "aec218d7a64f276a2be9932836f817ad23de82dea393780a74a545d014895975",
+  "checksum_preserved": 989677389,
+  "grip_bone": 0,
+  "model_to_bone": [
+    [
+      1.0,
+      -9.948377055479796e-07,
+      -0.0,
+      -5.183675289154053
+    ],
+    [
+      3.1229595190244985e-13,
+      3.1391647326017846e-07,
+      1.0,
+      -1.4772576093673706
+    ],
+    [
+      -9.948377055479796e-07,
+      -1.0,
+      3.1391647326017846e-07,
+      1.725508689880371
+    ],
+    [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ]
+  ],
+  "source_offset_matrix": [
+    [
+      0.984807753012208,
+      0,
+      0.17364817766693033,
+      -4.9
+    ],
+    [
+      0,
+      1,
+      0,
+      -4
+    ],
+    [
+      -0.17364817766693033,
+      0,
+      0.984807753012208,
+      1.3
+    ],
+    [
+      0,
+      0,
+      0,
+      1
+    ]
+  ],
+  "animated_root_matrix": [
+    [
+      4.7683636239526095e-06,
+      -2.8610049868094123e-06,
+      0.9999999999845387,
+      -1.724609375
+    ],
+    [
+      0.9999999999845387,
+      2.8610186291189166e-06,
+      -4.768355438611316e-06,
+      5.18359375
+    ],
+    [
+      -2.8610049868094123e-06,
+      0.9999999999918147,
+      2.8610186291189166e-06,
+      1.4765625
+    ],
+    [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ]
+  ],
+  "idle_animation": {
+    "source": "/home/shift/Documents/Codex/2026-10-13/install-rea-and-connect-it-to/work/arcvr-anniversary/models/weapons/arcticvr/aniv/pistol_glock.mdl",
+    "source_sha256": "c682c0cf077149eba9085c0bfe38b8641e9e5bfac979972e3ef90db80412fbcd",
+    "animation": "@idle",
+    "animation_descriptor_offset": 3352,
+    "frames": 2,
+    "root_record_offset": 3456,
+    "root_bone": 0,
+    "flags": 33,
+    "next_offset": 18,
+    "packed_quaternion64": "0x5ffffefffff80000",
+    "quaternion_xyzw": [
+      0.4999997615815346,
+      0.4999988079076729,
+      0.4999988079076729,
+      0.5000026225933426
+    ],
+    "position": [
+      -1.724609375,
+      5.18359375,
+      1.4765625
+    ],
+    "matrix": [
+      [
+        4.7683636239526095e-06,
+        -2.8610049868094123e-06,
+        0.9999999999845387,
+        -1.724609375
+      ],
+      [
+        0.9999999999845387,
+        2.8610186291189166e-06,
+        -4.768355438611316e-06,
+        5.18359375
+      ],
+      [
+        -2.8610049868094123e-06,
+        0.9999999999918147,
+        2.8610186291189166e-06,
+        1.4765625
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "orthonormal_max_error": 4.727160995760443e-17,
+    "scope": "Constant authored root idle; not inverse bind pose or runtime world pose",
+    "format_references": [
+      "https://github.com/ValveSoftware/source-sdk-2013/blob/master/src/public/studio.h",
+      "https://github.com/ValveSoftware/source-sdk-2013/blob/master/src/public/mathlib/compressed_vector.h"
+    ]
+  },
+  "calibrated_offset_matrix": [
+    [
+      0.984807753012208,
+      0.0,
+      0.17364817766693033,
+      -8.346827135542728
+    ],
+    [
+      0.0,
+      1.0,
+      0.0,
+      -4.0
+    ],
+    [
+      -0.17364817766693033,
+      0.0,
+      0.984807753012208,
+      1.9077686218342562
+    ],
+    [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ]
+  ],
+  "model_local_translation_delta": [
+    -3.5,
+    0,
+    0
+  ],
+  "local_grip_matrix": [
+    [
+      4.199112936476013e-06,
+      1.0,
+      -3.6455576264415868e-06,
+      -1.1835392713546753
+    ],
+    [
+      0.17364536225795746,
+      2.8610186291189166e-06,
+      0.9848082661628723,
+      -1.905969262123108
+    ],
+    [
+      0.9848082661628723,
+      -4.768355665873969e-06,
+      -0.17364536225795746,
+      10.275910377502441
+    ],
+    [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ]
+  ],
+  "roundtrip_max_error": 1.9369947967806667e-07,
+  "equation": "CalibratedOffset * AnimatedIdleRoot * LocalGrip == identity",
+  "runtime_status": "Same model/attachment tested in live session1792172326: wearer confirms improved orientation and final distance. Other weapons require separate visual checks."
+}

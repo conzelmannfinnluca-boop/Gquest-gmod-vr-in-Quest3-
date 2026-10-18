@@ -1,0 +1,53 @@
+{
+  "animdesc_va_fileoffset": "0xd18",
+  "animation_name": "@idle",
+  "frames": 2,
+  "root_anim_fileoffset": "0xd80",
+  "flags": "0x21",
+  "raw_quaternion64": "0x5ffffefffff80000",
+  "quaternion": [
+    0.4999997615815346,
+    0.4999988079076729,
+    0.4999988079076729,
+    0.5000026225933426
+  ],
+  "position": [
+    -1.724609375,
+    5.18359375,
+    1.4765625
+  ],
+  "matrix": [
+    [
+      4.7683636239526095e-06,
+      -2.8610049868094123e-06,
+      0.9999999999845387,
+      -1.724609375
+    ],
+    [
+      0.9999999999845387,
+      2.8610186291189166e-06,
+      -4.768355438611316e-06,
+      5.18359375
+    ],
+    [
+      -2.8610049868094123e-06,
+      0.9999999999918147,
+      2.8610186291189166e-06,
+      1.4765625
+    ],
+    [
+      0,
+      0,
+      0,
+      1
+    ]
+  ],
+  "angles_pyr_degrees": [
+    0.0001639235109102847,
+    89.99972679288916,
+    89.99983607570745
+  ],
+  "format_reference": "https://github.com/ValveSoftware/source-sdk-2013/blob/master/src/public/mathlib/compressed_vector.h",
+  "format_reference_studio": "https://github.com/ValveSoftware/source-sdk-2013/blob/master/src/public/studio.h",
+  "inference": "Original root idle is approximately Rz90 * bind root, not the bind root itself. Actual animation constants correspond to live runtime root relative entity. Attachment calibrated against inverse(poseToBone) omits this idle animation basis."
+}

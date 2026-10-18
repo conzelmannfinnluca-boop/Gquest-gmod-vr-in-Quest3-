@@ -1,0 +1,7 @@
+cmake_minimum_required(VERSION 3.22)
+project(gdroid_bootstrap_probe LANGUAGES C CXX)
+add_library(native_glue STATIC ${ANDROID_NDK}/sources/android/native_app_glue/android_native_app_glue.c)
+target_include_directories(native_glue PUBLIC ${ANDROID_NDK}/sources/android/native_app_glue)
+add_library(bootstrap_probe SHARED main.cpp)
+target_link_libraries(bootstrap_probe PRIVATE native_glue android log dl)
+target_link_options(bootstrap_probe PRIVATE "-uANativeActivity_onCreate")

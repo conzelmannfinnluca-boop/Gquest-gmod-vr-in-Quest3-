@@ -1,0 +1,13 @@
+{
+  "sha256": "544edd6c0536167fe61f1d604dfd57b4e0388c8d91c268163892dc8f6eb755c4",
+  "content_records": 385,
+  "arcvr_files": 23,
+  "signature": "verified",
+  "zip_crc": "passed",
+  "current_payload_identity": "passed",
+  "installed_on_quest": false,
+  "weapon_model_scripts": 12,
+  "weapon_model_report": "lua/autorun/client/gquest_weapon_models.lua",
+  "weapon_align": "lua/autorun/client/gquest_weapon_align.lua",
+  "wrist_hud": "lua/autorun/client/gquest_wrist_hud.lua"
+}
