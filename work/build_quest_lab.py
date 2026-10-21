@@ -7,8 +7,9 @@ from pathlib import Path
 
 U32 = lambda b, o: S.unpack_from('<I', b, o)[0]
 NS = 'http://schemas.android.com/apk/res/android'
-source = Path('outputs/GDroid-0.1.29.apk')
+source = Path('outputs/GDroid-0.1.30.apk')
 out = Path('work/GMod-Quest-Lab-unsigned.apk')
+assert hashlib.sha256(source.read_bytes()).hexdigest() == '28bcce6d656f324b883fa638ceae2893cfa875e423f28a7fbc2329c5cdd5d13c', 'Unexpected GDroid 0.1.30 base'
 with zipfile.ZipFile(source) as z:
     xml = z.read('AndroidManifest.xml')
     pool_at = 8
@@ -38,7 +39,7 @@ with zipfile.ZipFile(source) as z:
     for category in ['android.intent.category.LAUNCHER', 'com.oculus.intent.category.VR', 'org.khronos.openxr.intent.category.IMMERSIVE_HMD']:
         vrfilter += leaf('category', [attr('name', category)])
     vrfilter += end('intent-filter')
-    metadata = leaf('meta-data', [attr('name', 'com.oculus.supportedDevices'), attr('value', 'quest3|questpro|quest2')])
+    metadata = leaf('meta-data', [attr('name', 'com.oculus.supportedDevices'), attr('value', 'quest3|quest3s|questpro|quest2')])
     chunks, stack = [], []
     pos = pool_at + poolsize
     while pos < len(xml):
@@ -144,10 +145,10 @@ with zipfile.ZipFile(source) as z:
             if item.filename == 'classes.dex': content = bytes(dex)
             if item.filename == 'lib/arm64-v8a/libclient.so':
                 # GDroid Flat unconditionally clears the USERINFO VR-player
-                # cvar in its once-only client initialization (VA 0x4857b0).
+                # cvar in its once-only client initialization (VA 0x552128).
                 # Keep this isolated copy in VR mode before server signon.
-                assert hashlib.sha256(content).hexdigest() == '00c32647cdeca5726a14236ce7d23a5d6c493703df518f773a25baf70d06eea9'
-                offset = 0x4817b0
+                assert hashlib.sha256(content).hexdigest() == '5812ed714047662ba73ce4acdc6cafbe34a6097df287a97944e9efd1ec455cc8'
+                offset = 0x54e128
                 assert content[offset:offset+4] == bytes.fromhex('e1031f2a')  # mov w1,wzr
                 content = content[:offset] + bytes.fromhex('21008052') + content[offset+4:]  # mov w1,#1
 
@@ -169,15 +170,7 @@ with zipfile.ZipFile(source) as z:
             relative = own_path.relative_to(own_root).as_posix()
             w.writestr('assets/quest_lab_vr_content/' + relative, own_path.read_bytes())
             manifest_lines.append(str(own_path.stat().st_size) + '\t' + relative)
-        # Private ArcVR anniversary slice; provenance/checksums in its manifest.
-        arc_root = Path('work/gquest-arcvr/content')
-        if arc_root.exists():
-            for asset in sorted(arc_root.rglob('*')):
-                if not asset.is_file(): continue
-                relative = asset.relative_to(arc_root).as_posix()
-                assert not any(line.endswith('\t' + relative) for line in manifest_lines)
-                w.writestr('assets/quest_lab_vr_content/' + relative, asset.read_bytes())
-                manifest_lines.append(str(asset.stat().st_size) + '\t' + relative)
+        # ArcVR collection retired at the user's request; never package it again.
         model_root = Path('work/gquest-weapon-models/content')
         if model_root.exists():
             model_manifest=json.loads(Path('work/gquest-weapon-models/manifest.json').read_text())

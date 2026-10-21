@@ -1,0 +1,52 @@
+{
+  "upstream": "0.1.30",
+  "upstream_apk_sha256": "28bcce6d656f324b883fa638ceae2893cfa875e423f28a7fbc2329c5cdd5d13c",
+  "built_apk_sha256": "42f0cdaaa2f0e45b453adf4c3c0ab0ed9b9a866f64fa686babc2a2c590392b7c",
+  "runtime_zip": "identical to official0.1.30",
+  "runtime_manifest": "identical to official0.1.30",
+  "native_client_delta": "only four-byte VR player init instruction at file0x54e128",
+  "native_libraries": "all other official0.1.30 libraries byte-identical",
+  "unverified": [
+    "Quest3S hardware",
+    "complete video parity",
+    "new higher-detail meshes/materials",
+    "reworked two-hand contacts",
+    "physical free-magazine reload",
+    "HL2 wearer reload regression",
+    "latest tactical reload visual correction"
+  ],
+  "installed_on_quest": true,
+  "installed_apk_sha256": "42f0cdaaa2f0e45b453adf4c3c0ab0ed9b9a866f64fa686babc2a2c590392b7c",
+  "upstream_version": "0.1.30",
+  "device": "Quest3",
+  "quest_test": "Own native VRLua API active; real both-hand poses, profiles, M9 server reload and wearer shooting/reload confirmed. Menu visible and interactive confirmed. Persisted startup menu policy verified at PID26427. Latest tactical reload correction locally verified, fresh visual test pending.",
+  "native_compatibility_audit": [
+    "work/gdroid130-compat/audit.json",
+    "work/gdroid130-compat/lua-vr-and-cmdsock-audit.json"
+  ],
+  "active_scope": "GDroid only; separate Rust prototypes preserved",
+  "first_runtime": {
+    "pid": 14642,
+    "startup": "gm_construct stereo screenshot inspected; evolving head poses; left palm and native hook active",
+    "finger_profile": "none; investigating gate",
+    "performance": "VrApi typically72/72 with stale frames in sampled session; work/cpu timing needs separate interpretation",
+    "menu": "awaiting interactive test",
+    "log": "work/gquest-0.1.30-runtime.log",
+    "screenshot": "work/gquest-0.1.30-system.png"
+  },
+  "native_vr_lua": "Own gquest_vr module restores removed official0.1.30 GLua VR API; official liblua_shared.so remains byte-identical.",
+  "confirmed_0_1_30": {
+    "m9_shoot_reload": "wearer: Waffen funktionieren",
+    "menu": "wearer: Men\u00fc sichtbar und bedienbar",
+    "m9_resting_fingers": "wearer: Finger bleiben am Griff",
+    "native_finger_profiles": "live class-specific results in PID26427",
+    "menu_startup": "mat_queue_mode0 / pointer_hand0 read back at PID26427"
+  },
+  "latest_runtime": {
+    "pid": 29464,
+    "log": "work/gquest-0.1.30-final-start.log",
+    "vr_pose_gate": "alive true / active true / primary1",
+    "native_profiles": "M9, Desert Eagle, USP and HL2 profile selection observed after final install",
+    "latest_visual_reload_test": "pending"
+  }
+}

@@ -1,0 +1,127 @@
+{
+  "date": "2026-10-21",
+  "package": "com.gmodvr.qvrx",
+  "upstream": "GDroid0.1.30",
+  "apk_sha256": "676e7f6f9723645643e580b2114d911a494748df3bde9a452a0771749d69a40c",
+  "installed_on_quest": true,
+  "device": "Quest3",
+  "arcvr": {
+    "packaged_files": 0,
+    "retired_owned_files": 63,
+    "migration_runtime": "all63 moved on first HL2-only startup; actual mounted classes absent",
+    "retired_classes": [
+      "gquest_arcvr_aniv_glock",
+      "gquest_arcvr_aniv_m9",
+      "gquest_arcvr_aniv_deagle",
+      "gquest_arcvr_aniv_usptactical"
+    ],
+    "backup": "/sdcard/Android/data/com.gmodvr.qvrx/files/retired_content/arcvr-20261021/"
+  },
+  "native_finger_profiles": 12,
+  "fixes": [
+    "explicit native HL2 VR model assignment after Deploy",
+    "reuse owned hlvr_ aliases instead of duplicate Give",
+    "native main/support grip caches restored from actual model attachments",
+    "retired ArcVR UI/reload handlers removed",
+    "diagnostic resolves hlvr_ script aliases; entity world model is not treated as proof of the rendered model",
+    "native muzzle offset/angles refreshed transactionally from actual VR attachments",
+    "crowbar-only minus90 grip pitch, attachment-derived and idempotent; wearer direction confirmed"
+  ],
+  "wearer_confirmations": {
+    "pistol": "Ausrichtung passt jetzt",
+    "smg_grip_fire": "nur das mit zeiw handen ist noch kapu aber alles es gut",
+    "smg_after_cache_fix": "Zweih\u00e4ndig stabil, einh\u00e4ndig richtig",
+    "shotgun_after_final_restart": "Haltung, Zweihandgriff und Sch\u00fcsse funktionieren",
+    "crowbar_direction": "Ja, Richtung passt jetzt"
+  },
+  "smg_root_cause_evidence": {
+    "before_grip": [
+      0,
+      0,
+      0
+    ],
+    "before_foregrip": [
+      0,
+      4.4e-05,
+      0
+    ],
+    "after_grip": [
+      -1.208123,
+      1.8e-05,
+      -2.066015
+    ],
+    "after_foregrip": [
+      6.906851,
+      -0.027453,
+      -2.327133
+    ],
+    "engine_setsavevalue_and_readback": "all four fields accepted"
+  },
+  "local_tests": [
+    "native retired-content migration: idempotence, collision preservation, unrelated addon, symlink rejection",
+    "native HL2 model policy: after-Deploy, classes and scope guards",
+    "grip caches: model-local frames, coincident-anchor rejection, finite/range/schema guards, four rollback boundaries",
+    "owned HLVR weapon reuse and ammo-preserving selection",
+    "HL2-only menu and native class writer",
+    "native reload pulse and menu navigation",
+    "Rust/C++ ABI, native finger wrapper and own VRLua API",
+    "official base digest/native signatures, APK signature/CRC/current payload identity/upstream comparison"
+  ],
+  "latest_restart": {
+    "pid": 4049,
+    "status": "APK installed and hash matched; Android activity starts but Quest sleeping pauses it before game initialization",
+    "log": "work/gquest-crowbar-final-start.log",
+    "weapon_switch_regression": "pending headset wake; test prepared work/gquest_crowbar_switch_regression.lua"
+  },
+  "unverified": [
+    "individual visual fit of remaining weapon types",
+    "HL2 reload gesture regression",
+    "full GMod PCVR/addon parity",
+    "Quest3S hardware",
+    "crowbar physical melee damage test"
+  ],
+  "next_hardware_checks": [],
+  "switch_regression": [
+    {
+      "separation": 8.119205474853516,
+      "initial_inventory": 13.0,
+      "pass": true,
+      "tag": "smg-before-switch",
+      "class": "hlvr_weapon_smg1",
+      "clip": 45.0,
+      "model": "models/weapons/vr_smg.mdl",
+      "inventory": 13.0
+    },
+    {
+      "separation": 4.091166973114014,
+      "initial_inventory": 13.0,
+      "pass": true,
+      "tag": "pistol-between",
+      "class": "hlvr_weapon_pistol",
+      "clip": 17.0,
+      "model": "models/weapons/vr_pistol.mdl",
+      "inventory": 13.0
+    },
+    {
+      "separation": 8.11922836303711,
+      "initial_inventory": 13.0,
+      "pass": true,
+      "tag": "smg-after-switch",
+      "class": "hlvr_weapon_smg1",
+      "clip": 45.0,
+      "model": "models/weapons/vr_smg.mdl",
+      "inventory": 13.0
+    },
+    {
+      "separation": 14.050628662109375,
+      "initial_inventory": 13.0,
+      "pass": true,
+      "tag": "shotgun-settled",
+      "class": "hlvr_weapon_shotgun",
+      "clip": 0.0,
+      "model": "models/weapons/vr_shotgun.mdl",
+      "inventory": 13.0
+    }
+  ],
+  "damage_report": "outputs/Gquest-HL2-damage-verification.json"
+}

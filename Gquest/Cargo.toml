@@ -1,0 +1,13 @@
+[package]
+name = "gquest-gdroid-runtime"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+name = "gquest_runtime"
+crate-type = ["staticlib", "rlib"]
+
+[profile.release]
+opt-level = 2
+
+[workspace]

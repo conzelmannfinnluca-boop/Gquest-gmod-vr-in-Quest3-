@@ -18,6 +18,8 @@
 #include <android/asset_manager_jni.h>
 #include <sys/stat.h>
 #include <cerrno>
+#include <memory>
+#include "gquest_runtime.h"
 
 static void BridgeLog(const char* format, ...) {
     char text[1024];
@@ -55,7 +57,9 @@ static bool ReadableMemory(const void* address, size_t length) {
     }
     fclose(maps);return readable;
 }
-// Private, opt-in A/B for this exact client: its measured left local controller
+#include "gquest_native_fingers.h"
+#include "gquest_vr_lua.h"
+// Private, opt-in A/B for the audited GDroid0.1.30 client: its measured left local controller
 // offset is already handed, while the legacy constructor negates pitch/roll.
 // Change only that left visual operation; right follows the same branch target.
 static void ConfigureQuestLeftPalm(bool shuttingDown=false) {
@@ -88,10 +92,10 @@ static void ConfigureQuestLeftPalm(bool shuttingDown=false) {
         auto candidate=static_cast<unsigned char*>(info.dli_fbase);
         const unsigned char signature[]={0xff,0x83,0x04,0xd1,0xeb,0x2b,0x0a,0x6d,0xe9,0x23,0x0b,0x6d,0xfd,0x7b,0x0c,0xa9,0xfc,0x6f,0x0d,0xa9,0xfa,0x67,0x0e,0xa9,0xf8,0x5f,0x0f,0xa9,0xf6,0x57,0x10,0xa9};
         const uint32_t expected[]={0x370000b3,0x1e214000,0x1e214021,0xbd000ea0,0xbd0016a1};
-        if (memcmp(candidate+0x3a1428,signature,sizeof(signature)) || memcmp(candidate+0x3a164c,expected,sizeof(expected))) {
+        if (memcmp(candidate+0x46eac4,signature,sizeof(signature)) || memcmp(candidate+0x46ece8,expected,sizeof(expected))) {
             blocked=true;LOG("LEFT_PALM signature mismatch; no change");dlclose(library);return;
         }
-        instanceGlobal=*reinterpret_cast<void***>(candidate+0xddce48);
+        instanceGlobal=*reinterpret_cast<void***>(candidate+0xf47ae0);
         if (!ReadableMemory(instanceGlobal,sizeof(void*))) {dlclose(library);return;}
         base=candidate;pinnedLibrary=library;
         LOG("LEFT_PALM exact constructor/branch verified; opt-in candidate ready");
@@ -108,7 +112,7 @@ static void ConfigureQuestLeftPalm(bool shuttingDown=false) {
     }
     const bool enable=requested && cachedController;
     if (enable==modified || now<nextPatchAttempt) return;
-    auto instruction=reinterpret_cast<uint32_t*>(base+0x3a164c);
+    auto instruction=reinterpret_cast<uint32_t*>(base+0x46ece8);
     const uint32_t before=modified?0x14000005:0x370000b3;
     const uint32_t after=enable?0x14000005:0x370000b3;
     if (*instruction!=before) {blocked=true;LOG("LEFT_PALM unexpected instruction; no write");return;}
@@ -147,15 +151,15 @@ static void ProbeQuestHandOffsets() {
     if (!factory || !dladdr(factory,&info) || !info.dli_fbase) {dlclose(library);return;}
     auto base=static_cast<unsigned char*>(info.dli_fbase);
     const unsigned char signature[]={0xff,0x03,0x02,0xd1,0xfd,0x7b,0x06,0xa9,0xf3,0x3b,0x00,0xf9,0xfd,0x83,0x01,0x91,0xf3,0x03,0x08,0xaa,0x08,0xf0,0xa7,0x52,0xff,0xc3,0x02,0xf8,0xe8,0x23,0x00,0xb9};
-    if (memcmp(base+0x34b0f8,signature,sizeof(signature))!=0) {enabled=false;LOG("HAND_LOCAL signature mismatch; no observation");dlclose(library);return;}
-    auto instanceGlobal=*reinterpret_cast<void***>(base+0xddce48);
+    if (memcmp(base+0x4163f0,signature,sizeof(signature))!=0) {enabled=false;LOG("HAND_LOCAL signature mismatch; no observation");dlclose(library);return;}
+    auto instanceGlobal=*reinterpret_cast<void***>(base+0xf47ae0);
     if (!ReadableMemory(instanceGlobal,sizeof(void*)) || !ReadableMemory(*instanceGlobal,5026)) {dlclose(library);return;}
     auto instance=static_cast<unsigned char*>(*instanceGlobal);
     struct alignas(16) Mat4 {float values[16];};
     using LocalPose=Mat4(*)(void*,bool);
     ++samples;
     for (int side=0;side<2;++side) {
-        const Mat4 local=reinterpret_cast<LocalPose>(base+0x34b0f8)(instance,side!=0);
+        const Mat4 local=reinterpret_cast<LocalPose>(base+0x4163f0)(instance,side!=0);
         Mat4 grip{};memcpy(&grip,instance+32+64*side,sizeof(grip));
         unsigned char active,tracked,cached;
         memcpy(&active,instance+4888,1);memcpy(&tracked,instance+977+side,1);memcpy(&cached,instance+5024+side,1);
@@ -180,17 +184,17 @@ static void EnsureQuestLayerTargets() {
     if (!factory || !dladdr(factory,&info) || !info.dli_fbase) { dlclose(library); return; }
     auto base=static_cast<unsigned char*>(info.dli_fbase);
     const unsigned char signature[]={0xff,0x3,0x2,0xd1,0xfd,0x7b,0x2,0xa9,0xfc,0x6f,0x3,0xa9,0xfa,0x67,0x4,0xa9,0xf8,0x5f,0x5,0xa9,0xf6,0x57,0x6,0xa9,0xf4,0x4f,0x7,0xa9,0xfd,0x83,0x0,0x91};
-    if (memcmp(base+0x322490,signature,sizeof(signature))!=0) {
+    if (memcmp(base+0x3ed58c,signature,sizeof(signature))!=0) {
         attempted=true; LOG("LAYERS allocator signature mismatch; no call"); dlclose(library); return;
     }
     // The allocator itself loads this relocated material-system global.
-    auto materialGlobal=*reinterpret_cast<void***>(base+0xddccb0);
+    auto materialGlobal=*reinterpret_cast<void***>(base+0xf47948);
     if (!materialGlobal || !*materialGlobal) { dlclose(library); return; }
     attempted=true;
     LOG("LAYERS initializing retained client targets on engine thread");
-    reinterpret_cast<void(*)()>(base+0x322490)();
+    reinterpret_cast<void(*)()>(base+0x3ed58c)();
     for (int i=0;i<5;++i) {
-        auto record=base+0xde39d8+i*48;
+        auto record=base+0xf4e818+i*48;
         void* texture; int surface;
         memcpy(&texture,record+16,sizeof(texture)); memcpy(&surface,record+24,sizeof(surface));
         LOG("LAYERS target %d texture=%p surface=%d",i,texture,surface);
@@ -203,8 +207,8 @@ static int QuestPollEvent(void* event) {
     // SDL2 SDL_QUIT (0x100) is delivered before Source's IE_Quit teardown.
     uint32_t type = 0;
     if (result && event) memcpy(&type, event, sizeof(type));
-    if (type!=0x100) { EnsureQuestLayerTargets(); ConfigureQuestLeftPalm(); ProbeQuestHandOffsets(); }
-    else ConfigureQuestLeftPalm(true);
+    if (type!=0x100) { EnsureQuestLayerTargets(); ConfigureQuestLeftPalm(); ProbeQuestHandOffsets(); ConfigureGquestNativeFingers(); }
+    else {ConfigureQuestLeftPalm(true);ConfigureGquestNativeFingers(true);}
     if (type == 0x100 && EngineContext && gettid() == EngineContextOwner &&
         eglGetCurrentContext() == EGL_NO_CONTEXT) {
         EGLint version = 0;
@@ -338,7 +342,7 @@ static bool InstallInputSnapshotBridge(void* xr) {
     void** slot = table + 464 / sizeof(void*);
     Dl_info owner{};
     if (!dladdr(*slot, &owner) || !owner.dli_fbase ||
-        reinterpret_cast<uintptr_t>(*slot) - reinterpret_cast<uintptr_t>(owner.dli_fbase) != 0x174d4) return false;
+        reinterpret_cast<uintptr_t>(*slot) - reinterpret_cast<uintptr_t>(owner.dli_fbase) != 0x180f4) return false;
     const unsigned char stub[] = {0xe0,0x03,0x1f,0x2a,0xc0,0x03,0x5f,0xd6};
     if (memcmp(*slot, stub, sizeof(stub)) != 0) return false;
     // Query actual page permissions rather than leave the read-only vtable writable.
@@ -373,6 +377,7 @@ static bool EnsureContentDirectory(const std::string& path) {
     }
     return true;
 }
+#include "gquest_retired_content.h"
 static bool InstallVRContent(JNIEnv* env, jobject activity) {
     jclass cls = env->GetObjectClass(activity);
     jmethodID method = env->GetMethodID(cls, "getAssets", "()Landroid/content/res/AssetManager;");
@@ -389,6 +394,7 @@ static bool InstallVRContent(JNIEnv* env, jobject activity) {
     AAsset_close(manifest);
     const std::string root = "/storage/emulated/0/Android/data/com.gmodvr.qvrx/files/user/vr_content/";
     bool ok = !listing.empty() && EnsureContentDirectory(root);
+    if (ok) ok=RetireGquestArcVR(root,"/storage/emulated/0/Android/data/com.gmodvr.qvrx/files/retired_content/arcvr-20261021/");
     unsigned installed = 0, existing = 0;
     std::vector<char> buffer(256 * 1024);
     for (size_t pos = 0; ok && pos < listing.size();) {
@@ -425,50 +431,6 @@ static bool InstallVRContent(JNIEnv* env, jobject activity) {
     env->DeleteLocalRef(object);
     LOG("CONTENT ready=%d installed=%u existing=%u root=%s", int(ok), installed, existing, root.c_str());
     return ok;
-}
-
-static std::string EyeTier = "1032x1104";
-static std::string Foveation = "2";
-static std::string RefreshRate = "72";
-static void ReadQuestProfile() {
-    FILE* file = fopen("/storage/emulated/0/Android/data/com.gmodvr.qvrx/files/user/garrysmod/data/gquest_vr_profile.txt", "r");
-    if (!file) return;
-    char tier[64] = {}, ffr[16] = {}, rate[16] = {};
-    if (fgets(tier,sizeof(tier),file)) {
-        tier[strcspn(tier,"\r\n")] = 0;
-        for (const char* allowed : {"1032x1104","1548x1656","1680x1760"})
-            if (strcmp(tier,allowed)==0) EyeTier=allowed;
-    }
-    if (fgets(ffr,sizeof(ffr),file)) {
-        ffr[strcspn(ffr,"\r\n")] = 0;
-        if (strlen(ffr)==1 && ffr[0]>='0' && ffr[0]<='3') Foveation=ffr;
-    }
-    if (fgets(rate,sizeof(rate),file)) {
-        rate[strcspn(rate,"\r\n")] = 0;
-        if (strcmp(rate,"72")==0 || strcmp(rate,"90")==0) RefreshRate=rate;
-    }
-    fclose(file);
-    LOG("PROFILE eye=%s ffr=%s refresh=%s",EyeTier.c_str(),Foveation.c_str(),RefreshRate.c_str());
-}
-
-static void AppendQuestDefaults(std::vector<char*>& args) {
-    // Applied after Flat android_settings.cfg and before level loading.
-    static const char* settings[] = {
-        "+touch_enable", "0", "+vr_mainmenu", "1",
-        "+vr_panel_menu_auto", "1", "+vr_spawn_menu_enable", "1",
-        "+gmod_derma_vr", "1", "+vr_gameui_cursor", "1",
-        "+hlvr_grip_yaw_correction", "0",
-        "+vr_gameui_software_cursor", "0",
-        "+vr_eye_resolution", "1032x1104", "+vr_ffr_level", "2",
-        "+vr_perf_level", "50", "+vr_refresh_rate", "72", "+mat_vsync", "0"
-    };
-    for (size_t i=0; i<sizeof(settings)/sizeof(settings[0]); ++i) {
-        const char* value = settings[i];
-        if (i>0 && strcmp(settings[i-1],"+vr_eye_resolution")==0) value=EyeTier.c_str();
-        if (i>0 && strcmp(settings[i-1],"+vr_ffr_level")==0) value=Foveation.c_str();
-        if (i>0 && strcmp(settings[i-1],"+vr_refresh_rate")==0) value=RefreshRate.c_str();
-        args.push_back(const_cast<char*>(value));
-    }
 }
 
 extern "C" int LauncherMainAndroid(int argc, char** argv) {
@@ -512,8 +474,20 @@ extern "C" int LauncherMainAndroid(int argc, char** argv) {
         LOG("STOP incomplete VR content installation"); env->DeleteLocalRef(activity); return 1;
     }
     // This allowlisted XR setting is startup-latched, before swapchain creation.
-    ReadQuestProfile();
-    setenv("SOURCEVR_EYE_RESOLUTION", EyeTier.c_str(), 1);
+    if (gquest_runtime_abi() != 1) {
+        LOG("GQUEST_RUST STOP incompatible runtime ABI"); env->DeleteLocalRef(activity); return 1;
+    }
+    std::unique_ptr<GquestRuntime, decltype(&gquest_runtime_destroy)> runtime(
+        gquest_runtime_create(argc, argv), &gquest_runtime_destroy);
+    GquestProfile profile{};
+    if (!runtime || !gquest_runtime_profile(runtime.get(), &profile) || profile.abi_version != 1) {
+        LOG("GQUEST_RUST STOP startup policy initialization failed"); env->DeleteLocalRef(activity); return 1;
+    }
+    const std::string eyeTier = std::to_string(profile.eye_width) + "x" + std::to_string(profile.eye_height);
+    LOG("GQUEST_RUST READY abi=%u eye=%s ffr=%u refresh=%u loaded=%u argc=%d",
+        profile.abi_version, eyeTier.c_str(), profile.foveation, profile.refresh_rate,
+        profile.profile_loaded, gquest_runtime_argc(runtime.get()));
+    setenv("SOURCEVR_EYE_RESOLUTION", eyeTier.c_str(), 1);
     const bool boot = bootstrap(vm, activity);
     BootstrapContext = eglGetCurrentContext();
     LOG("EGL bootstrap current=%p display=%p", BootstrapContext, eglGetCurrentDisplay());
@@ -542,6 +516,9 @@ extern "C" int LauncherMainAndroid(int argc, char** argv) {
         env->DeleteLocalRef(activity);
         return 1;
     }
+    if (!GquestVRLua::Install(xr)) {
+        LOG("STOP missing VR Lua compatibility API");shutdown();env->DeleteLocalRef(activity);return 1;
+    }
     bool sharingInstalled = false;
     dl_iterate_phdr(InstallContextSharing, &sharingInstalled);
     if (!BootstrapContext || !sharingInstalled) {
@@ -552,48 +529,22 @@ extern "C" int LauncherMainAndroid(int argc, char** argv) {
         LOG("STOP engine launch withheld: VR input snapshot bridge unavailable");
         shutdown(); env->DeleteLocalRef(activity); return 1;
     }
-    // VRManager activation reads hlvr_isvrplayer before it requests SourceXR010.
-    // Set the startup cvar before +map; never change it during a running map.
-    std::vector<char*> vrArgs;
-    char vrSwitch[] = "-vr";
-    char vrPlayer[] = "+hlvr_isvrplayer";
-    char playerEnabled[] = "1";
-    // Put startup commands before the first map command.
-    bool inserted = false;
-    for (int i = 0; i < argc; ++i) {
-        if (!inserted && argv[i] && std::string(argv[i]) == "+map") {
-            AppendQuestDefaults(vrArgs);
-            vrArgs.push_back(vrPlayer);
-            vrArgs.push_back(playerEnabled);
-            inserted = true;
-        }
-        vrArgs.push_back(argv[i]);
-        if (i == 0) vrArgs.push_back(vrSwitch);
+    // Rust owns the same startup ordering and argument storage for this call.
+    LOG("READY calling original launcher with Rust-owned VR startup arguments");
+    auto launchArgc=gquest_runtime_argc(runtime.get());
+    auto launchArgv=gquest_runtime_argv(runtime.get());
+    std::vector<char*> diagnosticArgs;
+    // Explicit private opt-in. The engine listener binds only 127.0.0.1;
+    // official0.1.30 no longer starts it with an unspecified port.
+    if (access("/data/user/0/com.gmodvr.qvrx/files/diagnostics/dev-console.enable",F_OK)==0) {
+        diagnosticArgs.assign(launchArgv,launchArgv+launchArgc);
+        diagnosticArgs.push_back(const_cast<char*>("-vr_cmdsock_port"));
+        diagnosticArgs.push_back(const_cast<char*>("27100"));
+        diagnosticArgs.push_back(nullptr);
+        launchArgc+=2;launchArgv=diagnosticArgs.data();
+        LOG("DEV requesting opt-in loopback command socket port27100");
     }
-    if (!inserted) {
-        AppendQuestDefaults(vrArgs);
-        vrArgs.push_back(vrPlayer);
-        vrArgs.push_back(playerEnabled);
-    }
-    bool hasLevelCommand = false;
-    for (int i = 0; i < argc; ++i) {
-        if (!argv[i]) continue;
-        const std::string arg(argv[i]);
-        if (arg == "+map" || arg == "+connect" || arg == "+load" || arg == "+changelevel") hasLevelCommand = true;
-    }
-    char defaultMapCommand[] = "+map";
-    char defaultMap[] = "gm_construct";
-    if (!hasLevelCommand) {
-        // The Flat setup launcher can omit a level and leave this VR lab at an
-        // empty menu. Give the isolated test package a known playable entry.
-        vrArgs.push_back(defaultMapCommand);
-        vrArgs.push_back(defaultMap);
-        LOG("START no level command supplied; using lab map gm_construct");
-    }
-    const int vrArgc = static_cast<int>(vrArgs.size());
-    vrArgs.push_back(nullptr);
-    LOG("READY calling original launcher with -vr at initialization and hlvr_isvrplayer=1 before map");
-    const int result = main(vrArgc, vrArgs.data());
+    const int result = main(launchArgc, launchArgv);
     LOG("RESULT original launcher returned=%d", result);
     shutdown();
     env->DeleteLocalRef(activity);

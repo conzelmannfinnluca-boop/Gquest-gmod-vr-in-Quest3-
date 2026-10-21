@@ -1,0 +1,98 @@
+{
+  "weapon_357": {
+    "source": "Quest model bone matrices relative to player neutral skeleton",
+    "model": "models/weapons/vr_357.mdl",
+    "model_sha256": "96b2efa5eacdfb41287186587b6d37776673d0613fa6a79ea01816447049ad3f",
+    "sequence": "idle",
+    "reference": "models/player/kleiner.mdl ragdoll",
+    "index_release": "three bounded index changes"
+  },
+  "weapon_ar2": {
+    "source": "Quest model bone matrices relative to player neutral skeleton",
+    "model": "models/weapons/vr_irifle.mdl",
+    "model_sha256": "5bb861d6dbbf391341f90e71aadfc1456113aad7e562d82aa4b759f6c62f7dc9",
+    "sequence": "idle",
+    "reference": "models/player/kleiner.mdl ragdoll",
+    "index_release": "three bounded index changes"
+  },
+  "weapon_bugbait": {
+    "source": "Quest model bone matrices relative to player neutral skeleton",
+    "model": "models/weapons/vr_bugbait.mdl",
+    "model_sha256": "dc517d4db5926b7871b3cd85615e7f9370d35a873b082865576bad0d34d49a48",
+    "sequence": "idle",
+    "reference": "models/player/kleiner.mdl ragdoll",
+    "index_release": "authored grip retained"
+  },
+  "weapon_crossbow": {
+    "source": "Quest model bone matrices relative to player neutral skeleton",
+    "model": "models/weapons/vr_crossbow.mdl",
+    "model_sha256": "52933e1ff5a7d7ee826cb2278b1f79db8a9efe10ef7659c1195f28b71c9b806c",
+    "sequence": "idle",
+    "reference": "models/player/kleiner.mdl ragdoll",
+    "index_release": "three bounded index changes"
+  },
+  "weapon_crowbar": {
+    "source": "Quest model bone matrices relative to player neutral skeleton",
+    "model": "models/weapons/vr_crowbar.mdl",
+    "model_sha256": "18f34bff41122a3252781a663f11ff543decc3bc5b8ad7005ca1a68874828a3c",
+    "sequence": "idle",
+    "reference": "models/player/kleiner.mdl ragdoll",
+    "index_release": "authored grip retained"
+  },
+  "weapon_frag": {
+    "source": "Quest model bone matrices relative to player neutral skeleton",
+    "model": "models/weapons/vr_grenade.mdl",
+    "model_sha256": "5bcff5678d0db19798d49f3d75f457cb49d003198337da56b2351d78626bd681",
+    "sequence": "idle",
+    "reference": "models/player/kleiner.mdl ragdoll",
+    "index_release": "authored grip retained"
+  },
+  "weapon_physcannon": {
+    "source": "Quest model bone matrices relative to player neutral skeleton",
+    "model": "models/weapons/vr_physcannon.mdl",
+    "model_sha256": "723c8882577f070cb6f8a5bb8f93fafdb53794eecf2e806f0f571fce380215a5",
+    "sequence": "idle",
+    "reference": "models/player/kleiner.mdl ragdoll",
+    "index_release": "three bounded index changes"
+  },
+  "weapon_physgun": {
+    "source": "Quest model bone matrices relative to player neutral skeleton",
+    "model": "models/weapons/vr_superphyscannon.mdl",
+    "model_sha256": "aff2974454cc6620fb35eecaf65a04c26950be6f6027d4df0ec061a17f70df5d",
+    "sequence": "idle",
+    "reference": "models/player/kleiner.mdl ragdoll",
+    "index_release": "three bounded index changes"
+  },
+  "weapon_pistol": {
+    "source": "Quest model bone matrices relative to player neutral skeleton",
+    "model": "models/weapons/vr_pistol.mdl",
+    "model_sha256": "3355436de62196b912c395045f5cb77edb68903a911143334403fe5a112381ba",
+    "sequence": "idle",
+    "reference": "models/player/kleiner.mdl ragdoll",
+    "index_release": "three bounded index changes"
+  },
+  "weapon_rpg": {
+    "source": "Quest model bone matrices relative to player neutral skeleton",
+    "model": "models/weapons/vr_rocket_launcher.mdl",
+    "model_sha256": "e18db44f6648f6ba61f7e9b2b438039592257560c58403d6dbdb25164f9bb8d1",
+    "sequence": "idle",
+    "reference": "models/player/kleiner.mdl ragdoll",
+    "index_release": "three bounded index changes"
+  },
+  "weapon_shotgun": {
+    "source": "Quest model bone matrices relative to player neutral skeleton",
+    "model": "models/weapons/vr_shotgun.mdl",
+    "model_sha256": "d200bcc39bbe7b277b66019334d200294402a7212eb73a77d21d400c18d3fb5b",
+    "sequence": "idle",
+    "reference": "models/player/kleiner.mdl ragdoll",
+    "index_release": "three bounded index changes"
+  },
+  "weapon_smg1": {
+    "source": "Quest model bone matrices relative to player neutral skeleton",
+    "model": "models/weapons/vr_smg.mdl",
+    "model_sha256": "25bef7288bd4f8ceb5a983b90b9d2091163a6f600cddf6370fd7dc9abefb43ac",
+    "sequence": "idle",
+    "reference": "models/player/kleiner.mdl ragdoll",
+    "index_release": "three bounded index changes"
+  }
+}

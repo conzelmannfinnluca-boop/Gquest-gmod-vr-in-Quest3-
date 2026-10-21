@@ -1,0 +1,46 @@
+{
+  "date": "2026-10-21",
+  "scope": "GDroid0.1.30 Gquest, native HL2 weapons only",
+  "root_cause": "Late VR model replacement retained retail muzzle cache axes; actual VR attachment frames now refresh transactionally with grip caches.",
+  "weapon_damage_and_ammo_rules_changed": false,
+  "wearer_confirmations": {
+    "shotgun": "Treffer funktionieren jetzt",
+    "ar2": "Treffer und Schaden funktionieren",
+    "357": "Zielrichtung und Treffer stimmen",
+    "crossbow": "Bolzen fliegt richtig und trifft",
+    "rpg": "Rakete trifft und Explosion macht Schaden"
+  },
+  "observed_native_damage": {
+    "pistol": "Actual native impact damage5 and test NPC health decrease observed before log buffer rotated",
+    "shotgun": "Actual native pellet damage8 and test NPC health decrease observed",
+    "ar2": "Actual native damage/health drop observed",
+    "357": "Native hit and wearer confirmation",
+    "crossbow": "Native projectile and wearer confirmation",
+    "rpg": "Native explosive damage and wearer confirmation"
+  },
+  "raw_log_limit": "Android rolling log no longer contains earlier shots; claims distinguish prior runtime observation from retained raw evidence.",
+  "tests": "Model-local muzzle frame repair; all seven partial-write rollback boundaries; invalid muzzle rejected; clip/reserve retained; primary-only grip without foregrip",
+  "crowbar": {
+    "status": "wearer-confirmed direction fix permanently installed; device SHA matched",
+    "wearer_confirmation": "Ja, Richtung passt jetzt",
+    "correction": "native crowbar grip attachment pitch minus90; offset untouched",
+    "safety": "derived from fresh attachment each refresh; no accumulation or firearm change",
+    "physical_melee_damage": "pending actual controller swing test",
+    "evidence": [
+      "work/gquest-crowbar-direction-confirmed.log",
+      "work/gquest-crowbar-direction-current.png",
+      "work/gquest-crowbar-minus90.png",
+      "work/gdroid130-compat/crowbar-native-audit.json"
+    ]
+  },
+  "installed": true,
+  "apk_sha256": "676e7f6f9723645643e580b2114d911a494748df3bde9a452a0771749d69a40c",
+  "installed_sha256_matches": true,
+  "final_start": {
+    "pid": 4049,
+    "status": "APK installed and hash matched; Android activity starts but Quest sleeping pauses it before game initialization",
+    "log": "work/gquest-crowbar-final-start.log",
+    "weapon_switch_regression": "pending headset wake; test prepared work/gquest_crowbar_switch_regression.lua"
+  },
+  "final_apk_wearer_damage_retest": "pending; previous live version of identical canonical helper confirmed"
+}

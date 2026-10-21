@@ -1,28 +1,118 @@
-# Gquest: aktueller Stand (17. Oktober 2026)
+# Gquest: aktueller Stand (18. Oktober 2026)
 
-Privater experimenteller Standalone-Port für Quest 3. Zielpaket: com.gmodvr.qvrx.
+Privater experimenteller Standalone-Port für Quest 3, Paket com.gmodvr.qvrx.
 
-## Paket
+## Seitlicher Griffversatz korrigiert (18. Oktober)
 
-`outputs/Gquest.apk`, SHA256
-**544edd6c0536167fe61f1d604dfd57b4e0388c8d91c268163892dc8f6eb755c4**, enthält
-385 Inhaltsdateien: 346 bestehende VR-Assets, 4 eigene Skripte
-(gquest_vr_ui.lua, gquest_wrist_hud.lua, gquest_weapon_models.lua,
-gquest_weapon_align.lua), 23 Dateien der ArcVR-Glock-Testintegration und
-12 Waffenmodell-Zuordnungen.
-APK-Signatur (v3), ZIP-Prüfsummen, Inhaltsgrößen und die Übereinstimmung mit den
-aktuellen eigenen Quellen, ArcVR-Hashes und Waffenmodell-Skripten sind geprüft
-(`work/verify_gquest_package.py`, Ergebnis in `Gquest-build-verification.json`).
+Nutzer meldete Waffe links neben der Hand. Drei Live-Messungen an der M9:
+rechte Handfläche im Waffenrahmen Y=3.044977/3.045174/3.045446 Source-Units.
+Die aus echten VVD-Vertices mit Idle-Rootpose bestimmte Modell-Mittenebene
+liegt bei Y=5.17938. Modell um -2.14 Source-Y-Einheiten (ca. 5.44 cm nach
+rechts) verschoben. Neue Messung: Handfläche Y=5.185375, X und Z unverändert.
+Dies vergleicht Knochen-/Mesh-Landmarken und ist keine millimetergenaue
+Messung der tatsächlichen Haut- oder Griffoberfläche.
 
-Dieser Build ist **lokal geprüft, nicht installiert**. Am 17. Oktober erkennt ADB
-kein angeschlossenes Gerät (weder USB noch mDNS). Zuletzt installiert war
-cca9d817613bb6be7bb6e11300acf6076784dcdab1387aed84d5179f98c38bbe
-(16. Oktober, im Geräteprotokoll als installiert bestätigt); dieser Stand liegt
-zur Rückkehr als `work/Gquest-before-weapon-model-report.apk` vor. Ein
-Gerätetest des neuen Builds ist nicht erfolgt und wird nicht behauptet.
+M9, Desert Eagle und USP verwenden neue native *_grip_fit1.mdl-Modelle.
+Nur Modellname und Griff-Translationswerte geändert; Geometrie-Begleitdateien,
+Griffdrehung, Modellmaßstab und Abstand nach vorn sind byteweise unverändert.
+Eigene Kalibrierung in work/gquest-arcvr/hand_fit.json; reproduzierbarer Builder
+prepare_collection.py und Nachweis side_fit_delta_audit.json.
 
-Der Build vom 17. Oktober (204f3d4436…) mit dem Waffenmodell-Bericht wurde
-durch den Ausrichtungs-Build ersetzt; beide sind lokal geprüft, keiner installiert.
+Im laufenden Spiel alle drei vorhandenen Waffen mit ihren tatsächlichen
+Magazin-/Kammer-/Reservewerten neu erstellt; Saved/Restored-Log stimmt überein.
+Frisches M9-Eye-Bild geprüft. Nutzer bestätigt ausdrücklich: „Griff passt jetzt“.
+Alle vier lokalen Server-/Visual-State-Tests bestanden erneut. Dauerhaftes
+APK mit diesen identischen Modellbytes gebaut, signiert und paketgeprüft.
+Installation erfolgreich und SHA direkt am Gerät bestätigt. Ein erneuter
+Spielstart wurde noch nicht beobachtet: Quest wartet auf aktive Controller.
+Die im Live-Test bestätigten Modellbytes sind identisch im installierten APK.
+Details stehen im JSON-Prüfbericht. Backup vorheriger
+Dateien: work/backups/20261018-arcvr-side-fit.
+
+## Zusätzliche ArcVR-Waffen (18. Oktober)
+
+Neu vorbereitet: Beretta M9 (15 Schuss, 700 RPM), Desert Eagle
+(7 Schuss .357, 500 RPM), USP Tactical (12 Schuss, 400 RPM).
+Eigene private Adapter erben die geprüfte Glock-Logik, verwenden je eigene
+Modelle, Quellwerte, Magazin-/Kammerzustände und Schlitten-/Abzugsbewegungen.
+Auswahl über die vier Waffenknöpfe im Gquest-Menü; Laden nutzt echte Reserve.
+Die ursprünglichen GMod-Waffen bleiben zusätzlich verfügbar.
+
+Die drei Griffe werden aus ihren eigenen konstanten MDL-Idle-Rootposen und
+ArcVR-Offsets berechnet. Maximaler Rundlauf-Fehler < 9.1e-7. Bestehende
+Glock-Abstandskalibrierung dient als Ausgangspunkt für den Controllerabstand;
+Sitz und Größe jeder neuen Waffe müssen im Headset geprüft werden. Modellmaßstab 1.
+Kein H3VR-Assetimport, keine neue Highpoly-Geometrie, kein physisches Nachladen.
+Texturen und Sounds werden aus der eigenen lokalen CSS-Inhalts-VPK eingebunden;
+Begleitdatei-Prüfsummen und Modellidentitäten sind geprüft.
+
+Lokale Lua-5.4-Grenztests: Alle vier Waffen bestanden die Prüfung von
+Munitionsbilanz, Schaden, Feuerrate und Servergrenzen sowie Schlittenimpuls,
+Rückkehr, Leerzustand und unveränderten Root-/Mündungsknochen.
+Aktuelles APK SHA256: d9a89c9edd19481ea60c2a603dd325796016a1f221c71dd3b07b7726a67d21f1.
+425 Inhaltsdateien, davon 63 ArcVR-Dateien. Signatur, ZIP-CRC, Quellenvergleich,
+ADB-Installation und SHA direkt am installierten Paket bestätigt.
+Frischer Lauf session-1792336941.log: alle drei nativen Modelle, Griff und
+Mündung geladen; sämtliche Materialien fehlerfrei und Basistexturnamen aufgelöst.
+Echte Server-Schüsse für alle drei Klassen bestätigt, Counts im JSON-Prüfbericht.
+Frische Eye-Bilder für M9 und Desert Eagle inspiziert. Beim angeforderten
+USP-Bild hatte der Nutzer bereits zur M9 gewechselt; es wird als M9 gespeichert
+und nicht als USP-Bildbeweis dargestellt. M9-Seitenversatz nachfolgend korrigiert und vom Nutzer bestätigt;
+Desert Eagle und USP erhalten dieselbe gemessene seitliche Korrektur,
+ihr einzelner Sitz ist noch nicht bestätigt. Die bisherigen Hand-/HUD-Fixes wurden nicht verändert.
+
+## Vorheriger bestätigter Stand (Glock / linke Hand / HUD)
+
+## Aktuelle Änderungen
+
+- Handgelenk-HUD und zugehörige Menüregler entfernt. Die alte Autorun-Datei
+  bleibt als Tracking-Provider und entfernt bestehende HUD-Hooks beim Laden.
+  GquestXR.GetWorldTracking bleibt für Waffen und Diagnostik verfügbar.
+- ArcVR-Testglock: beweglicher Schlitten und Abzug, leerer Schlittenfang sowie
+  sichtbarer Magazin-/Kammerzustand, auch am normalen nativen Waffenmodell.
+  Der bestätigte Griff, Modellmaßstab, rechte Handbasis und Mündungsknochen
+  werden nicht verändert. Dies ist keine vollständige H3VR-Waffensimulation.
+- Linke Hand: letzter ausgelesener Lauf enthält keine LEFT_PALM-Aktivierung.
+  Die zuvor vom Nutzer bestätigte native Korrektur bleibt unverändert;
+  ihr Profil wird vor dem nächsten Start wieder sichergestellt. Ob damit der
+  aktuelle Fehler behoben ist, muss ein frischer Lauf mit Controllern zeigen.
+- Der alte VRMod-Ausrichtungsregler war im letzten Lauf mangels VRMod-Tabelle
+  inaktiv. Er ist damit keine belegte Ursache der nativen Waffenhaltung.
+
+## Prüfung und Paket
+
+Aktuelles APK: outputs/Gquest.apk; SHA256
+c2f0ec1b818f08e5325008444beafa4a662a9cec6e94194f333c74d17308c816.
+385 Inhaltsdateien: 346 VR-Assets, 4 eigene UI/Tracking-Skripte,
+23 ArcVR-Dateien und 12 Waffenmodell-Zuordnungen. Signatur, ZIP-CRC und
+Übereinstimmung mit Quellen und Manifesten bestanden.
+Installation mit ADB erfolgreich; SHA256 direkt am installierten base.apk bestätigt.
+Frischer Lauf session-1792335875.log bestätigt LEFT_PALM candidate=1,
+cached_controller=1 und right_path_unchanged=1 sowie GQUEST_WRIST removed.
+Frische VR-Eye-Bilder zeigen gm_construct ohne Handgelenk-HUD und die Glock
+mit offenem Schlitten nach dem letzten Schuss. 17 Server-Schüsse und 17
+Client-Bestätigungen erfasst; native Knochenabfrage UpdateVisualParts=true,
+Schlitten Z=-1.3, Root/Mündung unverändert (Position/Rotation Null).
+Nutzer bestätigt am 18. Oktober ausdrücklich: „Linke Hand richtig, HUD weg“. Kein vollständiger
+Test aller Waffenmodelle. Details in Gquest-build-verification.json.
+
+Lokale Tests mit System-Lua 5.4 (nicht der GLua-VM): ursprüngliche reale
+Client-Trigger- und Server-Munitionsharnesses bestanden; neuer Test prüft
+Schlittenimpuls, Rückkehr, leeren Schlittenfang, Magazin entfernen und Racken,
+keine Änderungen an Root/Mündung und keine wiederholten Schreibzugriffe im
+Stillstand. Tracking-Regressionsprüfung ohne HUD für beide Hände bestanden.
+Kein aktueller Bildnachweis wird daraus abgeleitet.
+
+H3VR-Referenz: https://www.youtube.com/watch?v=1-s19S-H9_w
+„Hot Dogs, Horseshoes & Hand Grenades - ALL WEAPONS“, LukeKindaWeird.
+Öffentliche Metadaten und Beschreibung gelesen, keine Videobilder geprüft.
+Keine H3VR-Assets übernommen. Beginn bei der eigenen Glock-Mechanik;
+übrige Waffen haben noch keine neue Geometrie oder vollständige Mechanik.
+
+## Historische Details (ältere Prüfstände)
+
+Die folgenden Abschnitte dokumentieren frühere Arbeitsschritte. Für Installation
+und den aktuellen Gerätetest gilt der obere Abschnitt mit dem Prüfbericht.
 
 ## Waffenmodelle: Prüfbericht aus den ausgelieferten Dateien
 

@@ -1,13 +1,30 @@
 {
-  "sha256": "544edd6c0536167fe61f1d604dfd57b4e0388c8d91c268163892dc8f6eb755c4",
-  "content_records": 385,
-  "arcvr_files": 23,
+  "sha256": "d9a89c9edd19481ea60c2a603dd325796016a1f221c71dd3b07b7726a67d21f1",
+  "content_records": 425,
+  "arcvr_files": 63,
   "signature": "verified",
   "zip_crc": "passed",
   "current_payload_identity": "passed",
-  "installed_on_quest": false,
+  "installed_on_quest": true,
   "weapon_model_scripts": 12,
   "weapon_model_report": "lua/autorun/client/gquest_weapon_models.lua",
   "weapon_align": "lua/autorun/client/gquest_weapon_align.lua",
-  "wrist_hud": "lua/autorun/client/gquest_wrist_hud.lua"
+  "wrist_hud": "removed; legacy autorun retains shared tracking provider",
+  "glock_visual_parts": "local Lua boundary tests passed; on-device rendering pending",
+  "installed_sha256": "d9a89c9edd19481ea60c2a603dd325796016a1f221c71dd3b07b7726a67d21f1",
+  "lateral_fit": {
+    "source_y_units": -2.14,
+    "approx_right_cm": 5.4356,
+    "applied_to": [
+      "m9",
+      "deagle",
+      "usptactical"
+    ],
+    "m9_wearer_confirmed": true,
+    "wearer_response": "Griff passt jetzt",
+    "geometry_rotation_scale_unchanged": true,
+    "saved_restored_ammo_verified": true,
+    "image": "work/m9-side-fit.png",
+    "fresh_restart_check": "not observed: Quest requires active controllers for launch"
+  }
 }

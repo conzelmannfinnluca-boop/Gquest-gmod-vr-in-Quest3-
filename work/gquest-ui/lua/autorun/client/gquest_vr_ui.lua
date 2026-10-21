@@ -1,5 +1,10 @@
 -- Gquest's own client UI; native GDroid provides the tracked Derma surface.
-local rootFrame
+local rootFrame,alignFrame
+local openRoot
+GquestUI=GquestUI or {}
+function GquestUI.IsMenuVisible()
+    return (IsValid(rootFrame) and rootFrame:IsVisible()) or (IsValid(alignFrame) and alignFrame:IsVisible()) or false
+end
 local menuBlockedUntil=0
 local profilePath = "gquest_vr_profile.txt"
 local tiers = { "1032x1104", "1548x1656", "1680x1760" }
@@ -56,7 +61,6 @@ local function weaponModelCheck()
         matched, missingRight, missingLeft, partsMissing)
     notification.AddLegacy(text, (missingRight + missingLeft + partsMissing) > 0 and NOTIFY_ERROR or NOTIFY_GENERIC, 8)
 end
-local alignFrame
 -- The alignment controls live in gquest_weapon_align.lua; this only hosts them
 -- in a frame so the menu keeps one code path for opening and closing panels.
 local function openAlign()
@@ -115,60 +119,6 @@ local function settingsPanel(parent)
     combo("Bildwiederholrate", {{"72 Hz",72},{"90 Hz",90}},refresh,function(value)
         refresh=value; saveProfile(); RunConsoleCommand("vr_refresh_rate",tostring(value))
     end)
-    text("Handgelenk-HUD",28)
-    combo("Anzeige am linken Handgelenk", {{"Ein",1},{"Aus",0}},
-        GetConVar("gquest_wrist_hud") and GetConVar("gquest_wrist_hud"):GetInt() or 1,
-        function(value) RunConsoleCommand("gquest_wrist_hud",tostring(value)) end)
-    combo("Seite des Handgelenks", {{"Oberseite",0},{"Gegenueberliegende Seite",1}},
-        GetConVar("gquest_wrist_hud_flip") and GetConVar("gquest_wrist_hud_flip"):GetInt() or 0,
-        function(value) RunConsoleCommand("gquest_wrist_hud_flip",tostring(value)) end)
-    combo("Groesse", {{"Kompakt",0.012},{"Normal",0.015},{"Gross",0.02}},
-        GetConVar("gquest_wrist_hud_scale") and GetConVar("gquest_wrist_hud_scale"):GetFloat() or 0.015,
-        function(value) RunConsoleCommand("gquest_wrist_hud_scale",tostring(value)) end)
-    -- The panel no longer sits on the glove; these buttons move it off the hand.
-    local function hudNudge(name, delta)
-        local convar = GetConVar(name)
-        if not convar then return end
-        RunConsoleCommand(name, string.format("%.2f", convar:GetFloat() + delta))
-    end
-    local hudHint = panel:Add("DLabel"); hudHint:SetWrap(true)
-    hudHint:SetTextColor(Color(235,235,235)); hudHint:SetPos(16,y); hudHint:SetSize(560,34)
-    local function hudRefresh()
-        local function value(name) local c=GetConVar(name); return c and c:GetFloat() or 0 end
-        hudHint:SetText(string.format("Lage: Seite %.1f, Hoehe %.1f, Vorne %.1f (Schritte 0,5)",
-            value("gquest_wrist_hud_offset_side"), value("gquest_wrist_hud_offset_up"),
-            value("gquest_wrist_hud_offset_forward")))
-    end
-    hudRefresh(); y = y + 40
-    local hudAxes = {
-        {"Seite +","gquest_wrist_hud_offset_side",0.5},{"Seite -","gquest_wrist_hud_offset_side",-0.5},
-        {"Hoehe +","gquest_wrist_hud_offset_up",0.5},{"Hoehe -","gquest_wrist_hud_offset_up",-0.5},
-        {"Vorne +","gquest_wrist_hud_offset_forward",0.5},{"Vorne -","gquest_wrist_hud_offset_forward",-0.5},
-    }
-    for index,entry in ipairs(hudAxes) do
-        local hudButton=panel:Add("DButton"); hudButton:SetText(entry[1]); hudButton:SetSize(176,42)
-        local column=(index-1)%3
-        local row=math.floor((index-1)/3)
-        hudButton:SetPos(16+column*190,y+row*50)
-        hudButton.DoClick=function() hudNudge(entry[2],entry[3]); hudRefresh() end
-    end
-    y = y + 108
-    local hudReset=panel:Add("DButton"); hudReset:SetText("HUD-Lage zuruecksetzen")
-    hudReset:SetPos(16,y); hudReset:SetSize(560,42)
-    hudReset.DoClick=function()
-        RunConsoleCommand("gquest_wrist_hud_offset_side","4.5")
-        RunConsoleCommand("gquest_wrist_hud_offset_up","5")
-        RunConsoleCommand("gquest_wrist_hud_offset_forward","1.4")
-        hudRefresh()
-    end
-    y = y + 54
-    combo("Ausblenden, wenn die Hand am Gesicht ist", {
-        {"Ab 14 Einheiten (Standard)",14},{"Ab 10 Einheiten",10},{"Ab 20 Einheiten",20},{"Nicht ausblenden",0}
-    }, GetConVar("gquest_wrist_hud_near_hide") and GetConVar("gquest_wrist_hud_near_hide"):GetInt() or 14,
-        function(value) RunConsoleCommand("gquest_wrist_hud_near_hide",tostring(value)) end)
-    combo("Ausblenden beim Zielen (beidhändiger Griff)", {{"Ein",1},{"Aus",0}},
-        GetConVar("gquest_wrist_hud_hide_aim") and GetConVar("gquest_wrist_hud_hide_aim"):GetInt() or 1,
-        function(value) RunConsoleCommand("gquest_wrist_hud_hide_aim",tostring(value)) end)
     text("Waffenmodelle",28)
     text("Prueft im laufenden Spiel, welches Handmodell jede Waffe tatsaechlich benutzt und ob alle Modelle geladen werden. Das Ergebnis steht im Log und in data/gquest/weapon_models.json.",76)
     local modelCheck=panel:Add("DButton"); modelCheck:SetText("Waffenmodelle pruefen")
@@ -176,7 +126,7 @@ local function settingsPanel(parent)
     modelCheck.DoClick=weaponModelCheck
     y = y + 58
     text("Ausrichtung",28)
-    text("Die alten Offsets stammen von den Stock-Viewmodels; fuer die 12 VR-Modelle sitzt der Griff bereits am Handursprung. Hier pro Waffe feinjustieren und speichern.",76)
+    text("Waffenhaltung pro Modell pruefen und feinjustieren. Die native Quest-Darstellung wird nicht von jeder VRMod-Einstellung beeinflusst.",76)
     local alignButton=panel:Add("DButton"); alignButton:SetText("Waffe ausrichten")
     alignButton:SetPos(16,y); alignButton:SetSize(560,46)
     alignButton.DoClick=openAlign
@@ -191,7 +141,7 @@ local function settingsPanel(parent)
     end
     return panel
 end
-local function openRoot(settings)
+openRoot=function(settings)
     closeRoot(); gui.HideGameUI()
     rootFrame=vgui.Create("DFrame")
     rootFrame:SetTitle("Gquest VR"); rootFrame:SetSize(math.min(680,ScrW()-48),math.min(680,ScrH()-48))
@@ -214,7 +164,7 @@ local function openRoot(settings)
     end
     button("Spawn-Menue",spawnToggle)
     button("VR-Einstellungen",function() openRoot(true) end)
-    button("Waffentest",weaponModelCheck)
+    button("Waffen",function() closeRoot();RunConsoleCommand("gquest_weapons") end)
     button("Zurueck zum Spiel",function() closeRoot(); gui.HideGameUI() end)
     local panel=settingsPanel(rootFrame); panel:Dock(FILL)
     print("GQUEST_UI opened settings="..tostring(settings==true))
