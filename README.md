@@ -1,49 +1,13 @@
-# Gquest – Quellcode
+# Gquest GDroid0.1.30 — aktuelle eigene Quellen
 
-Lokale Quellcode-Sicherung vom 18. Oktober 2026. Enthält den aktuell im Projekt
-vorhandenen eigenen Gquest-Code, Build-Werkzeuge und Tests.
+Aktive Version: standalone GDroid-App com.gmodvr.qvrx, Ziel Quest3/3S. ArcVR ist auf Nutzerwunsch aus Paket, Waffenmenü und Griffprofilen entfernt. Der Startup-Migrationscode sichert ausschließlich die63 früher installierten ArcVR-Dateien außerhalb des gemounteten Spielordners. Alte ArcVR-Quellen bleiben außerhalb dieses aktuellen Exports als private Historie erhalten.
 
-## Hier findest du den Code
+Die nativen HL2-Waffen bekommen ihre passenden VR-Modelle nach Deploy zugewiesen. Ihre zuvor praktisch deckungsgleichen nativen Griff-Caches werden aus tatsächlichen Modell-Attachments erneuert. Reale Hand-/Kopfdaten, Magazin- und Schusszustände bleiben bei der Engine. Benutzer bestätigt: HL2-Pistole korrekt ausgerichtet; SMG-Haltung und Schießen gut; SMG zweihändig stabil und einhändig richtig nach Cache-Korrektur. Weitere Waffen und Nachladegesten sind nicht pauschal als fertig bestätigt.
 
-- `work/quest_engine_bridge.cpp`: native Android-/OpenXR-Brücke und Handkorrektur.
-- `work/gquest-ui/lua/autorun/client/`: Menü, Handgelenk-HUD,
-  Waffenmodell-Diagnose und Ausrichtung.
-- `work/gquest-arcvr/content/lua/`: eigener ArcVR-Adapter und Glock-SWEP.
-- `work/gquest-arcvr/derive_grip.py`: reproduzierbare Glock-Griffkorrektur.
-- `work/gquest_decode_idle_root.py`: Decoder der tatsächlichen Idle-Wurzelpose.
-- `work/gdroid-xr-bootstrap/`: Quellcode und Konfiguration des XR-Bootstrap-Tests.
-- `work/build_quest_lab.py`: APK-Packager.
-- `work/verify_gquest_package.py`: APK-Signatur-/Inhaltsprüfung.
-- `work/harness/`, `work/gquest-arcvr/test_*.lua`: vorhandene Tests.
-- Weitere Probe-/Audit-Skripte unter `work/` sind Entwicklungswerkzeuge;
-  sie werden nicht automatisch in das Spiel geladen.
+Build: `rtk proxy python3 Gquest-Hybrid/tools/build.py`. Der bestehende private Arbeitsordner mit offizieller0.1.30-Basis, eigenen Spiel-/VR-Dateien, SDK/JDK/NDK und Signierschlüssel ist Voraussetzung. Diese privaten Abhängigkeiten sind nicht Teil des Archivs. Eigene C++-/Rust-/Lua-Quellen, Konverter, Daten-Metadaten und sinnvolle Grenztests sind enthalten. Keine Engine-Bibliotheken, SDKs, Modelle, Texturen oder Schlüssel werden exportiert.
 
-`SOURCE_FILES.json` enthält Originalpfade, Dateigrößen und SHA256-Prüfsummen.
-Die Ordnerstruktur entspricht dem bestehenden Projekt, damit relative Pfade
-in den vorhandenen Skripten erhalten bleiben.
+APK-SHA256: `676e7f6f9723645643e580b2114d911a494748df3bde9a452a0771749d69a40c`. Installations-/Neustartnachweis: docs/Gquest-HL2-only-verification.json. Vollständige1:1-PCVR-/Addon-Parität und Quest3S-Hardwaretest bleiben offen.
 
-## Umfang
+Mündungs- und Griff-Caches werden aus den tatsächlichen VR-Modellpunkten aktualisiert. Bestätigte HL2-Treffer und verbleibender Brechstangenfehler: docs/Gquest-HL2-damage-verification.json.
 
-Dies ist der verfügbare Gquest-Anpassungscode, nicht der vollständige Quellcode
-von Garry’s Mod, GDroid oder der Source-Engine. APKs, Spielemodelle/-texturen,
-SDKs, kompilierte Bibliotheken, Signierschlüssel und das vollständige ArcVR-
-Repository sind keine Bestandteile dieser Sicherung. Die Lua-Waffenintegration
-orientiert sich an Pescorr/arcvr_anniversary_bugfix_beta, Commit
-`0d8d5bed01c77ad1550097689dc0d1e6fc035385`; Herkunft und Anpassungen sind
-in `work/gquest-arcvr/ADAPTATION.md` und den Manifesten beschrieben.
-Es wird keine neue Lizenz für fremde Bestandteile vergeben.
-
-## Bauen
-
-Siehe `BUILD.md`. Für den privaten APK-Build werden die bereits lokal vorhandenen
-Abhängigkeiten aus dem übergeordneten Gquest-Projekt benötigt. Diese werden nur
-auf ausdrücklichen Aufruf von `prepare_dependencies.py` lokal verlinkt.
-Der Build verwendet ausschließlich die Quellcode-Kopie in diesem Ordner und
-schreibt seine Ergebnisse hier nach `work/` und `outputs/`.
-
-## Stand
-
-Die Sicherung enthält auch jüngere HUD-/Ausrichtungsänderungen, deren
-Darstellung auf der Quest noch geprüft werden muss. Das beigefügte bisherige
-Build-Protokoll ist eine Momentaufnahme des übergeordneten Projekts und keine
-neue Kompilierungs- oder Geräteprüfung dieses Exports.
+Brechstangenrichtung vom Träger bestätigt und dauerhaft je Waffenklasse korrigiert; wiederholtes Laden akkumuliert keinen Winkel.
