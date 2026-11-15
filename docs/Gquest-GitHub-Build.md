@@ -198,3 +198,25 @@ Lokal dieselbe Prüfung, ohne CI:
 ```sh
 python3 work/check_gquest_build.py
 ```
+
+## 7. Release per Tag
+
+Ein Tag, der mit `v` beginnt, startet denselben Build und veröffentlicht das
+Ergebnis danach automatisch:
+
+```sh
+git tag -a v0.1.31 -m "Gquest 0.1.31"
+git push origin v0.1.31
+```
+
+Der Job `release` (nur bei Tags, nicht beim manuellen Start) hängt an das
+Release des Tags:
+
+* `Gquest.apk` – das signierte Paket
+* `Gquest.apk.sha256` – Prüfsumme, neben dem APK mit `sha256sum -c Gquest.apk.sha256` prüfbar
+* `Gquest-build-verification.json`, `verification.json` – die Prüfberichte des Builds
+
+Existiert zum Tag schon ein Release (z. B. nach einem zweiten Lauf), werden die
+Assets ersetzt statt den Job scheitern zu lassen (`gh release upload --clobber`).
+Der Build-Job bleibt bei `contents: read`; nur der Release-Job hat Schreibrechte.
+Der Signatur-Fingerabdruck steht im Build-Log und in der Release-Notiz.

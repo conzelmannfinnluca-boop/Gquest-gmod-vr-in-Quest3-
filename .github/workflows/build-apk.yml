@@ -9,10 +9,14 @@ name: Gquest APK
 # committed in the repo (private repo / private build folder).
 # See docs/Gquest-GitHub-Build.md for what to upload and how.
 #
-# Manual only: run it from Actions -> Gquest APK -> Run workflow.
+# Laeuft manuell (Actions -> Gquest APK -> Run workflow) und bei einem Tag
+# v* - dann haengt der Job "release" das signierte APK an das Release des Tags.
 
 on:
   workflow_dispatch:
+  push:
+    tags:
+      - 'v*'
 
 permissions:
   contents: read
@@ -240,3 +244,42 @@ jobs:
       - name: Signaturschluessel entfernen
         if: always()
         run: rm -rf "$RUNNER_TEMP/signing"
+
+  # Eigener Job, weil das Anlegen eines Releases contents: write braucht - der
+  # Build selbst bleibt bei contents: read.
+  release:
+    needs: build
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: Gquest-apk
+          path: dist
+
+      - name: Release ${{ github.ref_name }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          TAG: ${{ github.ref_name }}
+        run: |
+          set -euo pipefail
+          ls -l dist/work/Gquest.apk
+          (cd dist/work && sha256sum Gquest.apk > ../Gquest.apk.sha256)
+          cat dist/Gquest.apk.sha256
+          assets=(dist/work/Gquest.apk dist/Gquest.apk.sha256)
+          for extra in dist/outputs/Gquest-build-verification.json dist/Gquest/dist/verification.json; do
+            if [ -f "$extra" ]; then assets+=("$extra"); fi
+          done
+          if gh release view "$TAG" > /dev/null 2>&1; then
+            echo "Release $TAG existiert - Assets werden ersetzt."
+            gh release upload "$TAG" "${assets[@]}" --clobber
+          else
+            gh release create "$TAG" "${assets[@]}" \
+              --title "Gquest $TAG" \
+              --notes "Automatisch gebaut aus ${GITHUB_SHA}. Signatur-Fingerabdruck steht im Build-Log." \
+              --verify-tag
+          fi
