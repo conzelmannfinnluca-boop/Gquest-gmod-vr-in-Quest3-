@@ -113,6 +113,13 @@ gehen als `env:`-Referenz an `apksigner`, stehen also nicht in der Prozessliste.
 sich keine APK mehr über eine bestehende Installation legen; Nutzer müssten
 deinstallieren (Spielstände/Mods im App-Verzeichnis gehen dabei verloren).
 
+`bash outputs/install-gquest.sh` vergleicht vor dem Installieren den
+Signatur-Fingerabdruck des neuen APKs mit der installierten Version und bricht
+mit beiden Fingerabdrücken plus Backup-/Deinstallationsbefehlen ab, wenn sie
+nicht übereinstimmen. Fehlt `apksigner` oder ist die installierte APK nicht
+lesbar, warnt es nur und installiert wie bisher – dann fängt erst `adb install`
+den Fehler `INSTALL_FAILED_UPDATE_INCOMPATIBLE` ab.
+
 Lokal mit demselben Schlüssel bauen (der Debug-Key bleibt der Standard, wenn
 diese Variablen fehlen):
 
