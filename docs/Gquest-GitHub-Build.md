@@ -166,6 +166,13 @@ java -jar work/android-sdk/build-tools/34.0.0/lib/apksigner.jar verify --print-c
   Repo selbst.
 * Der Runner hat 14 GB Platte; NDK (~2–3 GB entpackt) + Rust + Assets passen,
   die Archive werden nach dem Entpacken gelöscht.
+* NDK, build-tools und die Rust-Toolchain liegen in einem `actions/cache`-Eintrag
+  (`work/android-sdk`, `work/toolchains/cargo`, `work/toolchains/rustup`), die
+  Schritte laden nur bei einem Cache-Miss. Der Key enthält die Versionen und
+  wird über `GQUEST_TOOLS_CACHE` in der YAML hochgezählt: Caches sind
+  unveränderlich, ein geänderter Download landet sonst nie im Cache. GitHub
+  räumt Einträge nach 7 Tagen ohne Zugriff ab, die Obergrenze liegt bei 10 GB
+  pro Repo – der Eintrag mit NDK belegt davon grob ein Viertel.
 * Ein Job darf 6 Stunden laufen (der Build braucht Minuten). Artefakte laufen
   nach 90 Tagen ab.
 * Kostenlos und unbegrenzt sind Standard-Runner nur in **öffentlichen** Repos;
