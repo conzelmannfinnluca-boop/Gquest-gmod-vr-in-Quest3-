@@ -18,7 +18,12 @@ name: Gquest APK
 
 on:
   workflow_dispatch:
+  # Jeder Push auf main baut, damit niemand einen alten Lauf wiederholen muss.
+  # Soll das nicht jeder Push tun, diesen Block auf workflow_dispatch + tags
+  # reduzieren.
   push:
+    branches:
+      - main
     tags:
       - 'v*'
 

@@ -1,8 +1,14 @@
 # APK-Build in GitHub Actions
 
 Der Workflow `.github/workflows/build-apk.yml` baut das signierte Gquest-APK auf
-einem GitHub-Runner. Er ist **manuell** (Actions → „Gquest APK" → „Run workflow"),
-damit nicht jeder Push Minuten verbraucht.
+einem GitHub-Runner. Er läuft bei jedem Push auf `main` und bei Tags `v*`
+(Abschnitt 7) und lässt sich zusätzlich manuell starten (Actions → „Gquest APK"
+→ „Run workflow").
+
+**Nicht** „Re-run jobs" auf einem alten Lauf benutzen: GitHub wiederholt dabei
+genau den damaligen Commit und die damalige Workflow-Datei – alte Fehler kommen
+so unverändert wieder. Nach einer Änderung an der Workflow-Datei also pushen
+(löst automatisch aus) oder „Run workflow" auf `main` starten.
 
 Alles, was der Build braucht, ist entweder öffentlich oder kommt aus **einem**
 Release-Asset mit deinen privaten Dateien. Ohne dieses Asset bricht der Workflow
