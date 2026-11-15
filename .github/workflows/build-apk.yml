@@ -42,7 +42,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Freier Speicher
         run: df -h /
@@ -51,7 +51,7 @@ jobs:
       # Key bestimmt, wann neu geladen wird. Aendert sich eine Version oder URL,
       # GQUEST_TOOLS_CACHE erhoehen (Caches sind unveraenderlich).
       - name: Cache fuer NDK, build-tools und Rust
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: |
             work/android-sdk
@@ -59,7 +59,7 @@ jobs:
             work/toolchains/rustup
           key: ${{ env.GQUEST_TOOLS_CACHE }}-ndk23.2.8568313-bt34.0.0-rust${{ env.RUST_VERSION }}-${{ runner.os }}
 
-      - uses: actions/setup-java@v4
+      - uses: actions/setup-java@v6
         with:
           distribution: temurin
           java-version: '17'
@@ -137,9 +137,11 @@ jobs:
           echo "$BASE_APK_SHA256  outputs/GDroid-0.1.30.apk" | sha256sum -c -
           python3 work/unpack_base_natives.py
 
-      # Signiert mit deinem eigenen Schluessel, damit jede APK aus der CI die
-      # gleiche Signatur traegt und sich per "adb install -r" aktualisieren laesst.
-      - name: Signaturschluessel aus den Secrets
+      # Mit gesetzten Secrets signiert der Job mit deinem Release-Schluessel:
+      # gleiche Signatur in jedem Lauf, Updates per "adb install -r" moeglich.
+      # Ohne Secrets signiert er mit einem Wegwerf-Debug-Key und warnt - das APK
+      # ist installierbar, aber nicht updatefaehig. Halbe Konfiguration bricht ab.
+      - name: Signaturschluessel bereitstellen
         env:
           KEYSTORE_B64: ${{ secrets.GQUEST_KEYSTORE_B64 }}
           KEYSTORE_PASS: ${{ secrets.GQUEST_KEYSTORE_PASS }}
@@ -147,38 +149,50 @@ jobs:
           KEY_ALIAS: ${{ secrets.GQUEST_KEY_ALIAS }}
         run: |
           set -euo pipefail
-          missing=""
-          [ -n "${KEYSTORE_B64:-}" ] || missing="$missing GQUEST_KEYSTORE_B64"
-          [ -n "${KEYSTORE_PASS:-}" ] || missing="$missing GQUEST_KEYSTORE_PASS"
-          [ -n "${KEY_ALIAS:-}" ] || missing="$missing GQUEST_KEY_ALIAS"
-          if [ -n "$missing" ]; then
-            echo "::error::Signatur-Secrets fehlen:$missing"
-            echo "Repository -> Settings -> Secrets and variables -> Actions anlegen:"
-            echo "  GQUEST_KEYSTORE_B64   base64 des Keystores (.jks)"
-            echo "  GQUEST_KEYSTORE_PASS  Store-Passwort"
-            echo "  GQUEST_KEY_ALIAS      Alias des Schluessels"
-            echo "  GQUEST_KEY_PASS       Key-Passwort, falls abweichend (optional)"
-            echo "Anleitung: docs/Gquest-GitHub-Build.md"
-            exit 1
-          fi
           dir="$RUNNER_TEMP/signing"
           mkdir -p "$dir"
           chmod 700 "$dir"
-          printf '%s' "$KEYSTORE_B64" | base64 -d > "$dir/gquest-release.jks"
-          keytool -list -keystore "$dir/gquest-release.jks" -storepass "$KEYSTORE_PASS" -alias "$KEY_ALIAS" > /dev/null
-          expected="$(keytool -list -v -keystore "$dir/gquest-release.jks" -storepass "$KEYSTORE_PASS" -alias "$KEY_ALIAS" \
+          if [ -n "${KEYSTORE_B64:-}" ] && [ -n "${KEYSTORE_PASS:-}" ] && [ -n "${KEY_ALIAS:-}" ]; then
+            printf '%s' "$KEYSTORE_B64" | base64 -d > "$dir/gquest-release.jks"
+            keytool -list -keystore "$dir/gquest-release.jks" -storepass "$KEYSTORE_PASS" -alias "$KEY_ALIAS" > /dev/null
+            keystore="$dir/gquest-release.jks"
+            alias="$KEY_ALIAS"
+            store_pass="$KEYSTORE_PASS"
+            key_pass="${KEY_PASS:-$KEYSTORE_PASS}"
+            echo "Signatur: Release-Schluessel aus den Secrets (Alias $alias)."
+          elif [ -z "${KEYSTORE_B64:-}${KEYSTORE_PASS:-}${KEY_ALIAS:-}" ]; then
+            keytool -genkeypair -keystore "$dir/debug.jks" -storepass android -keypass android \
+              -alias androiddebugkey -keyalg RSA -keysize 2048 -validity 10000 \
+              -dname "CN=Android Debug,O=Android,C=US"
+            keystore="$dir/debug.jks"
+            alias=androiddebugkey
+            store_pass=android
+            key_pass=android
+            echo "::warning::Keine Signatur-Secrets gesetzt - dieses APK ist mit einem Wegwerf-Debug-Key signiert und kann eine bestehende Installation NICHT aktualisieren."
+            {
+              echo "## APK nur debug-signiert"
+              echo
+              echo "Ohne \`GQUEST_KEYSTORE_B64\`, \`GQUEST_KEYSTORE_PASS\` und \`GQUEST_KEY_ALIAS\` signiert der Job mit einem bei jedem Lauf neu erzeugten Debug-Key."
+              echo "Das APK installiert auf einem Geraet ohne bestehende GQuest-Installation, aber nicht als Update darueber."
+              echo "Fuer updatefaehige Builds die drei Secrets anlegen (docs/Gquest-GitHub-Build.md, Abschnitt 3b)."
+            } >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "::error::Signatur-Secrets unvollstaendig - entweder GQUEST_KEYSTORE_B64, GQUEST_KEYSTORE_PASS und GQUEST_KEY_ALIAS alle setzen oder alle weglassen."
+            exit 1
+          fi
+          expected="$(keytool -list -v -keystore "$keystore" -storepass "$store_pass" -alias "$alias" \
             | grep -i 'SHA256:' | head -n1 | sed 's/.*: //' | tr -d ':' | tr 'A-F' 'a-f')"
           if [ -z "$expected" ]; then
-            echo "::error::Kein Signaturzertifikat im Keystore gefunden (Alias $KEY_ALIAS)."
+            echo "::error::Kein Signaturzertifikat im Keystore gefunden (Alias $alias)."
             exit 1
           fi
           echo "Signaturzertifikat: SHA256 ${expected:0:16}..."
           {
-            echo "GQUEST_KEYSTORE=$dir/gquest-release.jks"
+            echo "GQUEST_KEYSTORE=$keystore"
             echo "GQUEST_EXPECTED_SIGNER=$expected"
-            echo "GQUEST_KEY_ALIAS=$KEY_ALIAS"
-            echo "GQUEST_KEYSTORE_PASS=$KEYSTORE_PASS"
-            echo "GQUEST_KEY_PASS=${KEY_PASS:-$KEYSTORE_PASS}"
+            echo "GQUEST_KEY_ALIAS=$alias"
+            echo "GQUEST_KEYSTORE_PASS=$store_pass"
+            echo "GQUEST_KEY_PASS=$key_pass"
           } >> "$GITHUB_ENV"
 
       # Zwei Wege, die privaten Eingaben bereitzustellen:
@@ -232,7 +246,7 @@ jobs:
       - name: Signatur des Artefakts pruefen
         run: python3 work/check_apk_signer.py work/Gquest.apk
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: Gquest-apk
           if-no-files-found: error
@@ -255,7 +269,7 @@ jobs:
     permissions:
       contents: write
     steps:
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v8
         with:
           name: Gquest-apk
           path: dist

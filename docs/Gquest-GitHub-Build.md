@@ -72,7 +72,9 @@ Artefakt `Gquest-apk` herunterladen.
 
 Das APK ist mit deinem Release-Schlüssel aus den Secrets signiert (siehe
 Abschnitt 3b) und lässt sich wie gewohnt per `bash outputs/install-gquest.sh`
-bzw. `adb install -r` installieren. Ohne hinterlegte Secrets bricht der Lauf ab.
+bzw. `adb install -r` installieren. Ohne hinterlegte Secrets entsteht ein
+debug-signierter Testbuild (siehe Abschnitt 3b) – das Installationsskript
+erkennt das und nennt die nötigen Schritte.
 
 ## 3b. Eigener Signaturschlüssel (statt Debug-Key)
 
@@ -103,8 +105,13 @@ Dann unter Repository → Settings → Secrets and variables → Actions anlegen
 | `GQUEST_KEY_ALIAS` | `gquest` |
 | `GQUEST_KEY_PASS` | Key-Passwort, nur falls abweichend |
 
-Fehlen die Secrets, bricht der Lauf beim Schritt „Signaturschluessel aus den
-Secrets" mit `::error::` ab – er fällt nicht still auf den Debug-Key zurück.
+Fehlen alle drei Secrets, baut der Job trotzdem, signiert dann aber mit einem
+**bei jedem Lauf neu erzeugten Debug-Key**: das APK lässt sich auf einem Gerät
+ohne bestehende GQuest-Installation installieren, aber nicht als Update
+darüberlegen. Der Lauf zeigt dafür eine Warnung und einen Hinweis in der
+Run-Zusammenfassung. Eine *halb* gesetzte Konfiguration (z. B. Keystore ohne
+Alias) bricht dagegen mit `::error::` ab – so fällt ein Tippfehler nicht als
+folgenloser Debug-Build durch.
 Der Job prüft Passwort und Alias mit `keytool`, zeigt den SHA256-Fingerabdruck im
 Log und löscht den Keystore am Ende wieder (`if: always()`). Die Passwörter
 gehen als `env:`-Referenz an `apksigner`, stehen also nicht in der Prozessliste.
