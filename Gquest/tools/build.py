@@ -29,7 +29,8 @@ run(sys.executable, WORK / 'run_lua_checks.py',
     WORK / 'harness/test_hl2_equipment.lua',
     WORK / 'harness/test_hl2_weapon_catalog.lua',
     WORK / 'harness/test_native_pose_class.lua',
-    WORK / 'test_reload_client.lua', WORK / 'test_gquest_menu_navigation.lua')
+    WORK / 'test_reload_client.lua', WORK / 'test_gquest_menu_navigation.lua',
+    WORK / 'harness/test_h3_manual.lua')
 cargo('test')
 run('c++', '-std=c++17', '-O2', '-I' + str(PROJECT / 'bridge'),
     PROJECT / 'tests/native_fingers.cpp', '-ldl', '-o', OUT / 'native-fingers-test')

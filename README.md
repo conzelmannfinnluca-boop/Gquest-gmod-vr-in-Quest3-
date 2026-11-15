@@ -10,4 +10,6 @@ APK-SHA256: `676e7f6f9723645643e580b2114d911a494748df3bde9a452a0771749d69a40c`. 
 
 Mündungs- und Griff-Caches werden aus den tatsächlichen VR-Modellpunkten aktualisiert. Bestätigte HL2-Treffer und verbleibender Brechstangenfehler: docs/Gquest-HL2-damage-verification.json.
 
+H3VR-artiges Waffenhandling (15. November): `lua/autorun/client/gquest_h3_manual.lua` bedient Magazin und Schlitten mit der getrackten Zweithand – greifen und herausziehen (nativer Auswurf), einsetzen (Auffüllen aus eigenem Vorrat), durchladen. Keine H3VR-Assets, kein +1-Kammerzustand auf den nativen HL2-Waffen. Schalter, Kalibrierung (`gquest_h3_report`, `gquest_h3_sample`, `gquest_h3_offset`, `gquest_h3_save`, `gquest_h3_status`), Abnahmetest und der geprüfte Umfang stehen in docs/Gquest-H3VR-Waffenhandling.md; ein Gerätelauf steht aus.
+
 Brechstangenrichtung vom Träger bestätigt und dauerhaft je Waffenklasse korrigiert; wiederholtes Laden akkumuliert keinen Winkel.
