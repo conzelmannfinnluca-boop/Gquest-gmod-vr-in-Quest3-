@@ -50,10 +50,11 @@ jobs:
           ln -sfn "$JAVA_HOME" work/toolchains/jdk
           work/toolchains/jdk/bin/java -version
 
-      - name: liblua5.4 fuer die Lua-Harnesse
+      - name: Host-Werkzeuge fuer die Tests
         run: |
           sudo apt-get update -qq
-          sudo apt-get install -y -qq liblua5.4-0
+          sudo apt-get install -y -qq g++ liblua5.4-0
+          c++ --version | head -n1
           python3 -c "import ctypes; ctypes.CDLL('liblua5.4.so.0'); print('liblua5.4.so.0 vorhanden')"
 
       - name: NDK 23.2.8568313
@@ -109,14 +110,27 @@ jobs:
             -keyalg RSA -keysize 2048 -validity 10000 \
             -dname "CN=Android Debug,O=Android,C=US"
 
-      - name: Private Build-Eingaben aus dem Release laden
+      # Zwei Wege, die privaten Eingaben bereitzustellen:
+      # 1. Release "inputs-latest" mit dem Archiv (oeffentliches Repo), oder
+      # 2. die Dateien liegen ohnehin im Repo (privates Repo / privater Build-Ordner).
+      - name: Private Build-Eingaben
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
-          gh release download "$INPUTS_RELEASE" --pattern "$INPUTS_ASSET" --dir /tmp --clobber
-          tar -xzf "/tmp/$INPUTS_ASSET" -C .
-          rm -f "/tmp/$INPUTS_ASSET"
+          if gh release view "$INPUTS_RELEASE" >/dev/null 2>&1; then
+            gh release download "$INPUTS_RELEASE" --pattern "$INPUTS_ASSET" --dir /tmp --clobber
+            tar -xzf "/tmp/$INPUTS_ASSET" -C .
+            rm -f "/tmp/$INPUTS_ASSET"
+            echo "Private Eingaben aus Release $INPUTS_RELEASE entpackt."
+          elif [ -d work/quest-vr-content ]; then
+            echo "Kein Release $INPUTS_RELEASE - die privaten Eingaben liegen bereits im Repo."
+          else
+            echo "Weder Release $INPUTS_RELEASE noch work/quest-vr-content vorhanden."
+            echo "Archiv hochladen (docs/Gquest-GitHub-Build.md) oder die privaten Dateien"
+            echo "ins Repo legen. Danach den Workflow neu starten."
+            exit 1
+          fi
 
       - name: Vorabpruefung der Build-Eingaben
         run: python3 work/check_gquest_build.py

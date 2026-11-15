@@ -54,6 +54,11 @@ gh release upload inputs-latest /tmp/gquest-private-inputs.tar.gz --clobber
 Der Workflow liest Tag `inputs-latest` und Datei `gquest-private-inputs.tar.gz`
 (beides steht oben in der YAML unter `env:`).
 
+**Variante ohne Release:** Liegen die privaten Dateien ohnehin im selben Repo
+(privates Repo bzw. dein privater Build-Ordner als Repo), dann überspringt der
+Workflow den Download und prüft die Dateien direkt im Arbeitsbaum. Dann genügt
+`gh workflow run build-apk.yml` – kein Upload nötig.
+
 ## 3. Workflow starten und APK holen
 
 ```sh
@@ -110,7 +115,7 @@ Abhilfe und bricht dort ab. Typische Fälle:
 |---|---|
 | `FEHLT work/quest-vr-content` | Archiv unvollständig oder mit falschem Wurzelpfad gepackt |
 | `FEHLT … mit falscher Prüfsumme` | Datei geändert, aber `quest-vr-content-manifest.json` nicht neu erzeugt |
-| `gh: Not Found (HTTP 404)` | Release-Tag/Dateiname weicht von `env:` ab, oder `contents: read` fehlt |
+| `gh: Not Found (HTTP 404)` | Release-Tag/Dateiname weicht von `env:` ab (nur nötig, wenn die Eingaben nicht schon im Repo liegen), oder `contents: read` fehlt |
 | `FEHLT work/toolchains/cargo` | Rust-Schritt übersprungen |
 | `Kein Build-Einstieg gefunden` | `tools/build.py` fehlt im Repo |
 
