@@ -171,6 +171,9 @@ java -jar work/android-sdk/build-tools/34.0.0/lib/apksigner.jar verify --print-c
 * Release-Assets dürfen bis 2 GB groß sein; Archive über ~1 GB besser vorher
   prüfen (unerwartet große Texturen). Dateien über 100 MB dürfen **nicht** ins
   Repo selbst.
+* Liegt eine Datei über 100 MB, nimm Git LFS (`git lfs track "*.vtex"` o. ä.);
+  der Workflow checkt mit `lfs: true` aus, LFS-Objekte landen also im Build.
+  Vorher prüfen: `find work/quest-vr-content -type f -size +90M`.
 * Der Runner hat 14 GB Platte; NDK (~2–3 GB entpackt) + Rust + Assets passen,
   die Archive werden nach dem Entpacken gelöscht.
 * NDK, build-tools und die Rust-Toolchain liegen in einem `actions/cache`-Eintrag
