@@ -92,6 +92,34 @@ local function openAlign()
     panel:Dock(FILL)
     print("GQUEST_UI align opened")
 end
+-- H3VR calibration from the headset. The sampler is armed with a five second
+-- delay, so the menu closes first and the support hand can reach the magazine
+-- before the measurement starts. The result comes back as a notification.
+local function h3Sample()
+    local module = GquestH3
+    if not module or not module.ReadHands then module = nil end
+    if not module then
+        RunConsoleCommand("gquest_h3_sample", "5", "2", "apply")
+        notification.AddLegacy("H3VR-Kalibrierung nur per Konsole: gquest_h3_sample 5 2 apply", NOTIFY_GENERIC, 6)
+        return
+    end
+    module.OnSample = function(result)
+        if type(result) ~= "table" then return end
+        if result.applied then
+            notification.AddLegacy(string.format(
+                "H3VR %s: Magazinpunkt gespeichert (%.2f/%.2f/%.2f, Streuung %.2f)",
+                tostring(result.class), result.f, result.r, result.u, result.spread),
+                NOTIFY_GENERIC, 8)
+        else
+            notification.AddLegacy(string.format(
+                "H3VR %s: Messung unbrauchbar (%d Bilder, Streuung %.2f) - Punkt unveraendert",
+                tostring(result.class), result.frames, result.spread), NOTIFY_ERROR, 8)
+        end
+    end
+    closeRoot(); gui.HideGameUI()
+    RunConsoleCommand("gquest_h3_sample", "5", "2", "apply")
+    notification.AddLegacy("H3VR-Messung laeuft: Zweithand 5 s lang ruhig an den Magazinpunkt halten.", NOTIFY_GENERIC, 7)
+end
 local function settingsPanel(parent)
     local panel = vgui.Create("DScrollPanel", parent)
     local y = 12
@@ -130,6 +158,33 @@ local function settingsPanel(parent)
     local alignButton=panel:Add("DButton"); alignButton:SetText("Waffe ausrichten")
     alignButton:SetPos(16,y); alignButton:SetSize(560,46)
     alignButton.DoClick=openAlign
+    y = y + 58
+    text("H3VR-Waffenhandling",28)
+    text("Magazin mit der Zweithand greifen, nach unten herausziehen, zurueck in den Schacht setzen und durchladen. Die Kalibrierung misst, wo deine Zweithand am Magazin liegt: Knopf druecken, Menue schliesst, 5 Sekunden Zeit, dann 2 Sekunden ruhig halten. Zu kurze oder zittrige Messungen werden abgelehnt.",122)
+    local h3SampleButton=panel:Add("DButton"); h3SampleButton:SetText("Magazinpunkt messen (5 s)")
+    h3SampleButton:SetPos(16,y); h3SampleButton:SetSize(560,46)
+    h3SampleButton.DoClick=h3Sample
+    y = y + 58
+    local h3StateButton
+    local function updateH3State()
+        local convar=GetConVar("gquest_h3_manual")
+        local on=convar and convar:GetBool() or false
+        if IsValid(h3StateButton) then h3StateButton:SetText("Handling: "..(on and "AN" or "AUS")) end
+    end
+    h3StateButton=panel:Add("DButton"); updateH3State()
+    h3StateButton:SetPos(16,y); h3StateButton:SetSize(560,46)
+    h3StateButton.DoClick=function()
+        local convar=GetConVar("gquest_h3_manual")
+        if convar then RunConsoleCommand("gquest_h3_manual", convar:GetBool() and "0" or "1") end
+        updateH3State()
+    end
+    y = y + 58
+    local h3ResetButton=panel:Add("DButton"); h3ResetButton:SetText("Magazinpunkt zuruecksetzen")
+    h3ResetButton:SetPos(16,y); h3ResetButton:SetSize(560,46)
+    h3ResetButton.DoClick=function()
+        RunConsoleCommand("gquest_h3_reset")
+        notification.AddLegacy("H3VR: gespeicherter Magazinpunkt geloescht.", NOTIFY_GENERIC, 5)
+    end
     y = y + 58
     text("Leistung liefert ein weicheres Bild. Ausgewogen und Schaerfer kosten mehr GPU-Zeit. Das Bildprofil wird beim naechsten Start angewendet.",76)
     local reset=panel:Add("DButton"); reset:SetText("Empfohlene Einstellungen wiederherstellen")
@@ -182,6 +237,8 @@ hook.Add("PopulateToolMenu","GquestSettings",function()
         panel:Button("Gquest-Menue oeffnen","gquest_menu")
         panel:Button("Waffenmodelle pruefen","gquest_wmodel")
         panel:Button("Waffe ausrichten","gquest_align")
+        panel:Button("H3VR-Kalibrierung oeffnen","gquest_settings")
+        panel:Help("H3VR: Magazinpunkt in den Gquest VR-Einstellungen messen.")
         panel:Help("Ausrichtung: gespeicherte Werte in data/gquest/weapon_align.json.")
         panel:Help("Bildprofil, Randaufloesung und Bildwiederholrate fuer Quest.")
         panel:Help("Waffenmodell-Bericht: gquest_wmodel oder gquest_wmodel_verbose.")

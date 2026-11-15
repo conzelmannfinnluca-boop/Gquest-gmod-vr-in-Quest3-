@@ -137,6 +137,7 @@ local function reset()
     weapon.clip = 17
     gui.menu = false
     state = GquestH3.State
+    GquestH3.OnSample = nil
     state.magOut = false
     state.grabbed = false
     state.armed = false
@@ -316,33 +317,56 @@ GquestH3.State.class = "weapon_pistol"
 commands.gquest_h3_reset()
 check(files["gquest/h3_manual.json"] ~= nil, "reset also writes the (now empty) file")
 
--- 15. The calibration sampler averages a held pose and can apply it.
+-- 15. A steady two-second sample is averaged, applied and reported.
 reset()
 GquestH3.ReadHands = nil
 pose(1.5, -2.0, -2.5)
-commands.gquest_h3_sample(nil, nil, {"0", "1", "apply"})
+local notified
+GquestH3.OnSample = function(result) notified = result end
+commands.gquest_h3_sample(nil, nil, {"0", "2", "apply"})
 think()
-now = 0.5
+for _ = 1, 10 do now = now + 0.2; think() end
+-- Sum of ten 0.2 steps is 1.9999999999999998: step past the window end explicitly.
+now = 2.1
 think()
-pose(1.7, -1.9, -2.6)
-now = 0.9
-think()
-now = 1.1
-think()
+check(GquestH3.LastSample ~= nil, "the sampler stores its result")
+check(notified ~= nil and notified == GquestH3.LastSample, "the sampler calls the menu callback")
+check(notified and notified.usable, "a steady sample over 10 frames is usable")
+check(notified and notified.applied, "a usable sample is applied")
+check(notified and math.abs(notified.spread) < 1e-6, "a held pose has no spread")
 local sampled = GquestH3.Context()
 check(sampled ~= nil, "the held weapon is still resolvable after sampling")
-if sampled then
-    check(math.abs(sampled.mag.x - 1.5667) < 0.01 and math.abs(sampled.mag.y + 1.9667) < 0.01
-        and math.abs(sampled.mag.z + 2.5333) < 0.01, "the sampler applied the averaged well")
-end
+check(sampled and notified and math.abs(sampled.mag.x - notified.f) < 1e-6
+    and math.abs(sampled.mag.z - notified.u) < 1e-6, "the averaged well is the one used")
 check(files["gquest/h3_manual.json"] ~= nil, "the sampled offset was saved")
 
--- 16. The sampler refuses a weapon without a magazine instead of guessing.
+-- 16. A one-frame sample is refused instead of saved silently.
+reset()
+local previous = GquestH3.Context().mag
+pose(9, 9, 9)
+GquestH3.OnSample = function(result) notified = result end
+commands.gquest_h3_sample(nil, nil, {"0", "0.2", "apply"})
+think()
+now = 1
+think()
+check(notified and notified.usable == false, "a one-frame sample is not usable")
+check(notified and notified.applied == false, "a refused sample is not applied")
+local unchanged = GquestH3.Context().mag
+check(math.abs(unchanged.x - previous.x) < 1e-6 and math.abs(unchanged.z - previous.z) < 1e-6,
+    "a refused sample keeps the stored well")
+
+-- 17. The sampler refuses a weapon without a magazine instead of guessing.
 reset()
 weapon.class = "hlvr_weapon_crowbar"
+local fired = false
+GquestH3.OnSample = function() fired = true end
 commands.gquest_h3_sample(nil, nil, {"0", "1", "apply"})
+now = 0.5
 think()
-check(not state.grabbed, "a magazineless weapon arms no sampler and no gesture")
+now = 3
+think()
+check(not fired, "a magazineless weapon arms no sampler")
+check(not state.grabbed, "a magazineless weapon triggers no gesture")
 weapon.class = "hlvr_weapon_pistol"
 
 -- 17. The status report carries the live clip and reserve for acceptance runs.

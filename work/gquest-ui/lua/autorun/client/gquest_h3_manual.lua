@@ -363,6 +363,10 @@ loadOverrides()
 -- command runs, so the sample starts after a delay and averages every frame of
 -- its window. Values are the same hand-frame numbers gquest_h3_report prints;
 -- the "apply" mode stores the average as this class's well and saves it.
+-- A sample that is too short or too shaky is never applied: a wrong magazine
+-- well would otherwise be saved silently and the gesture would fire elsewhere.
+local SAMPLE_MIN_FRAMES, SAMPLE_MAX_SPREAD = 10, 1.5
+
 local sample
 function sampleThink(ctx)
     if not sample or ctx.class ~= sample.class then return end
@@ -399,26 +403,44 @@ function sampleFinish()
         finished.max.f - finished.min.f,
         finished.max.r - finished.min.r,
         finished.max.u - finished.min.u)
-    print(string.format("GQUEST_H3 sample class=%s frames=%d avg=%.2f,%.2f,%.2f spread=%.2f",
-        finished.class, n, average.f, average.r, average.u, spread))
+    local usable = n >= SAMPLE_MIN_FRAMES and spread <= SAMPLE_MAX_SPREAD
+    print(string.format(
+        "GQUEST_H3 sample class=%s frames=%d avg=%.2f,%.2f,%.2f spread=%.2f usable=%s",
+        finished.class, n, average.f, average.r, average.u, spread, tostring(usable)))
+    local result = {class = finished.class, frames = n, spread = spread, usable = usable,
+        f = average.f, r = average.r, u = average.u, applied = false}
     if finished.apply then
-        overrides[finished.class] = average
-        saveOverrides()
-        state.grabbed = false
-        state.armed = false
-        print(string.format("GQUEST_H3 sample applied and saved %s", finished.class))
+        if usable then
+            overrides[finished.class] = average
+            saveOverrides()
+            state.grabbed = false
+            state.armed = false
+            result.applied = true
+            print(string.format("GQUEST_H3 sample applied and saved %s", finished.class))
+        else
+            print(string.format(
+                "GQUEST_H3 sample rejected: need >=%d frames and spread <=%.1f; offset unchanged",
+                SAMPLE_MIN_FRAMES, SAMPLE_MAX_SPREAD))
+        end
     else
         print(string.format(
             "GQUEST_H3 sample: apply with gquest_h3_offset %.2f %.2f %.2f %s",
             average.f, average.r, average.u, finished.class))
     end
+    -- Read by the VR menu so the wearer gets the result without a log;
+    -- OnSample is optional and only ever called from here.
+    GquestH3.LastSample = result
+    local callback = GquestH3.OnSample
+    if type(callback) == "function" then pcall(callback, result) end
 end
 
 concommand.Add("gquest_h3_sample", function(_, _, arguments)
     local delay = tonumber(arguments and arguments[1] or "") or 5
     local window = tonumber(arguments and arguments[2] or "") or 2
     local mode = arguments and arguments[3] or ""
-    local class = currentMagazineClass() or state.class
+    -- Only the weapon actually held counts; a stale class from the last weapon
+    -- must never arm a measurement for the wrong gun.
+    local class = currentMagazineClass()
     if not class then
         print("GQUEST_H3 sample: hold a magazine weapon first")
         return

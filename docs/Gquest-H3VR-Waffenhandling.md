@@ -63,7 +63,24 @@ gquest_h3_reset                   # gespeicherte Werte der Klasse löschen
 gquest_h3_status                  # Zustand, Schwellen, Offset, Clip/Reserve
 ```
 
-`gquest_h3_sample` ist der praktische Weg: Befehl vom PC schicken, dann die
+## Bedienung im VR-Menü (ohne adb)
+
+Im Gquest-Menü unter „VR-Einstellungen“ → Abschnitt **H3VR-Waffenhandling**:
+
+* **„Magazinpunkt messen (5 s)“** schließt das Menü und startet die Messung mit
+  5 s Vorlauf; danach 2 s die Zweithand ruhig an den Magazinpunkt halten. Das
+  Ergebnis kommt als Hinweis im Spiel („Magazinpunkt gespeichert …“ oder
+  „Messung unbrauchbar … Punkt unverändert“) und landet in
+  `data/gquest/h3_manual.json`.
+* **„Handling: AN/AUS“** schaltet `gquest_h3_manual`.
+* **„Magazinpunkt zuruecksetzen“** löscht den gespeicherten Punkt der Klasse.
+
+Abgelehnt wird eine Messung unter 10 Bildern oder mit Streuung über 1,5
+Einheiten – ein falscher Magazinpunkt würde die Geste sonst still an der
+falschen Stelle auslösen. Im Spawn-Menü (Utilities → Gquest) gibt es einen
+Knopf, der dieselbe Seite öffnet.
+
+`gquest_h3_sample` ist auch der Konsolenweg: Befehl vom PC schicken, dann die
 Zweithand in die Griffpose bringen und still halten. Ausgegeben werden Mittelwert
 und Streuung über alle Bilder des Fensters; `spread` über ca. 0,5 Einheiten
 bedeutet, dass die Hand nicht ruhig lag. Ohne `apply` wird nur der passende
