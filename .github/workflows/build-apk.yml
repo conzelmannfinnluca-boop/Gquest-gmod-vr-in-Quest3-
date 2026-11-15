@@ -3,9 +3,10 @@ name: Gquest APK
 # Builds the signed Gquest APK on a GitHub runner.
 #
 # Everything the build needs is either public (base APK, NDK 23.2, build-tools
-# 34, JDK, Rust, liblua5.4) or comes from the release asset named below, which
-# holds the private inputs: work/quest-vr-content (+manifest), the weapon model
-# scripts, the private server Lua files and work/gdroid130-compat.
+# 34, JDK, Rust, liblua5.4) or private: work/quest-vr-content (+manifest), the
+# weapon model scripts, the private server Lua files and work/gdroid130-compat.
+# The private part comes either from the release asset named below or already
+# committed in the repo (private repo / private build folder).
 # See docs/Gquest-GitHub-Build.md for what to upload and how.
 #
 # Manual only: run it from Actions -> Gquest APK -> Run workflow.
