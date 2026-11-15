@@ -70,9 +70,59 @@ gh run download -n Gquest-apk          # work/Gquest.apk + Prüfberichte
 Oder im Browser: Actions → „Gquest APK" → „Run workflow" → nach dem Lauf das
 Artefakt `Gquest-apk` herunterladen.
 
-Das APK ist mit demselben Debug-Schlüssel signiert wie dein lokaler Build
-(`pass:android`, Alias `androiddebugkey`) und lässt sich wie gewohnt per
-`bash outputs/install-gquest.sh` bzw. `adb install -r` installieren.
+Das APK ist mit deinem Release-Schlüssel aus den Secrets signiert (siehe
+Abschnitt 3b) und lässt sich wie gewohnt per `bash outputs/install-gquest.sh`
+bzw. `adb install -r` installieren. Ohne hinterlegte Secrets bricht der Lauf ab.
+
+## 3b. Eigener Signaturschlüssel (statt Debug-Key)
+
+Mit einem eigenen Schlüssel tragen alle Builds dieselbe Signatur – nur so lässt
+sich eine installierte GQuest-Version per `adb install -r` aktualisieren. Der
+Debug-Key taugt dafür nicht: er liegt nicht in der CI und ist nicht dauerhaft.
+
+Einmalig auf dem eigenen Rechner:
+
+```sh
+keytool -genkeypair -keystore gquest-release.jks -alias gquest \
+  -keyalg RSA -keysize 4096 -validity 10000 \
+  -dname "CN=Gquest, O=Gquest, C=DE"
+
+# Fingerabdruck notieren (muss bei jeder APK gleich sein)
+keytool -list -v -keystore gquest-release.jks -alias gquest | grep SHA256
+
+# Keystore als Base64 für das Secret
+base64 -w0 gquest-release.jks > gquest-release.jks.b64   # macOS: base64 -i
+```
+
+Dann unter Repository → Settings → Secrets and variables → Actions anlegen:
+
+| Secret | Inhalt |
+|---|---|
+| `GQUEST_KEYSTORE_B64` | kompletter Inhalt von `gquest-release.jks.b64` |
+| `GQUEST_KEYSTORE_PASS` | Store-Passwort |
+| `GQUEST_KEY_ALIAS` | `gquest` |
+| `GQUEST_KEY_PASS` | Key-Passwort, nur falls abweichend |
+
+Fehlen die Secrets, bricht der Lauf beim Schritt „Signaturschluessel aus den
+Secrets" mit `::error::` ab – er fällt nicht still auf den Debug-Key zurück.
+Der Job prüft Passwort und Alias mit `keytool`, zeigt den SHA256-Fingerabdruck im
+Log und löscht den Keystore am Ende wieder (`if: always()`). Die Passwörter
+gehen als `env:`-Referenz an `apksigner`, stehen also nicht in der Prozessliste.
+
+**Keystore und Passwörter sicher aufbewahren.** Ist der Schlüssel weg, lässt
+sich keine APK mehr über eine bestehende Installation legen; Nutzer müssten
+deinstallieren (Spielstände/Mods im App-Verzeichnis gehen dabei verloren).
+
+Lokal mit demselben Schlüssel bauen (der Debug-Key bleibt der Standard, wenn
+diese Variablen fehlen):
+
+```sh
+GQUEST_KEYSTORE=~/gquest-release.jks GQUEST_KEY_ALIAS=gquest \
+GQUEST_KEYSTORE_PASS=… python3 Gquest/tools/build.py
+
+# danach prüfen
+java -jar work/android-sdk/build-tools/34.0.0/lib/apksigner.jar verify --print-certs work/Gquest.apk
+```
 
 ## 4. Was der Runner selbst beschafft
 
@@ -85,7 +135,7 @@ Das APK ist mit demselben Debug-Schlüssel signiert wie dein lokaler Build
 | JDK 17 | `actions/setup-java`, als `work/toolchains/jdk` verlinkt |
 | Rust + aarch64-Ziel | rustup in **deine** privaten Pfade `work/toolchains/cargo` / `work/toolchains/rustup`, weil `tools/cargo.py` genau die benutzt |
 | `liblua5.4.so.0` | `apt-get install liblua5.4-0` (für `work/run_lua_checks.py`) |
-| Debug-Keystore | per `keytool` im Job erzeugt |
+| Release-Keystore | aus den Secrets `GQUEST_KEYSTORE_B64`, `GQUEST_KEYSTORE_PASS`, `GQUEST_KEY_ALIAS`, `GQUEST_KEY_PASS` (siehe Abschnitt 3b) |
 
 **Nicht** hochladen: Basis-APK, Toolchains, Keystore, gebaute APKs.
 

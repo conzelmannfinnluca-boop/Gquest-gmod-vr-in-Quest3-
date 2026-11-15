@@ -101,15 +101,42 @@ jobs:
           echo "$BASE_APK_SHA256  outputs/GDroid-0.1.30.apk" | sha256sum -c -
           python3 work/unpack_base_natives.py
 
-      - name: Debug-Keystore erzeugen
+      # Signiert mit deinem eigenen Schluessel, damit jede APK aus der CI die
+      # gleiche Signatur traegt und sich per "adb install -r" aktualisieren laesst.
+      - name: Signaturschluessel aus den Secrets
+        env:
+          KEYSTORE_B64: ${{ secrets.GQUEST_KEYSTORE_B64 }}
+          KEYSTORE_PASS: ${{ secrets.GQUEST_KEYSTORE_PASS }}
+          KEY_PASS: ${{ secrets.GQUEST_KEY_PASS }}
+          KEY_ALIAS: ${{ secrets.GQUEST_KEY_ALIAS }}
         run: |
           set -euo pipefail
-          mkdir -p "$HOME/.android"
-          rm -f "$HOME/.android/debug.keystore"
-          keytool -genkeypair -keystore "$HOME/.android/debug.keystore" \
-            -storepass android -keypass android -alias androiddebugkey \
-            -keyalg RSA -keysize 2048 -validity 10000 \
-            -dname "CN=Android Debug,O=Android,C=US"
+          missing=""
+          [ -n "${KEYSTORE_B64:-}" ] || missing="$missing GQUEST_KEYSTORE_B64"
+          [ -n "${KEYSTORE_PASS:-}" ] || missing="$missing GQUEST_KEYSTORE_PASS"
+          [ -n "${KEY_ALIAS:-}" ] || missing="$missing GQUEST_KEY_ALIAS"
+          if [ -n "$missing" ]; then
+            echo "::error::Signatur-Secrets fehlen:$missing"
+            echo "Repository -> Settings -> Secrets and variables -> Actions anlegen:"
+            echo "  GQUEST_KEYSTORE_B64   base64 des Keystores (.jks)"
+            echo "  GQUEST_KEYSTORE_PASS  Store-Passwort"
+            echo "  GQUEST_KEY_ALIAS      Alias des Schluessels"
+            echo "  GQUEST_KEY_PASS       Key-Passwort, falls abweichend (optional)"
+            echo "Anleitung: docs/Gquest-GitHub-Build.md"
+            exit 1
+          fi
+          dir="$RUNNER_TEMP/signing"
+          mkdir -p "$dir"
+          chmod 700 "$dir"
+          printf '%s' "$KEYSTORE_B64" | base64 -d > "$dir/gquest-release.jks"
+          keytool -list -keystore "$dir/gquest-release.jks" -storepass "$KEYSTORE_PASS" -alias "$KEY_ALIAS" > /dev/null
+          keytool -list -v -keystore "$dir/gquest-release.jks" -storepass "$KEYSTORE_PASS" -alias "$KEY_ALIAS" | grep -i 'SHA256:' | head -n1
+          {
+            echo "GQUEST_KEYSTORE=$dir/gquest-release.jks"
+            echo "GQUEST_KEY_ALIAS=$KEY_ALIAS"
+            echo "GQUEST_KEYSTORE_PASS=$KEYSTORE_PASS"
+            echo "GQUEST_KEY_PASS=${KEY_PASS:-$KEYSTORE_PASS}"
+          } >> "$GITHUB_ENV"
 
       # Zwei Wege, die privaten Eingaben bereitzustellen:
       # 1. Release "inputs-latest" mit dem Archiv (oeffentliches Repo), oder
@@ -155,6 +182,8 @@ jobs:
           set -euo pipefail
           ls -l work/Gquest.apk outputs/Gquest.apk
           sha256sum work/Gquest.apk
+          "$JAVA_HOME/bin/java" -jar work/android-sdk/build-tools/34.0.0/lib/apksigner.jar \
+            verify --print-certs work/Gquest.apk | head -n5
 
       - uses: actions/upload-artifact@v4
         with:
@@ -164,3 +193,7 @@ jobs:
             work/Gquest.apk
             outputs/Gquest-build-verification.json
             Gquest/dist/verification.json
+
+      - name: Signaturschluessel entfernen
+        if: always()
+        run: rm -rf "$RUNNER_TEMP/signing"

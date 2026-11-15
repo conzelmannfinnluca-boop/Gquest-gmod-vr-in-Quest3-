@@ -7,6 +7,8 @@ import subprocess
 import sys
 import zipfile
 
+import signing
+
 PROJECT = Path(__file__).resolve().parents[1]
 BASE = PROJECT.parent
 WORK = BASE / 'work'
@@ -66,8 +68,9 @@ run(NDK / 'aarch64-linux-android29-clang++', '-shared', '-fPIC', '-O2',
     WORK / 'gdroid-0.1.30-native/liblauncher.so', '-Wl,-soname,liblauncheq.so')
 run(sys.executable, WORK / 'build_quest_lab.py')
 run(TOOLS / 'zipalign', '-f', '-p', '4', WORK / 'GMod-Quest-Lab-unsigned.apk', WORK / 'GMod-Quest-Lab-aligned.apk')
-run(JAVA, '-jar', TOOLS / 'lib/apksigner.jar', 'sign', '--ks', Path.home() / '.android/debug.keystore',
-    '--ks-pass', 'pass:android', '--key-pass', 'pass:android', '--out', WORK / 'Gquest.apk', WORK / 'GMod-Quest-Lab-aligned.apk')
+print(signing.describe())
+run(JAVA, '-jar', TOOLS / 'lib/apksigner.jar', 'sign', *signing.signing_arguments(),
+    '--out', WORK / 'Gquest.apk', WORK / 'GMod-Quest-Lab-aligned.apk')
 run(sys.executable, WORK / 'verify_gquest_package.py')
 apk = WORK / 'Gquest.apk'
 baseline = BASE / "outputs/GDroid-0.1.30.apk"
