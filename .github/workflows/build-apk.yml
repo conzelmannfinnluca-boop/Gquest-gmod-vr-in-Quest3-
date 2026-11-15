@@ -1,0 +1,151 @@
+name: Gquest APK
+
+# Builds the signed Gquest APK on a GitHub runner.
+#
+# Everything the build needs is either public (base APK, NDK 23.2, build-tools
+# 34, JDK, Rust, liblua5.4) or comes from the release asset named below, which
+# holds the private inputs: work/quest-vr-content (+manifest), the weapon model
+# scripts, the private server Lua files and work/gdroid130-compat.
+# See docs/Gquest-GitHub-Build.md for what to upload and how.
+#
+# Manual only: run it from Actions -> Gquest APK -> Run workflow.
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: gquest-apk-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  INPUTS_RELEASE: inputs-latest
+  INPUTS_ASSET: gquest-private-inputs.tar.gz
+  BASE_APK_URL: https://github.com/tinsarfal/GDroid/releases/download/0.1.30/GDroid-0.1.30.apk
+  BASE_APK_SHA256: 28bcce6d656f324b883fa638ceae2893cfa875e423f28a7fbc2329c5cdd5d13c
+  NDK_URL: https://dl.google.com/android/repository/android-ndk-r23b-linux.zip
+  BUILD_TOOLS_URL: https://dl.google.com/android/repository/build-tools_r34-linux.zip
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Freier Speicher
+        run: df -h /
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: JDK in den erwarteten Pfad legen
+        run: |
+          set -euo pipefail
+          mkdir -p work/toolchains
+          ln -sfn "$JAVA_HOME" work/toolchains/jdk
+          work/toolchains/jdk/bin/java -version
+
+      - name: liblua5.4 fuer die Lua-Harnesse
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq liblua5.4-0
+          python3 -c "import ctypes; ctypes.CDLL('liblua5.4.so.0'); print('liblua5.4.so.0 vorhanden')"
+
+      - name: NDK 23.2.8568313
+        run: |
+          set -euo pipefail
+          mkdir -p work/android-sdk/ndk
+          curl -sSL --retry 3 -o /tmp/ndk.zip "$NDK_URL"
+          unzip -q /tmp/ndk.zip -d /tmp/ndk-unpack
+          top="$(find /tmp/ndk-unpack -maxdepth 1 -mindepth 1 -type d | head -n1)"
+          test -n "$top"
+          mv "$top" work/android-sdk/ndk/23.2.8568313
+          rm -rf /tmp/ndk.zip /tmp/ndk-unpack
+          work/android-sdk/ndk/23.2.8568313/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android29-clang++ --version | head -n1
+
+      - name: build-tools 34.0.0
+        run: |
+          set -euo pipefail
+          mkdir -p work/android-sdk/build-tools/34.0.0
+          curl -sSL --retry 3 -o /tmp/bt.zip "$BUILD_TOOLS_URL"
+          unzip -q /tmp/bt.zip -d /tmp/bt-unpack
+          top="$(find /tmp/bt-unpack -maxdepth 1 -mindepth 1 -type d | head -n1)"
+          test -n "$top"
+          cp -a "$top"/. work/android-sdk/build-tools/34.0.0/
+          chmod +x work/android-sdk/build-tools/34.0.0/zipalign
+          rm -rf /tmp/bt.zip /tmp/bt-unpack
+          test -f work/android-sdk/build-tools/34.0.0/zipalign
+          test -f work/android-sdk/build-tools/34.0.0/lib/apksigner.jar
+
+      - name: Private Rust-Toolchain in den erwarteten Pfaden
+        run: |
+          set -euo pipefail
+          export CARGO_HOME="$PWD/work/toolchains/cargo"
+          export RUSTUP_HOME="$PWD/work/toolchains/rustup"
+          curl -sSf https://sh.rustup.rs -o /tmp/rustup-init.sh
+          sh /tmp/rustup-init.sh -y --profile minimal --default-toolchain stable --no-modify-path
+          "$CARGO_HOME/bin/rustup" target add aarch64-linux-android
+          "$CARGO_HOME/bin/cargo" --version
+
+      - name: Basis-APK laden, pruefen und native Bibliotheken entpacken
+        run: |
+          set -euo pipefail
+          curl -sSL --retry 3 -o outputs/GDroid-0.1.30.apk "$BASE_APK_URL"
+          echo "$BASE_APK_SHA256  outputs/GDroid-0.1.30.apk" | sha256sum -c -
+          python3 work/unpack_base_natives.py
+
+      - name: Debug-Keystore erzeugen
+        run: |
+          set -euo pipefail
+          mkdir -p "$HOME/.android"
+          rm -f "$HOME/.android/debug.keystore"
+          keytool -genkeypair -keystore "$HOME/.android/debug.keystore" \
+            -storepass android -keypass android -alias androiddebugkey \
+            -keyalg RSA -keysize 2048 -validity 10000 \
+            -dname "CN=Android Debug,O=Android,C=US"
+
+      - name: Private Build-Eingaben aus dem Release laden
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          gh release download "$INPUTS_RELEASE" --pattern "$INPUTS_ASSET" --dir /tmp --clobber
+          tar -xzf "/tmp/$INPUTS_ASSET" -C .
+          rm -f "/tmp/$INPUTS_ASSET"
+
+      - name: Vorabpruefung der Build-Eingaben
+        run: python3 work/check_gquest_build.py
+
+      - name: APK bauen
+        run: |
+          set -euo pipefail
+          BUILD_SCRIPT=""
+          for candidate in Gquest-Hybrid/tools/build.py Gquest/tools/build.py; do
+            if [ -f "$candidate" ]; then BUILD_SCRIPT="$candidate"; break; fi
+          done
+          if [ -z "$BUILD_SCRIPT" ]; then
+            echo "Kein Build-Einstieg gefunden (Gquest-Hybrid/tools/build.py oder Gquest/tools/build.py)"
+            exit 1
+          fi
+          echo "Build-Einstieg: $BUILD_SCRIPT"
+          python3 "$BUILD_SCRIPT"
+
+      - name: Nachweise
+        run: |
+          set -euo pipefail
+          ls -l work/Gquest.apk outputs/Gquest.apk
+          sha256sum work/Gquest.apk
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Gquest-apk
+          if-no-files-found: error
+          path: |
+            work/Gquest.apk
+            outputs/Gquest-build-verification.json
+            Gquest/dist/verification.json

@@ -18,4 +18,4 @@ Einzeln aufrufbar (rein lesend, ohne Build):
 python3 work/check_gquest_build.py
 ```
 
-Prüft Basis-APK, die 33 nativen Bibliotheken, beide Inhalts-Manifeste (VR-Assets, Waffenskripte) und die Werkzeuge samt gepinnter Prüfsummen und listet jede fehlende Eingabe mit Abhilfe. Rückgabewert 1 bedeutet: der Build bricht an dieser Stelle ab. `--root <ordner>` prüft einen anderen Arbeitsordner. Quellarchiv im privaten Hauptprojekt erneut erstellen: `rtk proxy python3 work/package_gdroid_source.py`.
+Prüft Basis-APK, die 34 nativen Bibliotheken, beide Inhalts-Manifeste (VR-Assets, Waffenskripte) und die Werkzeuge samt gepinnter Prüfsummen und listet jede fehlende Eingabe mit Abhilfe. Rückgabewert 1 bedeutet: der Build bricht an dieser Stelle ab. `--root <ordner>` prüft einen anderen Arbeitsordner. Quellarchiv im privaten Hauptprojekt erneut erstellen: `rtk proxy python3 work/package_gdroid_source.py`.

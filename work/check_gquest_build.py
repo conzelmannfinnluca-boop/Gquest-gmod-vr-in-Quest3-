@@ -143,7 +143,7 @@ def check_base(report: Report, root: Path) -> dict:
         report.wrong("work/gdroid-0.1.30-native",
                      f"{good}/{good + bad} Bibliotheken ok, abweichend oder fehlend: {', '.join(bad_names[:6])}"
                      + (" …" if len(bad_names) > 6 else ""),
-                     "die 33 Bibliotheken aus der Basis-APK (lib/arm64-v8a/) nach work/gdroid-0.1.30-native/ entpacken")
+                     "die Bibliotheken aus der Basis-APK entpacken: python3 work/unpack_base_natives.py")
     else:
         report.ok("work/gdroid-0.1.30-native", f"{good}/{good} Bibliotheken byte-identisch zur APK")
 
