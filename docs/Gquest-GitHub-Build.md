@@ -109,6 +109,16 @@ Der Job prüft Passwort und Alias mit `keytool`, zeigt den SHA256-Fingerabdruck 
 Log und löscht den Keystore am Ende wieder (`if: always()`). Die Passwörter
 gehen als `env:`-Referenz an `apksigner`, stehen also nicht in der Prozessliste.
 
+Nach dem Signieren vergleicht der Schritt „Signatur des Artefakts pruefen"
+(`work/check_apk_signer.py`) den Zertifikat-Fingerabdruck des fertigen
+`work/Gquest.apk` mit dem Wert aus dem Keystore. Stimmt er nicht – etwa weil
+doch der Debug-Key signiert hat – bricht der Job mit `::error::` ab, bevor das
+APK als Artefakt hochgeladen wird. Dasselbe Skript läuft lokal:
+
+```sh
+GQUEST_EXPECTED_SIGNER=<sha256> python3 work/check_apk_signer.py work/Gquest.apk
+```
+
 **Keystore und Passwörter sicher aufbewahren.** Ist der Schlüssel weg, lässt
 sich keine APK mehr über eine bestehende Installation legen; Nutzer müssten
 deinstallieren (Spielstände/Mods im App-Verzeichnis gehen dabei verloren).

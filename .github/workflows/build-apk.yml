@@ -130,9 +130,16 @@ jobs:
           chmod 700 "$dir"
           printf '%s' "$KEYSTORE_B64" | base64 -d > "$dir/gquest-release.jks"
           keytool -list -keystore "$dir/gquest-release.jks" -storepass "$KEYSTORE_PASS" -alias "$KEY_ALIAS" > /dev/null
-          keytool -list -v -keystore "$dir/gquest-release.jks" -storepass "$KEYSTORE_PASS" -alias "$KEY_ALIAS" | grep -i 'SHA256:' | head -n1
+          expected="$(keytool -list -v -keystore "$dir/gquest-release.jks" -storepass "$KEYSTORE_PASS" -alias "$KEY_ALIAS" \
+            | grep -i 'SHA256:' | head -n1 | sed 's/.*: //' | tr -d ':' | tr 'A-F' 'a-f')"
+          if [ -z "$expected" ]; then
+            echo "::error::Kein Signaturzertifikat im Keystore gefunden (Alias $KEY_ALIAS)."
+            exit 1
+          fi
+          echo "Signaturzertifikat: SHA256 ${expected:0:16}..."
           {
             echo "GQUEST_KEYSTORE=$dir/gquest-release.jks"
+            echo "GQUEST_EXPECTED_SIGNER=$expected"
             echo "GQUEST_KEY_ALIAS=$KEY_ALIAS"
             echo "GQUEST_KEYSTORE_PASS=$KEYSTORE_PASS"
             echo "GQUEST_KEY_PASS=${KEY_PASS:-$KEYSTORE_PASS}"
@@ -184,6 +191,10 @@ jobs:
           sha256sum work/Gquest.apk
           "$JAVA_HOME/bin/java" -jar work/android-sdk/build-tools/34.0.0/lib/apksigner.jar \
             verify --print-certs work/Gquest.apk | head -n5
+
+      # Ein APK mit fremdem Schluessel waere installierbar, aber nicht updatefaehig.
+      - name: Signatur des Artefakts pruefen
+        run: python3 work/check_apk_signer.py work/Gquest.apk
 
       - uses: actions/upload-artifact@v4
         with:
