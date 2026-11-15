@@ -11,6 +11,10 @@ name: Gquest APK
 #
 # Laeuft manuell (Actions -> Gquest APK -> Run workflow) und bei einem Tag
 # v* - dann haengt der Job "release" das signierte APK an das Release des Tags.
+#
+# Achtung: "Re-run jobs" wiederholt den ALTEN Commit samt altem Workflow. Nach
+# einer Aenderung an dieser Datei immer "Run workflow" auf dem aktuellen
+# Branch starten.
 
 on:
   workflow_dispatch:
@@ -211,14 +215,34 @@ jobs:
           elif [ -d work/quest-vr-content ]; then
             echo "Kein Release $INPUTS_RELEASE - die privaten Eingaben liegen bereits im Repo."
           else
-            echo "Weder Release $INPUTS_RELEASE noch work/quest-vr-content vorhanden."
+            echo "::error::Weder Release $INPUTS_RELEASE noch work/quest-vr-content vorhanden - die privaten Build-Eingaben fehlen."
             echo "Archiv hochladen (docs/Gquest-GitHub-Build.md) oder die privaten Dateien"
             echo "ins Repo legen. Danach den Workflow neu starten."
+            {
+              echo "## Private Build-Eingaben fehlen"
+              echo
+              echo "Weder das Release \`$INPUTS_RELEASE\` mit \`$INPUTS_ASSET\` noch \`work/quest-vr-content\` sind vorhanden."
+              echo "Benoetigt: \`work/quest-vr-content\` + Manifest, \`work/gquest-weapon-models/content\`, \`work/gdroid130-compat/audit.json\` und die drei privaten Lua-Dateien."
+              echo "Anleitung: \`docs/Gquest-GitHub-Build.md\`."
+            } >> "$GITHUB_STEP_SUMMARY"
             exit 1
           fi
 
       - name: Vorabpruefung der Build-Eingaben
-        run: python3 work/check_gquest_build.py
+        run: |
+          set -o pipefail
+          if python3 work/check_gquest_build.py | tee /tmp/preflight.log; then
+            exit 0
+          fi
+          {
+            echo "## Vorabpruefung fehlgeschlagen"
+            echo
+            echo '```'
+            grep -E '^(FEHLT|   [0-9]+\.)' /tmp/preflight.log | head -n 40
+            echo '```'
+            echo "Die vollstaendige Liste mit Abhilfe steht im Log dieses Schritts."
+          } >> "$GITHUB_STEP_SUMMARY"
+          exit 1
 
       - name: APK bauen
         run: |
