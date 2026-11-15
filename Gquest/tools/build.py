@@ -22,6 +22,18 @@ def run(*args):
 def cargo(*args):
     run(sys.executable, PROJECT / 'tools/cargo.py', *args)
 
+def preflight():
+    """Name the missing input instead of failing at whichever step needs it."""
+    script = WORK / 'check_gquest_build.py'
+    if not script.is_file():
+        print('VORABPRUEFUNG: ' + str(script) + ' fehlt - Eingabepruefung uebersprungen.')
+        return
+    result = subprocess.run([sys.executable, str(script), '--root', str(BASE)])
+    if result.returncode != 0:
+        raise SystemExit('VORABPRUEFUNG FEHLGESCHLAGEN: Build-Eingaben fehlen oder passen nicht '
+                         '(Liste oben). Build abgebrochen; es wurde nichts gebaut.')
+
+preflight()
 run(sys.executable, WORK / 'verify_gdroid_base.py')
 run(sys.executable, WORK / 'run_lua_checks.py',
     WORK / 'harness/test_hl2_grip_cache.lua',

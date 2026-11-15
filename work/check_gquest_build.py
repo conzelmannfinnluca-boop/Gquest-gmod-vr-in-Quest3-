@@ -17,6 +17,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import os
 import shutil
 import subprocess
 import sys
@@ -211,6 +212,12 @@ def check_tools(report: Report, root: Path) -> None:
     else:
         report.missing("NDK 23.2 (aarch64-linux-android29-clang++)",
                        "Android NDK 23.2.8568313 nach work/android-sdk/ndk/ entpacken")
+    linker = ndk / "aarch64-linux-android29-clang"
+    if linker.is_file():
+        report.ok("NDK 23.2 aarch64-Linker", "tools/cargo.py setzt ihn als aarch64-Linker")
+    else:
+        report.missing("NDK 23.2 (aarch64-linux-android29-clang)",
+                       "gehört zum selben NDK; tools/cargo.py linkt damit")
 
     build_tools = root / "work/android-sdk/build-tools/34.0.0"
     for name, hint in (("zipalign", "Android build-tools 34.0.0 nach work/android-sdk/build-tools/ entpacken"),
@@ -237,26 +244,52 @@ def check_tools(report: Report, root: Path) -> None:
                        "-keypass android -alias androiddebugkey -keyalg RSA -keysize 2048 -validity 10000 "
                        "-dname 'CN=Android Debug,O=Android,C=US'")
 
-    for name, hint in (("cargo", "Rust-Toolchain installieren (rustup)"),
-                       ("rustc", "Rust-Toolchain installieren (rustup)"),
-                       ("c++", "C++-Compiler für die Brücken-Tests (g++/clang++)")):
-        found = shutil.which(name)
-        if found:
-            report.ok(name, found)
-        else:
-            report.missing(name, hint)
+    # tools/cargo.py uses this workspace's private Rust installation, not PATH.
+    rust_home = root / "work/toolchains/cargo"
+    rustup_home = root / "work/toolchains/rustup"
+    cargo = rust_home / "bin/cargo"
+    rustc = rust_home / "bin/rustc"
+    if cargo.is_file():
+        report.ok("cargo (work/toolchains/cargo)", "private Toolchain wie in tools/cargo.py")
+    elif shutil.which("cargo"):
+        report.ok("cargo (PATH)", shutil.which("cargo"))
+    else:
+        report.missing("cargo", "private Rust-Toolchain nach work/toolchains/cargo (tools/cargo.py "
+                                "erwartet work/toolchains/cargo/bin/cargo) oder rustup installieren")
 
-    if shutil.which("rustc"):
-        try:
-            sysroot = subprocess.run(["rustc", "--print", "sysroot"], capture_output=True,
-                                     text=True, timeout=30).stdout.strip()
-        except (OSError, subprocess.SubprocessError):
-            sysroot = ""
+    target_root = rustup_home if (rustup_home / "toolchains").is_dir() else None
+    found_target = None
+    if target_root:
+        matches = sorted(target_root.glob("toolchains/*/lib/rustlib/aarch64-linux-android"))
+        found_target = matches[0] if matches else None
+    if found_target:
+        report.ok("Rust-Ziel aarch64-linux-android", str(found_target.relative_to(root)))
+    else:
+        binary = rustc if rustc.is_file() else None
+        if binary is None and shutil.which("rustc"):
+            binary = Path(shutil.which("rustc"))
+        sysroot = ""
+        if binary:
+            environment = os.environ.copy()
+            environment["RUSTUP_HOME"] = str(rustup_home)
+            environment["CARGO_HOME"] = str(rust_home)
+            try:
+                sysroot = subprocess.run([str(binary), "--print", "sysroot"], capture_output=True,
+                                         text=True, timeout=30, env=environment).stdout.strip()
+            except (OSError, subprocess.SubprocessError):
+                sysroot = ""
         target = Path(sysroot) / "lib/rustlib/aarch64-linux-android" if sysroot else None
         if target and target.is_dir():
-            report.ok("Rust-Ziel aarch64-linux-android")
+            report.ok("Rust-Ziel aarch64-linux-android", sysroot)
         else:
-            report.missing("Rust-Ziel aarch64-linux-android", "rustup target add aarch64-linux-android")
+            report.missing("Rust-Ziel aarch64-linux-android",
+                           "rustup target add aarch64-linux-android "
+                           "(RUSTUP_HOME=work/toolchains/rustup, wie tools/cargo.py)")
+
+    if shutil.which("c++"):
+        report.ok("c++", shutil.which("c++"))
+    else:
+        report.missing("c++", "C++-Compiler für die Brücken-Tests (g++/clang++)")
 
     try:
         import ctypes
