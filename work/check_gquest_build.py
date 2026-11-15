@@ -235,9 +235,16 @@ def check_tools(report: Report, root: Path) -> None:
         report.missing("JDK (work/toolchains/jdk/bin/java)",
                        "JDK 17 nach work/toolchains/jdk entpacken; apksigner braucht java")
 
-    keystore = Path.home() / ".android/debug.keystore"
+    # CI with release secrets signs with GQUEST_KEYSTORE and never creates the
+    # debug keystore, so either one satisfies the build.
+    configured = os.environ.get("GQUEST_KEYSTORE", "")
+    keystore = Path(configured).expanduser() if configured else Path.home() / ".android/debug.keystore"
     if keystore.is_file():
-        report.ok("Debug-Keystore", str(keystore))
+        report.ok("Signatur-Keystore", str(keystore))
+    elif configured:
+        report.missing(f"Signatur-Keystore ({keystore})",
+                       "GQUEST_KEYSTORE zeigt auf eine fehlende Datei; sonst den Debug-Key anlegen "
+                       "oder GQUEST_KEYSTORE weglassen")
     else:
         report.missing("Debug-Keystore (~/.android/debug.keystore)",
                        "keytool -genkeypair -keystore ~/.android/debug.keystore -storepass android "
