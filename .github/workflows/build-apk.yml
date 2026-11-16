@@ -67,22 +67,36 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
-          if gh release view "$INPUTS_RELEASE" >/dev/null 2>&1; then
-            gh release download "$INPUTS_RELEASE" --pattern "$INPUTS_ASSET" --dir /tmp --clobber
+          got=""
+          rm -f /tmp/release.err
+          if gh release download "$INPUTS_RELEASE" --pattern "$INPUTS_ASSET" --dir /tmp --clobber 2>/tmp/release.err; then
             tar -xzf "/tmp/$INPUTS_ASSET" -C .
             rm -f "/tmp/$INPUTS_ASSET"
             echo "Private Eingaben aus Release $INPUTS_RELEASE entpackt."
+            got=1
           elif [ -d work/quest-vr-content ]; then
-            echo "Kein Release $INPUTS_RELEASE - die privaten Eingaben liegen bereits im Repo."
-          else
-            echo "::error::Weder Release $INPUTS_RELEASE noch work/quest-vr-content vorhanden - die privaten Build-Eingaben fehlen."
-            echo "Archiv hochladen (docs/Gquest-GitHub-Build.md) oder die privaten Dateien"
-            echo "ins Repo legen. Danach den Workflow neu starten."
+            echo "Kein nutzbares Release $INPUTS_RELEASE - die privaten Eingaben liegen bereits im Repo."
+            sed 's/^/  /' /tmp/release.err 2>/dev/null | head -n 5 || true
+            got=1
+          fi
+
+          if [ -z "$got" ]; then
+            echo "::error::Private Build-Eingaben fehlen: kein Release $INPUTS_RELEASE mit $INPUTS_ASSET und kein work/quest-vr-content im Repo."
+            echo "gh release download meldet:"
+            sed 's/^/  /' /tmp/release.err 2>/dev/null | head -n 5 || true
             {
               echo "## Private Build-Eingaben fehlen"
               echo
-              echo "Weder das Release \`$INPUTS_RELEASE\` mit \`$INPUTS_ASSET\` noch \`work/quest-vr-content\` sind vorhanden."
+              echo "Gesucht: Release \`$INPUTS_RELEASE\` mit dem Asset \`$INPUTS_ASSET\` – oder die Dateien im Repo."
+              echo
               echo "Benoetigt: \`work/quest-vr-content\` + Manifest, \`work/gquest-weapon-models/content\`, \`work/gdroid130-compat/audit.json\` und die drei privaten Lua-Dateien."
+              echo
+              echo "### Was dieses Repository an Releases sieht"
+              echo '```'
+              gh release list --limit 10 2>&1 | head -n 12 || true
+              echo '```'
+              echo "Ein Entwurf (Draft) erscheint hier nicht; ein abweichender Tag- oder Asset-Name passt nicht zur Suche."
+              echo
               echo "Anleitung: \`docs/Gquest-GitHub-Build.md\`."
             } >> "$GITHUB_STEP_SUMMARY"
             exit 1
