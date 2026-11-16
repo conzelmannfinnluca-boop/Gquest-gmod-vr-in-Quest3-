@@ -57,6 +57,62 @@ jobs:
         with:
           lfs: true
 
+      # Zwei Wege, die privaten Eingaben bereitzustellen:
+      # 1. Release "inputs-latest" mit dem Archiv, oder
+      # 2. die Dateien liegen ohnehin im Repo (privates Repo / privater Build-Ordner).
+      # Steht bewusst am Anfang: fehlt etwas, ist der Lauf nach Sekunden rot statt
+      # nach einer Minute Werkzeug-Installation.
+      - name: Private Build-Eingaben
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          if gh release view "$INPUTS_RELEASE" >/dev/null 2>&1; then
+            gh release download "$INPUTS_RELEASE" --pattern "$INPUTS_ASSET" --dir /tmp --clobber
+            tar -xzf "/tmp/$INPUTS_ASSET" -C .
+            rm -f "/tmp/$INPUTS_ASSET"
+            echo "Private Eingaben aus Release $INPUTS_RELEASE entpackt."
+          elif [ -d work/quest-vr-content ]; then
+            echo "Kein Release $INPUTS_RELEASE - die privaten Eingaben liegen bereits im Repo."
+          else
+            echo "::error::Weder Release $INPUTS_RELEASE noch work/quest-vr-content vorhanden - die privaten Build-Eingaben fehlen."
+            echo "Archiv hochladen (docs/Gquest-GitHub-Build.md) oder die privaten Dateien"
+            echo "ins Repo legen. Danach den Workflow neu starten."
+            {
+              echo "## Private Build-Eingaben fehlen"
+              echo
+              echo "Weder das Release \`$INPUTS_RELEASE\` mit \`$INPUTS_ASSET\` noch \`work/quest-vr-content\` sind vorhanden."
+              echo "Benoetigt: \`work/quest-vr-content\` + Manifest, \`work/gquest-weapon-models/content\`, \`work/gdroid130-compat/audit.json\` und die drei privaten Lua-Dateien."
+              echo "Anleitung: \`docs/Gquest-GitHub-Build.md\`."
+            } >> "$GITHUB_STEP_SUMMARY"
+            exit 1
+          fi
+
+          # Auch die uebrigen privaten Pfade muessen da sein, sonst bricht der
+          # Build ohnehin ab - nur eben spaeter und ohne klare Liste.
+          missing=()
+          for path in work/quest-vr-content-manifest.json \
+                      work/gquest-weapon-models/content \
+                      work/gdroid130-compat/audit.json \
+                      work/gquest-ui/lua/autorun/server/gquest_hl2_equipment.lua \
+                      work/gquest-ui/lua/autorun/server/gquest_hl2_models.lua \
+                      work/gquest-ui/lua/autorun/client/gquest_weapon_catalog.lua; do
+            [ -e "$path" ] || missing+=("$path")
+          done
+          if [ "${#missing[@]}" -gt 0 ]; then
+            printf 'FEHLT %s\n' "${missing[@]}"
+            printf '::error::Private Build-Eingaben unvollstaendig (%d Pfade fehlen).\n' "${#missing[@]}"
+            {
+              echo "## Private Build-Eingaben unvollstaendig"
+              echo
+              printf -- '- `%s`\n' "${missing[@]}"
+              echo
+              echo "Anleitung: \`docs/Gquest-GitHub-Build.md\`."
+            } >> "$GITHUB_STEP_SUMMARY"
+            exit 1
+          fi
+          echo "Alle privaten Pfade vorhanden."
+
       - name: Freier Speicher
         run: df -h /
 
@@ -207,35 +263,6 @@ jobs:
             echo "GQUEST_KEYSTORE_PASS=$store_pass"
             echo "GQUEST_KEY_PASS=$key_pass"
           } >> "$GITHUB_ENV"
-
-      # Zwei Wege, die privaten Eingaben bereitzustellen:
-      # 1. Release "inputs-latest" mit dem Archiv (oeffentliches Repo), oder
-      # 2. die Dateien liegen ohnehin im Repo (privates Repo / privater Build-Ordner).
-      - name: Private Build-Eingaben
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          set -euo pipefail
-          if gh release view "$INPUTS_RELEASE" >/dev/null 2>&1; then
-            gh release download "$INPUTS_RELEASE" --pattern "$INPUTS_ASSET" --dir /tmp --clobber
-            tar -xzf "/tmp/$INPUTS_ASSET" -C .
-            rm -f "/tmp/$INPUTS_ASSET"
-            echo "Private Eingaben aus Release $INPUTS_RELEASE entpackt."
-          elif [ -d work/quest-vr-content ]; then
-            echo "Kein Release $INPUTS_RELEASE - die privaten Eingaben liegen bereits im Repo."
-          else
-            echo "::error::Weder Release $INPUTS_RELEASE noch work/quest-vr-content vorhanden - die privaten Build-Eingaben fehlen."
-            echo "Archiv hochladen (docs/Gquest-GitHub-Build.md) oder die privaten Dateien"
-            echo "ins Repo legen. Danach den Workflow neu starten."
-            {
-              echo "## Private Build-Eingaben fehlen"
-              echo
-              echo "Weder das Release \`$INPUTS_RELEASE\` mit \`$INPUTS_ASSET\` noch \`work/quest-vr-content\` sind vorhanden."
-              echo "Benoetigt: \`work/quest-vr-content\` + Manifest, \`work/gquest-weapon-models/content\`, \`work/gdroid130-compat/audit.json\` und die drei privaten Lua-Dateien."
-              echo "Anleitung: \`docs/Gquest-GitHub-Build.md\`."
-            } >> "$GITHUB_STEP_SUMMARY"
-            exit 1
-          fi
 
       - name: Vorabpruefung der Build-Eingaben
         run: |
